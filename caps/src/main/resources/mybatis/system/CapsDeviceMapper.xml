@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.CapsDeviceMapper">
+
+    <resultMap type="CapsDevice" id="CapsDeviceResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="personId"    column="person_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="mobile"    column="mobile"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectCapsDeviceVo">
+        select id, device_id, person_id, user_id, user_name, mobile, create_by, create_time, update_by,
+               update_time, remark
+        from caps_device
+    </sql>
+
+    <select id="selectCapsDeviceList" parameterType="CapsDevice" resultMap="CapsDeviceResult">
+        <include refid="selectCapsDeviceVo"/>
+        <where>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="personId != null  and personId != ''"> and person_id = #{personId}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="mobile != null  and mobile != ''"> and mobile = #{mobile}</if>
+        </where>
+    </select>
+
+    <select id="selectCapsDeviceById" parameterType="Integer" resultMap="CapsDeviceResult">
+        <include refid="selectCapsDeviceVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectCapsDeviceByDeviceId" parameterType="String" resultMap="CapsDeviceResult">
+        <include refid="selectCapsDeviceVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <select id="selectCapsDeviceByUserId" parameterType="String" resultMap="CapsDeviceResult">
+        <include refid="selectCapsDeviceVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertCapsDevice" parameterType="CapsDevice" useGeneratedKeys="true" keyProperty="id">
+        insert into caps_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">device_id,</if>
+            <if test="personId != null and personId != ''">person_id,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="mobile != null">mobile,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+            <if test="personId != null and personId != ''">#{personId},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="mobile != null">#{mobile},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCapsDevice" parameterType="CapsDevice">
+        update caps_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">device_id = #{deviceId},</if>
+            <if test="personId != null and personId != ''">person_id = #{personId},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="mobile != null">mobile = #{mobile},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCapsDeviceById" parameterType="Integer">
+        delete from caps_device where id = #{id}
+    </delete>
+
+    <delete id="deleteCapsDeviceByIds" parameterType="String">
+        delete from caps_device where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateCapsDeviceUserId" parameterType="String">
+         update caps_device set user_id = #{userId} where device_id = #{deviceId}
+    </update>
+
+    <update id="updateCapsPersonIdByDeviceId" parameterType="String">
+        update caps_device set person_id = #{personId} where device_id = #{deviceId}
+    </update>
+</mapper>

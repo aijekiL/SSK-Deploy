@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 閸忋劌鐪崣鍌涙殶 -->
+	<settings>
+		<!-- 娴ｅ灝鍙忕仦鈧惃鍕Ё鐏忓嫬娅掗崥顖滄暏閹存牜顩﹂悽銊х处鐎?-->
+		<setting name="cacheEnabled" value="true"/>
+		<!-- 閸忎浇顔廕DBC 閺€顖涘瘮閼奉亜濮╅悽鐔稿灇娑撳鏁?-->
+		<setting name="useGeneratedKeys" value="true"/>
+		<!-- 闁板秶鐤嗘妯款吇閻ㄥ frauen澧界悰灞芥珤.SIMPLE鐏忚鲸妲搁弲顕€鈧碍澧界悰灞芥珤;REUSE閹笛嗩攽閸ｃ劋绱伴柌宥囨暏妫板嫬顦╅悶鍡氼嚔閸?prepared statements);BATCH閹笛嗩攽閸ｃ劌鐨㈤柌宥囨暏鐠囶厼褰為獮鑸靛⒔鐞涘本澹掗柌蹇旀纯閺?-->
+		<setting name="defaultExecutorType" value="SIMPLE"/>
+		<!-- 閹稿洤鐣?MyBatis 閹碘偓閻劍妫╄箛妤冩畱閸忚渹缍�€圭偟骞?-->
+		<setting name="logImpl" value="SLF4J"/>
+		<!-- 娴ｈ法鏁ゆす鐓庡槻閸涜棄鎮曞▔鏇℃祮閹广垹鐡у▓?-->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+	<!-- 缁鐎烽崚顐㈡倳 -->
+	<typeAliases>
+		<typeAlias alias="Page" type="com.ruoyi.common.utils.PageUtils"/>
+	</typeAliases>
+	
+</configuration>

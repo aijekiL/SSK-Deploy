@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>E:\csepdiCode\Project-Code-Git-nw\XMJCFW\VenusPro\Venus.SqlSugar\Venus.WebApi\bin\Release\</_PublishTargetUrl>
+    <History>True|2024-12-20T06:27:33.6101316Z;True|2024-12-20T14:16:01.5970475+08:00;True|2024-12-20T12:39:04.8830298+08:00;True|2024-12-20T12:27:55.8459509+08:00;</History>
+    <LastFailureDetails />
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+  </PropertyGroup>
+  <ItemGroup>
+    <EFMigrations Include="Venus.Entitys.VenusDbContext">
+      <Value>
+      </Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

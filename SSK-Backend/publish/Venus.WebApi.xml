@@ -1,0 +1,446 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Venus.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Venus.WebApi.Common.ServicesSetup.AddServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            自动注入服务
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Common.ServicesSetup.Match(System.String)">
+            <summary>
+            程序集是否匹配
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.Attachment.AttachmentController">
+            <summary>
+            附件管理API
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.Attachment.AttachmentController.Upload(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile},System.String,System.String)">
+            <summary>
+            上传附件
+            </summary>
+            <param name="fileInput">附件集合</param>
+            <param name="BizObjectTable">业务表名</param>
+            <param name="DataField">业务表字段</param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.Attachment.AttachmentController.Download(System.Guid)">
+            <summary>
+            下载附件
+            </summary>
+            <param name="AttachmentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.Attachment.AttachmentController.Preview(System.Guid)">
+            <summary>
+            预览附件
+            </summary>
+            <param name="AttachmentId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.Attachment.AttachmentController.GetFileToBusinessId(System.String,System.String,System.String,System.String)">
+            <summary>
+            根据业务ID获取附件
+            </summary>
+            <param name="type"></param>
+            <param name="BizObjectTable"></param>
+            <param name="DataField"></param>
+            <param name="BizObjectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.AuthController.Login(Venus.WebApi.Controllers.AuthController.LoginInfo)">
+            <summary>
+            WebApi登陆
+            </summary>
+            <param name="loginInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.AuthController.KeepLogin">
+            <summary>
+            保持登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.FaceManageController">
+            <summary>
+            人脸管理（CompreFace）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.FaceManageController.AddFaceToUserGroup(System.String,System.String,System.String,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            添加人脸到用户组
+            </summary>
+            <param name="userId">用户唯一标识</param>
+            <param name="userInfo">用户信息（可选）</param>
+            <param name="groupId">用户组（用于选择API Key，可选）</param>
+            <param name="fileInput">人脸图片</param>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.FaceManageController.SearchFacesInGroup(System.Int32,System.String,Microsoft.AspNetCore.Http.IFormFile,System.Threading.CancellationToken)">
+            <summary>
+            人脸检索
+            </summary>
+            <param name="minSimilarity">最小相似度（百分比）</param>
+            <param name="groupId">用户组（用于选择API Key，可选）</param>
+            <param name="fileInput">人脸图片</param>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController">
+            <summary>
+            设备信息
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.GetPageDataList(Venus.Tools.Request.PageDataOptions)">
+            <summary>
+            获取设备列表
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.Save(Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SaveDto)">
+            <summary>
+            保存设备信息
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController">
+            <summary>
+            项目信息接口
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.GetList">
+            <summary>
+            获取工程信息列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.Save(Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.SaveDto)">
+            <summary>
+            保存工程信息
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.GetData(System.Guid)">
+            <summary>
+            获取工程信息
+            </summary>
+            <param name="ObjectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.Completed(System.Guid)">
+            <summary>
+            完工
+            </summary>
+            <param name="ObjectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.Delete(Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.DeleteDto)">
+            <summary>
+            删除工程
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.GetConfig">
+            <summary>
+            获取工程配置
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.GetCurPrjInfo">
+            <summary>
+            获取当前工程信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.SetCurPrjId(System.Guid)">
+            <summary>
+            设置当前工程
+            </summary>
+            <param name="ObjectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController.GetMonitorProjectInfo">
+            <summary>
+            获取监听项目信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController">
+            <summary>
+            员工信息
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto">
+            <summary>
+            人员信息保存DTO
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.ObjectId">
+            <summary>
+            人员信息ID
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.ParentId">
+            <summary>
+            项目ID-SM_ProjectInfo-ObjectId
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.id">
+            <summary>
+            身份证号
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.phone">
+            <summary>
+            联系方式
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.company">
+            <summary>
+            工作单位
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.department">
+            <summary>
+            工作部门
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.Device1">
+            <summary>
+            设备1
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.AttachmentId">
+            <summary>
+            附件ID
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto">
+            <summary>
+            工器具DTO
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto.StaffId">
+            <summary>
+            用户ID
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto.ToolName">
+            <summary>
+            工具名称
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto.ToolNumber">
+            <summary>
+            工具数量
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto.AttachmentId">
+            <summary>
+            附件ID
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.ConfirmStaffInfo(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto)">
+            <summary>
+            确认员工信息
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.AddStaffToolInfo(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto)">
+            <summary>
+            保存用户工具信息
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.BindDevice(System.Guid,System.String)">
+            <summary>
+            绑定设备
+            </summary>
+            <param name="StaffId"></param>
+            <param name="Device"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.DelStaffToolInfo(System.Guid)">
+            <summary>
+            删除员工工具信息
+            </summary>
+            <param name="ToolId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.GetStaffList(System.Guid)">
+            <summary>
+            获取员工列表
+            </summary>
+            <param name="ProjectId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.GetStaffData(System.Guid)">
+            <summary>
+            获取员工数据
+            </summary>
+            <param name="StaffId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.StaffExit(System.Guid)">
+            <summary>
+            员工退场
+            </summary>
+            <param name="StaffId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.UpdateCurStep(System.Guid,System.Int32)">
+            <summary>
+            更新当前步骤
+            </summary>
+            <param name="StaffId"></param>
+            <param name="curStep"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.CompleteRegistration(System.Guid)">
+            <summary>
+            完成员工登记并正式入场
+            </summary>
+            <param name="StaffId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto">
+            <summary>
+            人员信息保存DTO
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.ObjectId">
+            <summary>
+            人员信息ID
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.name">
+            <summary>
+            姓名
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.id">
+            <summary>
+            身份证号
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.phone">
+            <summary>
+            联系方式
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.company">
+            <summary>
+            工作单位
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.department">
+            <summary>
+            工作部门
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.AttachmentId">
+            <summary>
+            附件ID
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileAsync(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto)">
+            <summary>
+            人员档案登记
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.GetEmployeeProfileList(Venus.Tools.Request.PageDataOptions)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.DeleteEmployeeProfile(System.Guid)">
+            <summary>
+            删除人员档案
+            </summary>
+            <param name="EmployeeProfileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.User.UserController.GetUserListData(Venus.Tools.Request.PageDataOptions)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.User.UserController.info">
+            <summary>
+            获取当前登录用户信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.User.UserController.menu">
+            <summary>
+            获取用户菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.BaseUrl">
+            <summary>
+            CompreFace base URL, e.g. http://localhost:8000
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.RecognitionPath">
+            <summary>
+            Recognition service base path.
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.ApiKey">
+            <summary>
+            Default API key for the recognition service.
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.GroupApiKeys">
+            <summary>
+            Optional per-group API keys.
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.DefaultPredictionCount">
+            <summary>
+            Default prediction count (subjects per face).
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.DefaultLimit">
+            <summary>
+            Default limit (max faces to detect). 0 means server default.
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.CompreFaceOptions.TimeoutSeconds">
+            <summary>
+            HTTP timeout for CompreFace requests.
+            </summary>
+        </member>
+    </members>
+</doc>

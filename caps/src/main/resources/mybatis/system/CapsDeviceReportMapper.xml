@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.CapsDeviceReportMapper">
+
+    <resultMap type="CapsDeviceReport" id="CapsDeviceReportResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="altitude"    column="altitude"    />
+        <result property="batL"    column="bat_l"    />
+        <result property="batV"    column="bat_v"    />
+        <result property="btSignalInfo"    column="bt_signal_info"    />
+        <result property="cSpeed"    column="c_speed"    />
+        <result property="charging"    column="charging"    />
+        <result property="gps"    column="gps"    />
+        <result property="gpsLevel"    column="gps_level"    />
+        <result property="inUse"    column="in_use"    />
+        <result property="isWeared"    column="is_weared"    />
+        <result property="netStrenth"    column="net_strenth"    />
+        <result property="netType"    column="net_type"    />
+        <result property="phoneNumber"    column="phoneNumber"    />
+        <result property="simDataNum"    column="sim_data_num"    />
+        <result property="simStatus"    column="sim_status"    />
+        <result property="tcardStatus"    column="tcard_status"    />
+        <result property="tempdata"    column="tempdata"    />
+        <result property="userId"    column="user_id"    />
+        <result property="xPoint"    column="x_point"    />
+        <result property="yPoint"    column="y_point"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="ch4"    column="ch4"    />
+        <result property="o2"    column="o2"    />
+        <result property="co"    column="co"    />
+        <result property="h2s"    column="h2s"    />
+    </resultMap>
+
+    <sql id="selectCapsDeviceReportVo">
+        select id, device_id, altitude, bat_l, bat_v, bt_signal_info, c_speed,
+               charging, gps, gps_level, in_use, is_weared, net_strenth, net_type,
+               phoneNumber, sim_data_num, sim_status, tcard_status, tempdata, user_id,
+               x_point, y_point, create_by, create_time, update_by,
+               update_time, remark , ch4, o2, co, h2s
+        from caps_device_report
+    </sql>
+
+    <select id="selectCapsDeviceReportList" parameterType="CapsDeviceReport" resultMap="CapsDeviceReportResult">
+        <include refid="selectCapsDeviceReportVo"/>
+        <where>
+            <if test="deviceId != null  and deviceId != ''"> and device_id = #{deviceId}</if>
+            <if test="altitude != null  and altitude != ''"> and altitude = #{altitude}</if>
+            <if test="batL != null  and batL != ''"> and bat_l = #{batL}</if>
+            <if test="batV != null  and batV != ''"> and bat_v = #{batV}</if>
+            <if test="btSignalInfo != null  and btSignalInfo != ''"> and bt_signal_info = #{btSignalInfo}</if>
+            <if test="cSpeed != null  and cSpeed != ''"> and c_speed = #{cSpeed}</if>
+            <if test="charging != null  and charging != ''"> and charging = #{charging}</if>
+            <if test="gps != null  and gps != ''"> and gps = #{gps}</if>
+            <if test="gpsLevel != null  and gpsLevel != ''"> and gps_level = #{gpsLevel}</if>
+            <if test="inUse != null  and inUse != ''"> and in_use = #{inUse}</if>
+            <if test="isWeared != null  and isWeared != ''"> and is_weared = #{isWeared}</if>
+            <if test="netStrenth != null  and netStrenth != ''"> and net_strenth = #{netStrenth}</if>
+            <if test="netType != null  and netType != ''"> and net_type = #{netType}</if>
+            <if test="phoneNumber != null  and phoneNumber != ''"> and phoneNumber = #{phoneNumber}</if>
+            <if test="simDataNum != null  and simDataNum != ''"> and sim_data_num = #{simDataNum}</if>
+            <if test="simStatus != null  and simStatus != ''"> and sim_status = #{simStatus}</if>
+            <if test="tcardStatus != null  and tcardStatus != ''"> and tcard_status = #{tcardStatus}</if>
+            <if test="tempdata != null  and tempdata != ''"> and tempdata = #{tempdata}</if>
+            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
+            <if test="xPoint != null  and xPoint != ''"> and x_point = #{xPoint}</if>
+            <if test="yPoint != null  and yPoint != ''"> and y_point = #{yPoint}</if>
+        </where>
+    </select>
+
+    <select id="selectCapsDeviceReportById" parameterType="Integer" resultMap="CapsDeviceReportResult">
+        <include refid="selectCapsDeviceReportVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertCapsDeviceReport" parameterType="CapsDeviceReport" useGeneratedKeys="true" keyProperty="id">
+        insert into caps_device_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">device_id,</if>
+            <if test="altitude != null and altitude != ''">altitude,</if>
+            <if test="batL != null and batL != ''">bat_l,</if>
+            <if test="batV != null and batV != ''">bat_v,</if>
+            <if test="btSignalInfo != null and btSignalInfo != ''">bt_signal_info,</if>
+            <if test="cSpeed != null and cSpeed != ''">c_speed,</if>
+            <if test="charging != null and charging != ''">charging,</if>
+            <if test="gps != null and gps != ''">gps,</if>
+            <if test="gpsLevel != null and gpsLevel != ''">gps_level,</if>
+            <if test="inUse != null and inUse != ''">in_use,</if>
+            <if test="isWeared != null and isWeared != ''">is_weared,</if>
+            <if test="netStrenth != null and netStrenth != ''">net_strenth,</if>
+            <if test="netType != null and netType != ''">net_type,</if>
+            <if test="phoneNumber != null and phoneNumber != ''">phoneNumber,</if>
+            <if test="simDataNum != null and simDataNum != ''">sim_data_num,</if>
+            <if test="simStatus != null and simStatus != ''">sim_status,</if>
+            <if test="tcardStatus != null and tcardStatus != ''">tcard_status,</if>
+            <if test="tempdata != null and tempdata != ''">tempdata,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="xPoint != null and xPoint != ''">x_point,</if>
+            <if test="yPoint != null and yPoint != ''">y_point,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="ch4 != null">ch4,</if>
+            <if test="o2 != null">o2,</if>
+            <if test="co != null">co,</if>
+            <if test="h2s != null">h2s,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+            <if test="altitude != null and altitude != ''">#{altitude},</if>
+            <if test="batL != null and batL != ''">#{batL},</if>
+            <if test="batV != null and batV != ''">#{batV},</if>
+            <if test="btSignalInfo != null and btSignalInfo != ''">#{btSignalInfo},</if>
+            <if test="cSpeed != null and cSpeed != ''">#{cSpeed},</if>
+            <if test="charging != null and charging != ''">#{charging},</if>
+            <if test="gps != null and gps != ''">#{gps},</if>
+            <if test="gpsLevel != null and gpsLevel != ''">#{gpsLevel},</if>
+            <if test="inUse != null and inUse != ''">#{inUse},</if>
+            <if test="isWeared != null and isWeared != ''">#{isWeared},</if>
+            <if test="netStrenth != null and netStrenth != ''">#{netStrenth},</if>
+            <if test="netType != null and netType != ''">#{netType},</if>
+            <if test="phoneNumber != null and phoneNumber != ''">#{phoneNumber},</if>
+            <if test="simDataNum != null and simDataNum != ''">#{simDataNum},</if>
+            <if test="simStatus != null and simStatus != ''">#{simStatus},</if>
+            <if test="tcardStatus != null and tcardStatus != ''">#{tcardStatus},</if>
+            <if test="tempdata != null and tempdata != ''">#{tempdata},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="xPoint != null and xPoint != ''">#{xPoint},</if>
+            <if test="yPoint != null and yPoint != ''">#{yPoint},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="ch4 != null">#{ch4},</if>
+            <if test="o2 != null">#{o2},</if>
+            <if test="co != null">#{co},</if>
+            <if test="h2s != null">#{h2s},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCapsDeviceReport" parameterType="CapsDeviceReport">
+        update caps_device_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">device_id = #{deviceId},</if>
+            <if test="altitude != null and altitude != ''">altitude = #{altitude},</if>
+            <if test="batL != null and batL != ''">bat_l = #{batL},</if>
+            <if test="batV != null and batV != ''">bat_v = #{batV},</if>
+            <if test="btSignalInfo != null and btSignalInfo != ''">bt_signal_info = #{btSignalInfo},</if>
+            <if test="cSpeed != null and cSpeed != ''">c_speed = #{cSpeed},</if>
+            <if test="charging != null and charging != ''">charging = #{charging},</if>
+            <if test="gps != null and gps != ''">gps = #{gps},</if>
+            <if test="gpsLevel != null and gpsLevel != ''">gps_level = #{gpsLevel},</if>
+            <if test="inUse != null and inUse != ''">in_use = #{inUse},</if>
+            <if test="isWeared != null and isWeared != ''">is_weared = #{isWeared},</if>
+            <if test="netStrenth != null and netStrenth != ''">net_strenth = #{netStrenth},</if>
+            <if test="netType != null and netType != ''">net_type = #{netType},</if>
+            <if test="phoneNumber != null and phoneNumber != ''">phoneNumber = #{phoneNumber},</if>
+            <if test="simDataNum != null and simDataNum != ''">sim_data_num = #{simDataNum},</if>
+            <if test="simStatus != null and simStatus != ''">sim_status = #{simStatus},</if>
+            <if test="tcardStatus != null and tcardStatus != ''">tcard_status = #{tcardStatus},</if>
+            <if test="tempdata != null and tempdata != ''">tempdata = #{tempdata},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="xPoint != null and xPoint != ''">x_point = #{xPoint},</if>
+            <if test="yPoint != null and yPoint != ''">y_point = #{yPoint},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="ch4 != null">ch4 = #{ch4},</if>
+            <if test="o2 != null">o2 = #{o2},</if>
+            <if test="co != null">co = #{co},</if>
+            <if test="h2s != null">h2s = #{h2s},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCapsDeviceReportById" parameterType="Integer">
+        delete from caps_device_report where id = #{id}
+    </delete>
+
+    <delete id="deleteCapsDeviceReportByIds" parameterType="String">
+        delete from caps_device_report where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectCapsDeviceReportByDeviceId" parameterType="String" resultMap="CapsDeviceReportResult">
+        select * from caps_device_report where device_id = #{deviceId} order by create_time desc limit 1
+    </select>
+</mapper>

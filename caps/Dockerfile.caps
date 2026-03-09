@@ -1,0 +1,6 @@
+FROM openjdk:8-jre
+WORKDIR /app
+COPY ruoyi.jar /app/app.jar
+ENV TZ=Asia/Shanghai
+EXPOSE 5010 8949 1935
+ENTRYPOINT ["java","-jar","/app/app.jar"]

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>E:\csepdiCode\Project-Code-Git-nw\yxkjzy\ManageApi\Venus.EfCore\Venus.WebApi\bin\Release\net6.0\publish\</_PublishTargetUrl>
+    <History>True|2025-05-17T02:45:04.9271820Z;True|2025-05-15T17:00:22.1816648+08:00;True|2025-05-07T18:32:17.6466206+08:00;True|2025-05-07T14:12:28.5380499+08:00;True|2025-05-07T08:23:16.6240630+08:00;True|2025-04-27T18:16:05.8258313+08:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

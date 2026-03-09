@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Venus.Authentication
+{
+    public class JwtUserInfo
+    {
+        public Guid UserId { get; set; }
+
+        public string LoginName { get; set; } = string.Empty;
+
+        public string UserName { get; set; } = string.Empty;
+
+        public string Token { get; set; } = string.Empty;
+    }
+}
+
