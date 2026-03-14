@@ -169,23 +169,33 @@ public class WebSocketServer
             // 实时数据
             try{
                 deviceId = capsDeviceReportService.parseCapsDeviceReport(jsonObject);
-                result.put("cmd", "ca_report_location");
-                result.put("status", true);
-                result.put("msg", "上报成功");
-                result.put("f_id", "0");
-                result.put("f_key", "d751713988987e9331980363e24189ce");
-                result.put("bt_beacon", "");
-                result.put("report_time", 0);
-                event = CapsConstants.SOCKET_EVENT_REPORT;
-                // 判断map中是否保存了设备对话session, 没有则保存
-                if(!sessionMap.containsKey(deviceId)){
-                    System.out.println("保存设备对话session");
-                    sessionMap.put(deviceId, session);
+                if (deviceId == null || deviceId.trim().isEmpty()) {
+                    log.warn("report failed: cannot map device, user_id={}, payload.device_id={}",
+                            jsonObject.getString("user_id"), jsonObject.getString("device_id"));
+                    result.put("cmd", "ca_report_location");
+                    result.put("msg", "report failed: cannot map device");
+                    result.put("status", false);
+                    result.put("data", "");
+                } else {
+                    result.put("cmd", "ca_report_location");
+                    result.put("status", true);
+                    result.put("msg", "report success");
+                    result.put("f_id", "0");
+                    result.put("f_key", "d751713988987e9331980363e24189ce");
+                    result.put("bt_beacon", "");
+                    result.put("report_time", 0);
+                    event = CapsConstants.SOCKET_EVENT_REPORT;
+                    // save device session for call control
+                    if(!sessionMap.containsKey(deviceId)){
+                        System.out.println("save device call session");
+                        sessionMap.put(deviceId, session);
+                    }
                 }
             }catch(Exception e){
-                log.error("上报失败:{}", e.getMessage());
+                log.error("report failed, payload={}", jsonObject, e);
+                String errMsg = e.getMessage() == null ? e.getClass().getSimpleName() : e.getMessage();
                 result.put("cmd", "ca_report_location");
-                result.put("msg", "上报失败:"+e.getMessage());
+                result.put("msg", "report failed:"+errMsg);
                 result.put("status", false);
                 result.put("data", "");
             }

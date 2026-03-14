@@ -559,6 +559,32 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
                 {
                     att.BizObjectId = EmployeeProfile.ObjectId.ToString();
                     _dbContext.Set<Sys_Attachment>().Update(att);
+
+                    // Replace mode: keep only the latest registration photo for this employee profile.
+                    var obsoleteAtts = _dbContext.Set<Sys_Attachment>()
+                        .Where(o => o.BizObjectTable == "SM_EmployeeProfile"
+                            && o.DataField == "djz"
+                            && o.BizObjectId == EmployeeProfile.ObjectId.ToString()
+                            && o.ObjectId != att.ObjectId)
+                        .ToList();
+                    if (obsoleteAtts.Count > 0)
+                    {
+                        var deleteAttachmentIds = obsoleteAtts.Select(o => o.ObjectId).ToList();
+                        var mongoIds = obsoleteAtts.Select(o => o.MongoId)
+                            .Where(o => !string.IsNullOrWhiteSpace(o))
+                            .Distinct()
+                            .ToList();
+                        foreach (var mongoId in mongoIds)
+                        {
+                            var hasOther = _dbContext.Set<Sys_Attachment>()
+                                .Any(o => o.MongoId == mongoId && !deleteAttachmentIds.Contains(o.ObjectId));
+                            if (!hasOther)
+                            {
+                                _fileStorageService.DeleteFile(mongoId);
+                            }
+                        }
+                        _dbContext.Set<Sys_Attachment>().RemoveRange(obsoleteAtts);
+                    }
                 }
             }
             _dbContext.SaveChanges();
@@ -635,7 +661,6 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
             return WebResponseContent.Instance.OK("成功", data);
         }
 
-        
         /// <summary>
         /// 删除人员档案
         /// </summary>

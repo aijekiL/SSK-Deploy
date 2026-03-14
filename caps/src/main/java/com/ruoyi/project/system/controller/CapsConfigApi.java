@@ -8,7 +8,9 @@ import com.ruoyi.common.utils.HuaheUtil;
 import com.ruoyi.common.utils.MediaUtil;
 import com.ruoyi.framework.web.domain.AjaxResultNew;
 import com.ruoyi.project.system.domain.CapsDevice;
+import com.ruoyi.project.system.domain.dto.CapsGasMonitorReportDto;
 import com.ruoyi.project.system.service.IAudibleVoiceAlarmService;
+import com.ruoyi.project.system.service.ICapsDeviceReportService;
 import com.ruoyi.project.system.service.ICapsDeviceService;
 import com.ruoyi.project.system.websocket.WebSocketServer;
 import com.ruoyi.project.system.websocket.WebSocketUsers;
@@ -40,6 +42,9 @@ public class CapsConfigApi {
 
     @Resource
     private ICapsDeviceService capsDeviceService;
+
+    @Resource
+    private ICapsDeviceReportService capsDeviceReportService;
 
     @Resource
     private IAudibleVoiceAlarmService audioAlarmService;
@@ -133,6 +138,16 @@ public class CapsConfigApi {
 
 
     //保存正在通话的map信息
+
+    @PostMapping("/gas/report")
+    public AjaxResultNew gasReport(@RequestBody CapsGasMonitorReportDto gasReportDto) {
+        int rows = capsDeviceReportService.saveGasMonitorReport(gasReportDto);
+        if (rows > 0) {
+            return AjaxResultNew.success("上报成功");
+        }
+        return AjaxResultNew.error("未写入有效气体数据");
+    }
+
     public static Set<String> dialogMap = new HashSet<>();
     /**
      * 开启对�?

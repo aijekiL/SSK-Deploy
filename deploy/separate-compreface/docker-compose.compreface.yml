@@ -1,0 +1,116 @@
+services:
+  compreface-postgres-db:
+    image: ${registry:-exadel/}compreface-postgres-db:${POSTGRES_VERSION:-1.2.0}
+    container_name: compreface-postgres-db
+    restart: always
+    environment:
+      POSTGRES_USER: ${postgres_username:-postgres}
+      POSTGRES_PASSWORD: ${postgres_password:-postgres}
+      POSTGRES_DB: ${postgres_db:-frs}
+      TZ: ${TZ:-Asia/Shanghai}
+    volumes:
+      - compreface-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks:
+      - compreface-net
+
+  compreface-core:
+    image: ${registry:-exadel/}compreface-core:${CORE_VERSION:-1.2.0}
+    container_name: compreface-core
+    restart: always
+    environment:
+      ML_PORT: 3000
+      IMG_LENGTH_LIMIT: ${max_detect_size:-640}
+      UWSGI_PROCESSES: ${uwsgi_processes:-1}
+      UWSGI_THREADS: ${uwsgi_threads:-1}
+      TZ: ${TZ:-Asia/Shanghai}
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail http://localhost:3000/healthcheck || exit 1"]
+      interval: 10s
+      timeout: 1s
+      retries: 20
+    networks:
+      - compreface-net
+
+  compreface-api:
+    image: ${registry:-exadel/}compreface-api:${API_VERSION:-1.2.0}
+    container_name: compreface-api
+    restart: always
+    depends_on:
+      compreface-postgres-db:
+        condition: service_healthy
+      compreface-core:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${postgres_username:-postgres}
+      POSTGRES_PASSWORD: ${postgres_password:-postgres}
+      POSTGRES_URL: jdbc:postgresql://${postgres_domain:-compreface-postgres-db}:${postgres_port:-5432}/${postgres_db:-frs}
+      SPRING_PROFILES_ACTIVE: dev
+      API_JAVA_OPTS: ${compreface_api_java_options:--Xms128m -Xmx256m}
+      SAVE_IMAGES_TO_DB: ${save_images_to_db:-true}
+      MAX_FILE_SIZE: ${max_file_size:-5MB}
+      MAX_REQUEST_SIZE: ${max_request_size:-10M}B
+      CONNECTION_TIMEOUT: ${connection_timeout:-10000}
+      READ_TIMEOUT: ${read_timeout:-60000}
+      TZ: ${TZ:-Asia/Shanghai}
+    networks:
+      - compreface-net
+
+  compreface-admin:
+    image: ${registry:-exadel/}compreface-admin:${ADMIN_VERSION:-1.2.0}
+    container_name: compreface-admin
+    restart: always
+    depends_on:
+      compreface-postgres-db:
+        condition: service_healthy
+      compreface-api:
+        condition: service_started
+    environment:
+      POSTGRES_USER: ${postgres_username:-postgres}
+      POSTGRES_PASSWORD: ${postgres_password:-postgres}
+      POSTGRES_URL: jdbc:postgresql://${postgres_domain:-compreface-postgres-db}:${postgres_port:-5432}/${postgres_db:-frs}
+      SPRING_PROFILES_ACTIVE: dev
+      ENABLE_EMAIL_SERVER: ${enable_email_server:-false}
+      EMAIL_HOST: ${email_host:-}
+      EMAIL_USERNAME: ${email_username:-}
+      EMAIL_FROM: ${email_from:-}
+      EMAIL_PASSWORD: ${email_password:-}
+      ADMIN_JAVA_OPTS: ${compreface_admin_java_options:--Xms128m -Xmx256m}
+      MAX_FILE_SIZE: ${max_file_size:-5MB}
+      MAX_REQUEST_SIZE: ${max_request_size:-10M}B
+      TZ: ${TZ:-Asia/Shanghai}
+    networks:
+      - compreface-net
+
+  compreface-fe:
+    image: ${registry:-exadel/}compreface-fe:${FE_VERSION:-1.2.0}
+    container_name: compreface-ui
+    restart: always
+    depends_on:
+      compreface-api:
+        condition: service_started
+      compreface-admin:
+        condition: service_started
+    ports:
+      - "${COMPREFACE_UI_PORT:-8001}:80"
+    environment:
+      CLIENT_MAX_BODY_SIZE: ${max_request_size:-10M}
+      PROXY_READ_TIMEOUT: ${read_timeout:-60000}ms
+      PROXY_CONNECT_TIMEOUT: ${connection_timeout:-10000}ms
+      TZ: ${TZ:-Asia/Shanghai}
+    networks:
+      - compreface-net
+
+networks:
+  compreface-net:
+    name: ${COMPREFACE_NETWORK_NAME:-ssk-compreface-net}
+    driver: bridge
+
+volumes:
+  compreface-postgres-data:
+    name: ${COMPREFACE_POSTGRES_VOLUME:-compreface-120_postgres-data}

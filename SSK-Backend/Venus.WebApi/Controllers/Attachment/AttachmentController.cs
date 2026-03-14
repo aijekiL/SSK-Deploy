@@ -115,6 +115,10 @@ namespace Venus.WebApi.Controllers.Attachment
             var encodedFileName = System.Web.HttpUtility.UrlEncode(att.Data.fileName ?? "download", System.Text.Encoding.UTF8) ?? "download";
             var contentDisposition = $"inline; filename*=UTF-8''{encodedFileName}";
             Response.Headers["Content-Disposition"] = contentDisposition;
+            // Preview URL is often reused by BizObjectId route; disable client/proxy cache to avoid stale images.
+            Response.Headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
 
             return File(att.Data.fileStream, contentType);
         }
@@ -130,7 +134,12 @@ namespace Venus.WebApi.Controllers.Attachment
         [HttpGet,Route("GetFileToBusinessId/{type}")]
         public async Task<IActionResult> GetFileToBusinessId(string type, string BizObjectTable, string DataField, string BizObjectId)
         {
-            var doc = _dbContext.Set<Sys_Attachment>().FirstOrDefault(o => o.BizObjectTable == BizObjectTable && o.DataField == DataField && o.BizObjectId == BizObjectId);
+            // Always pick the latest attachment bound to this business object/field.
+            var doc = _dbContext.Set<Sys_Attachment>()
+                .Where(o => o.BizObjectTable == BizObjectTable && o.DataField == DataField && o.BizObjectId == BizObjectId)
+                .OrderByDescending(o => o.ModifyDate ?? o.CreateDate)
+                .ThenByDescending(o => o.CreateDate)
+                .FirstOrDefault();
             if (doc == null) { return Json(WebResponseContent.Instance.Error("数据库中未找到此记录！")); }
 
             if (type == "Preview")

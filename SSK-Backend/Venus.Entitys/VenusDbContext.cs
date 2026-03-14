@@ -114,9 +114,16 @@ namespace Venus.Entitys
                 Console.WriteLine(ex.ToString());
             }
 
-            //2023.08.22 CSEPDI.DW.Huqixing 直接在访问数据库的最底层过滤已删除的数据
+            // Normalize all mapped table names to lowercase to avoid case-sensitive issues.
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
+                var tableName = entityType.GetTableName();
+                if (!string.IsNullOrWhiteSpace(tableName))
+                {
+                    entityType.SetTableName(tableName.ToLowerInvariant());
+                }
+
+                //2023.08.22 CSEPDI.DW.Huqixing 直接在访问数据库的最底层过滤已删除的数据
                 var isDeletedProperty = entityType.FindProperty("Deleted");
                 if (isDeletedProperty != null)
                 {

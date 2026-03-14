@@ -251,11 +251,6 @@ namespace Venus.WebApi
             app.UseStaticHttpContext();
 
             app.MapControllers();
-            using (var scope = app.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<VenusDbContext>();
-                db.Database.Migrate();
-            }
 
             //app.UseSpa(spa =>
             //{

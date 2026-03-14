@@ -21,7 +21,7 @@ public class CapsConstants {
 
 //    public static String rtmpIp = "pqyxkjzy.huwork.cn";
     // 服务器地址
-    public static String rtmpIp = "192.168.1.14";
+    public static String rtmpIp = "192.168.166.210";
     //public static String rtmpIp = "192.168.144.213";
     // sos
     public static final String SOCKET_EVENT_SOS = "ca_sos";
