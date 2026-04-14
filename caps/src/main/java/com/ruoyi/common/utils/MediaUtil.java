@@ -22,7 +22,7 @@ public class MediaUtil {
     public static final String URL = "/index/api/getMediaList";
 
     public static boolean getMediaList(String deviceId) {
-        String url = CapsConstants.WEBRTC_ADDRESS + URL;
+        String url = CapsConstants.getWebrtcAddress() + URL;
         Map<String,Object> param = new HashMap<>();
         param.put("stream",deviceId);
         param.put("secret",SECRET);

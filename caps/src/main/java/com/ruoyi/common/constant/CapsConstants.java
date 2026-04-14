@@ -1,40 +1,64 @@
 package com.ruoyi.common.constant;
 
+import javax.annotation.PostConstruct;
+
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-/**
- * 功能描述 设备socket事件?
- *
- * 
- *
- * ACT - 设备发往服务��?
- * CMD - 服务器发往设备
- */
 @Getter
 @Component
-public class CapsConstants {
-    // 登录
+public class CapsConstants
+{
+    private static final String DEFAULT_RTMP_IP = "192.168.166.210";
+
     public static final String SOCKET_EVENT_LOGIN = "ca_login";
-    // 设备上报
     public static final String SOCKET_EVENT_REPORT = "ca_report_location";
 
-//    public static String rtmpIp = "pqyxkjzy.huwork.cn";
-    // 服务器地址
-    public static String rtmpIp = "192.168.166.210";
-    //public static String rtmpIp = "192.168.144.213";
-    // sos
+    public static final String GAS_DICT_O2 = "a19001";
+    public static final String GAS_DICT_CO = "a21005";
+    public static final String GAS_DICT_H2S = "a21028";
+    public static final String GAS_DICT_CH4 = "qt00001";
+
     public static final String SOCKET_EVENT_SOS = "ca_sos";
     public static final String SOCKET_EVENT_SIP_SOS = "ca_sip_sos";
-    public static final String IP_ADDRESS = "http://"+rtmpIp+":5010";
-//    public static final String IP_ADDRESS = "https://"+rtmpIp+":5010";
-    public static final String SOCKET_ADDRESS = "ws://"+rtmpIp+":5010";
-//    public static final String SOCKET_ADDRESS = "wss://"+rtmpIp+":5010";
-    // webrtc视频通话
-    public static final String WEBRTC_ADDRESS = "https://"+rtmpIp+":8949";
-    //public static final String WEBRTC_ADDRESS = "https://"+rtmpIp+":19443";
-    // 流媒体推送
-    public static final String RTMP_ADDRESS = "rtmp://"+rtmpIp+":1935";
 
+    private static String rtmpIp = DEFAULT_RTMP_IP;
 
+    @Value("${rtmp.url:" + DEFAULT_RTMP_IP + "}")
+    private String configuredRtmpIp;
+
+    @PostConstruct
+    public void init()
+    {
+        if (configuredRtmpIp != null && !configuredRtmpIp.trim().isEmpty())
+        {
+            rtmpIp = configuredRtmpIp.trim();
+        }
+    }
+
+    public static String getRtmpIp()
+    {
+        return rtmpIp;
+    }
+
+    public static String getIpAddress()
+    {
+        return "http://" + rtmpIp + ":5010";
+    }
+
+    public static String getSocketAddress()
+    {
+        return "ws://" + rtmpIp + ":5010";
+    }
+
+    public static String getWebrtcAddress()
+    {
+        return "https://" + rtmpIp + ":8949";
+    }
+
+    public static String getRtmpAddress()
+    {
+        return "rtmp://" + rtmpIp + ":1935";
+    }
 }

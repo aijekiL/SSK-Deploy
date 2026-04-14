@@ -1,0 +1,640 @@
+2026-04-03 17:25:38 17:25:38.836 [http-nio-5010-exec-1] INFO  o.a.c.c.C.[.[.[/] - [log,173] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-03 17:25:38 17:25:38.837 [http-nio-5010-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,525] - Initializing Servlet 'dispatcherServlet'
+2026-04-03 17:25:38 17:25:38.839 [http-nio-5010-exec-1] INFO  o.s.w.s.DispatcherServlet - [initServletBean,547] - Completed initialization in 1 ms
+2026-04-03 17:25:38 17:25:38.953 [http-nio-5010-exec-1] INFO  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,51] - url:http://192.168.144.213:5010/caps/api/index.php
+2026-04-03 17:25:38 17:25:38.956 [http-nio-5010-exec-1] INFO  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,52] - param:ctl=config&act=gt_config&app_version=M6816_ZLTH_66_gas&ic=NGG&device_id=866652022498332&ca_ver=rd_aqm6816-q0.mp1-L5.0Ah-PV2-6816rdgas4uart21-m6816rundegas4u21-user-svn7487-v1.2.9-20240514_1814
+2026-04-03 17:25:41 17:25:41.310 [http-nio-5010-exec-2] INFO  c.r.p.s.w.WebSocketServer - [onOpen,89] - websocket connected: sessionId=0, currentUsers=1
+2026-04-03 17:25:41 17:25:41.331 [http-nio-5010-exec-3] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"act":"ca_login","device_id":"866652022498332"}
+2026-04-03 17:25:41 17:25:41.340 [http-nio-5010-exec-3] INFO  c.r.p.s.w.WebSocketServer - [onMessage,140] - device login received: deviceId=866652022498332, sessionId=0
+2026-04-03 17:25:41 17:25:41.367 [http-nio-5010-exec-3] INFO  c.r.p.s.w.WebSocketServer - [onMessage,150] - device login registered: deviceId=866652022498332, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:25:41 17:25:41.465 [http-nio-5010-exec-4] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"act":"toggle_localrecord","device_id":"866652022498332","type":"1"}
+2026-04-03 17:25:41 17:25:41.470 [http-nio-5010-exec-4] INFO  c.r.p.s.w.WebSocketServer - [onMessage,308] - websocket message ignored: sessionId=0, act=toggle_localrecord, payload={"act":"toggle_localrecord","device_id":"866652022498332","type":"1"}
+2026-04-03 17:25:41 17:25:41.593 [http-nio-5010-exec-5] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--;O2--20.9;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"4044","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"1","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"2","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--24000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:25:41 17:25:41.793 [http-nio-5010-exec-5] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:25:41 17:25:41.794 [http-nio-5010-exec-5] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:25:44 17:25:44.254 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--;O2--20.9;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"4044","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--24000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:25:44 17:25:44.282 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:25:44 17:25:44.283 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:25:51 17:25:51.715 [http-nio-5010-exec-7] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--;O2--20.9;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3956","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--24000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:25:51 17:25:51.745 [http-nio-5010-exec-7] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:25:51 17:25:51.746 [http-nio-5010-exec-7] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:25:51 17:25:51.911 [http-nio-5010-exec-8] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:25:55 17:25:55.490 [http-nio-5010-exec-9] INFO  c.r.p.s.w.WebSocketServer - [onOpen,89] - websocket connected: sessionId=1, currentUsers=2
+2026-04-03 17:25:55 17:25:55.596 [http-nio-5010-exec-10] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"act":"web_one_register","person_id":"78ef95ad-1e45-47f2-a8d2-bf584569486c"}
+2026-04-03 17:25:55 17:25:55.598 [http-nio-5010-exec-10] INFO  c.r.p.s.w.WebSocketServer - [onMessage,234] - web client register: personId=78ef95ad-1e45-47f2-a8d2-bf584569486c, sessionId=1
+2026-04-03 17:26:01 17:26:01.694 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--;O2--20.9;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3956","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--24000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:01 17:26:01.734 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:01 17:26:01.736 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:01 17:26:01.900 [http-nio-5010-exec-14] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:11 17:26:11.754 [http-nio-5010-exec-16] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--25000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:11 17:26:11.774 [http-nio-5010-exec-16] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:11 17:26:11.775 [http-nio-5010-exec-16] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:11 17:26:11.950 [http-nio-5010-exec-17] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:21 17:26:21.795 [http-nio-5010-exec-20] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--25000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:21 17:26:21.821 [http-nio-5010-exec-20] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:21 17:26:21.822 [http-nio-5010-exec-20] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:21 17:26:21.953 [http-nio-5010-exec-21] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:25 17:26:25.598 [http-nio-5010-exec-22] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:26:31 17:26:31.845 [http-nio-5010-exec-23] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--25000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:31 17:26:31.871 [http-nio-5010-exec-23] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:31 17:26:31.872 [http-nio-5010-exec-23] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:31 17:26:31.936 [http-nio-5010-exec-24] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:41 17:26:41.881 [http-nio-5010-exec-26] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3988","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--26000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:41 17:26:41.903 [http-nio-5010-exec-26] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:41 17:26:41.904 [http-nio-5010-exec-26] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:41 17:26:41.942 [http-nio-5010-exec-27] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:51 17:26:51.928 [http-nio-5010-exec-28] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3926","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--26000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:26:51 17:26:51.949 [http-nio-5010-exec-28] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:26:51 17:26:51.950 [http-nio-5010-exec-28] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:26:51 17:26:51.956 [http-nio-5010-exec-29] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:26:55 17:26:55.597 [http-nio-5010-exec-30] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:27:01 17:27:01.979 [http-nio-5010-exec-31] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3926","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--26000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:02 17:27:02.004 [http-nio-5010-exec-32] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:02 17:27:02.008 [http-nio-5010-exec-31] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:02 17:27:02.010 [http-nio-5010-exec-31] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:12 17:27:12.030 [http-nio-5010-exec-33] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3926","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--27000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:12 17:27:12.041 [http-nio-5010-exec-34] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:12 17:27:12.050 [http-nio-5010-exec-33] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:12 17:27:12.051 [http-nio-5010-exec-33] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:22 17:27:22.066 [http-nio-5010-exec-36] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3971","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--27000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:22 17:27:22.096 [http-nio-5010-exec-36] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:22 17:27:22.096 [http-nio-5010-exec-37] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:22 17:27:22.098 [http-nio-5010-exec-36] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:25 17:27:25.598 [http-nio-5010-exec-38] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:27:32 17:27:32.099 [http-nio-5010-exec-41] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3971","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--27000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:32 17:27:32.119 [http-nio-5010-exec-41] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:32 17:27:32.120 [http-nio-5010-exec-41] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:32 17:27:32.126 [http-nio-5010-exec-42] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:42 17:27:42.136 [http-nio-5010-exec-45] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3971","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--28000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:42 17:27:42.152 [http-nio-5010-exec-45] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:42 17:27:42.153 [http-nio-5010-exec-45] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:42 17:27:42.159 [http-nio-5010-exec-46] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:48 17:27:48.083 [http-nio-5010-exec-48] INFO  c.r.p.s.c.CapsConfigApi - [openDialog,166] - openDialog request: deviceId=866652022498332, code=88888888, stream=test, sessionKeys=[866652022498332], dialogMap=[]
+2026-04-03 17:27:48 17:27:48.084 [http-nio-5010-exec-48] INFO  c.r.p.s.c.CapsConfigApi - [openDialog,176] - openDialog dispatch: roomId=866652022498332-88888888-test, deviceId=866652022498332, sessionId=0
+2026-04-03 17:27:48 17:27:48.086 [http-nio-5010-exec-48] INFO  c.r.p.s.c.CapsConfigApi - [openDialog,221] - openDialog payload: {"cmd":"server_push_webrtc_call","room_id":"866652022498332-88888888-test","members":[{"id":"88888888","is_caps":"0","type":"1","rtc_url":["https://192.168.144.213:8949/index/api/webrtc?app=live&stream=test&type=play","https://192.168.144.213:8949/index/api/webrtc?app=live&stream=test&type=push"],"status":"1","stream":"test","udid":"88888888","room_id":"866652022498332-88888888-test"},{"id":"866652022498332","is_caps":"1","type":"1","rtc_url":["https://192.168.144.213:8949/index/api/webrtc?app=live&stream=866652022498332&type=play","https://192.168.144.213:8949/index/api/webrtc?app=live&stream=866652022498332&type=push","rtmp://192.168.144.213:1935/live/866652022498332"],"status":"1","user_id":"2","stream":"866652022498332","udid":"88888888","room_id":"866652022498332-88888888-test"}],"type":"1","status":"true","msg":"success","msg_code":[{"id":"88888888","is_caps":"0","type":"1","rtc_url":["https://192.168.144.213:8949/index/api/webrtc?app=live&stream=test&type=play","https://192.168.144.213:8949/index/api/webrtc?app=live&stream=test&type=push"],"status":"1","stream":"test","udid":"88888888","room_id":"866652022498332-88888888-test"},{"id":"866652022498332","is_caps":"1","type":"1","rtc_url":["https://192.168.144.213:8949/index/api/webrtc?app=live&stream=866652022498332&type=play","https://192.168.144.213:8949/index/api/webrtc?app=live&stream=866652022498332&type=push","rtmp://192.168.144.213:1935/live/866652022498332"],"status":"1","user_id":"2","stream":"866652022498332","udid":"88888888","room_id":"866652022498332-88888888-test"}]}
+2026-04-03 17:27:48 17:27:48.089 [http-nio-5010-exec-48] INFO  c.r.p.s.c.CapsConfigApi - [openDialog,224] - openDialog accepted: roomId=866652022498332-88888888-test, dialogMap=[866652022498332-88888888-test]
+2026-04-03 17:27:52 17:27:52.175 [http-nio-5010-exec-49] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3971","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"3","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--28000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:27:52 17:27:52.191 [http-nio-5010-exec-49] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:27:52 17:27:52.192 [http-nio-5010-exec-49] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:27:52 17:27:52.205 [http-nio-5010-exec-50] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:27:54 17:27:54.951 [http-nio-5010-exec-51] INFO  c.r.p.s.c.CapsConfigApi - [closeDialog,235] - closeDialog request: deviceId=866652022498332, code=88888888, stream=test, roomId=866652022498332-88888888-test, sessionKeys=[866652022498332], dialogMap=[866652022498332-88888888-test]
+2026-04-03 17:27:54 17:27:54.953 [http-nio-5010-exec-51] INFO  c.r.p.s.c.CapsConfigApi - [closeDialog,244] - closeDialog dispatch: roomId=866652022498332-88888888-test, deviceId=866652022498332, sessionId=0
+2026-04-03 17:27:54 17:27:54.955 [http-nio-5010-exec-51] INFO  c.r.p.s.c.CapsConfigApi - [closeDialog,255] - closeDialog completed: roomId=866652022498332-88888888-test, dialogMap=[]
+2026-04-03 17:27:55 17:27:55.603 [http-nio-5010-exec-53] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:28:02 17:28:02.215 [http-nio-5010-exec-54] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"93","bat_v":"3971","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--28000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:02 17:28:02.240 [http-nio-5010-exec-54] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:02 17:28:02.241 [http-nio-5010-exec-54] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:02 17:28:02.242 [http-nio-5010-exec-55] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:12 17:28:12.280 [http-nio-5010-exec-57] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3890","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:12 17:28:12.286 [http-nio-5010-exec-58] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:12 17:28:12.303 [http-nio-5010-exec-57] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:12 17:28:12.304 [http-nio-5010-exec-57] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:22 17:28:22.295 [http-nio-5010-exec-60] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3948","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:22 17:28:22.309 [http-nio-5010-exec-60] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:22 17:28:22.309 [http-nio-5010-exec-60] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:22 17:28:22.322 [http-nio-5010-exec-61] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:26 17:28:26.370 [http-nio-5010-exec-62] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:28:32 17:28:32.346 [http-nio-5010-exec-64] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3948","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:32 17:28:32.364 [http-nio-5010-exec-64] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:32 17:28:32.365 [http-nio-5010-exec-64] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:32 17:28:32.382 [http-nio-5010-exec-65] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:42 17:28:42.423 [http-nio-5010-exec-68] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3948","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:42 17:28:42.425 [http-nio-5010-exec-69] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:42 17:28:42.440 [http-nio-5010-exec-68] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:42 17:28:42.441 [http-nio-5010-exec-68] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:52 17:28:52.430 [http-nio-5010-exec-71] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3948","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:28:52 17:28:52.446 [http-nio-5010-exec-71] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:28:52 17:28:52.447 [http-nio-5010-exec-71] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:28:52 17:28:52.449 [http-nio-5010-exec-72] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:28:56 17:28:56.371 [http-nio-5010-exec-73] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:29:02 17:29:02.497 [http-nio-5010-exec-75] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3948","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--29000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:02 17:29:02.500 [http-nio-5010-exec-76] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:02 17:29:02.515 [http-nio-5010-exec-75] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:02 17:29:02.516 [http-nio-5010-exec-75] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:12 17:29:12.505 [http-nio-5010-exec-78] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3872","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--30000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:12 17:29:12.520 [http-nio-5010-exec-78] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:12 17:29:12.521 [http-nio-5010-exec-78] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:12 17:29:12.525 [http-nio-5010-exec-79] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:22 17:29:22.558 [http-nio-5010-exec-82] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3872","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--30000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:22 17:29:22.572 [http-nio-5010-exec-82] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:22 17:29:22.572 [http-nio-5010-exec-82] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:22 17:29:22.584 [http-nio-5010-exec-80] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:26 17:29:26.370 [http-nio-5010-exec-83] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:29:32 17:29:32.586 [http-nio-5010-exec-85] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3872","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--30000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:32 17:29:32.602 [http-nio-5010-exec-85] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:32 17:29:32.604 [http-nio-5010-exec-85] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:32 17:29:32.604 [http-nio-5010-exec-86] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:42 17:29:42.645 [http-nio-5010-exec-89] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:42 17:29:42.657 [http-nio-5010-exec-89] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:42 17:29:42.657 [http-nio-5010-exec-89] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:42 17:29:42.694 [http-nio-5010-exec-90] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:52 17:29:52.788 [http-nio-5010-exec-92] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:29:52 17:29:52.790 [http-nio-5010-exec-93] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:29:52 17:29:52.803 [http-nio-5010-exec-92] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:29:52 17:29:52.803 [http-nio-5010-exec-92] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:29:56 17:29:56.369 [http-nio-5010-exec-94] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:30:02 17:30:02.706 [http-nio-5010-exec-96] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:02 17:30:02.726 [http-nio-5010-exec-96] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:02 17:30:02.726 [http-nio-5010-exec-97] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:02 17:30:02.727 [http-nio-5010-exec-96] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:12 17:30:12.781 [http-nio-5010-exec-99] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3972","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:12 17:30:12.789 [http-nio-5010-exec-100] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:12 17:30:12.818 [http-nio-5010-exec-99] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:12 17:30:12.819 [http-nio-5010-exec-99] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:22 17:30:22.791 [http-nio-5010-exec-2] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3938","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:22 17:30:22.805 [http-nio-5010-exec-3] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:22 17:30:22.812 [http-nio-5010-exec-2] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:22 17:30:22.813 [http-nio-5010-exec-2] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:26 17:30:26.369 [http-nio-5010-exec-4] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:30:32 17:30:32.828 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3938","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:32 17:30:32.843 [http-nio-5010-exec-7] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:32 17:30:32.847 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:32 17:30:32.848 [http-nio-5010-exec-6] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:35 17:30:35.801 [http-nio-5010-exec-8] INFO  c.r.p.s.w.WebSocketServer - [onOpen,89] - websocket connected: sessionId=2, currentUsers=3
+2026-04-03 17:30:36 17:30:36.352 [http-nio-5010-exec-9] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=2, payload={"act":"web_one_register","person_id":"78ef95ad-1e45-47f2-a8d2-bf584569486c"}
+2026-04-03 17:30:36 17:30:36.359 [http-nio-5010-exec-9] INFO  c.r.p.s.w.WebSocketServer - [onMessage,234] - web client register: personId=78ef95ad-1e45-47f2-a8d2-bf584569486c, sessionId=2
+2026-04-03 17:30:42 17:30:42.862 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3938","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:42 17:30:42.875 [http-nio-5010-exec-14] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:42 17:30:42.878 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:42 17:30:42.879 [http-nio-5010-exec-13] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:52 17:30:52.912 [http-nio-5010-exec-17] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3938","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:30:52 17:30:52.927 [http-nio-5010-exec-17] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:30:52 17:30:52.928 [http-nio-5010-exec-17] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:30:52 17:30:52.932 [http-nio-5010-exec-18] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:30:56 17:30:56.370 [http-nio-5010-exec-20] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=1, payload={"type":"ping"}
+2026-04-03 17:31:02 17:31:02.949 [http-nio-5010-exec-22] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=0, payload={"CD4":"CH4--0.0;O2--20.8;CO--0.0;H2S--0.0;NH3--;CH2O--;NO2--;SF6--;H2--","act":"ca_report_location","altitude":"0.0","bat_l":"92","bat_v":"3938","body_info":"","body_simple_info":"","bt_signal_info":"","c_accuracy":"0.0","c_speed":"0.0","c_startcount":"0","c_trust":"0","charging":"1","gas_data":"","gps":"0","gps_level":"-1","hanger_a_status":"-1","hanger_b_status":"-1","in_use":"2","is_weared":"1","net_strenth":"4","net_type":"2","notuploaded_video_count":"3","online_type":"-1","oxygen_data":"","phoneNumber":"89861124248087907130","rail_status":"0","record_switch":"false","sim_data_num":"0","sim_status":"2","tcard_status":"1","tempdata":"mtktsbtsmdpa--mtktsbtsmdpa--31000","user_id":"11","x_point":"39.88742919921875","y_point":"116.47819308810764"}
+2026-04-03 17:31:02 17:31:02.966 [http-nio-5010-exec-23] WARN  c.r.p.s.c.CapsConfigApi - [getDeviceConfig,139] - stream check skipped: userId=null not bound to device
+2026-04-03 17:31:02 17:31:02.967 [http-nio-5010-exec-22] INFO  c.r.p.s.w.WebSocketServer - [onMessage,174] - device report registered: deviceId=866652022498332, userId=11, sessionId=0, sessionKeys=[866652022498332]
+2026-04-03 17:31:02 17:31:02.968 [http-nio-5010-exec-22] INFO  c.r.p.s.w.WebSocketUsers - [recordPushCmdState,137] - send server_push_open_rtsp: deviceId=866652022498332, pushUrl=rtmp://192.168.144.213:1935/live/866652022498332, sourceRtmpUrl=rtmp://192.168.144.213:1935/live/866652022498332
+2026-04-03 17:31:06 17:31:06.352 [http-nio-5010-exec-25] INFO  c.r.p.s.w.WebSocketServer - [onMessage,130] - websocket message: sessionId=2, payload={"type":"ping"}
+
+ main.cpp:367 start_main | 已启动http api 接口
+2026-04-03 17:23:50 2026-04-03 17:23:50.000 I [MediaServer] [8-MediaServer] main.cpp:369 start_main | 已启动http hook 接口
+2026-04-03 17:24:07 2026-04-03 17:24:07.221 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -4438
+2026-04-03 17:24:37 2026-04-03 17:24:37.217 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -3212
+2026-04-03 17:25:07 2026-04-03 17:25:07.215 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -2725
+2026-04-03 17:25:37 2026-04-03 17:25:37.213 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -2195
+2026-04-03 17:25:43 2026-04-03 17:25:43.941 D [MediaServer] [8-event poller 2] RtmpSession.cpp:21 RtmpSession | 1-87(172.19.0.1:59030) 
+2026-04-03 17:25:44 2026-04-03 17:25:44.110 T [MediaServer] [8-event poller 2] RtmpProtocol.cpp:762 handle_chunk | MSG_WIN_SIZE:1310720
+2026-04-03 17:25:44 2026-04-03 17:25:44.179 D [MediaServer] [8-event poller 2] RtmpSession.cpp:128 operator() | 1-87(172.19.0.1:59030) publish 回复时间:3ms
+2026-04-03 17:25:44 2026-04-03 17:25:44.455 I [MediaServer] [8-event poller 2] Transcode.cpp:76 setupFFmpeg_l | libavcodec 57.107
+2026-04-03 17:25:44 2026-04-03 17:25:44.455 I [MediaServer] [8-event poller 2] Transcode.cpp:78 setupFFmpeg_l | libavutil 55.55
+2026-04-03 17:25:44 2026-04-03 17:25:44.455 I [MediaServer] [8-event poller 2] Transcode.cpp:279 getCodec_l | got decoder:aac
+2026-04-03 17:25:44 2026-04-03 17:25:44.457 I [MediaServer] [8-event poller 2] Transcode.cpp:430 FFmpegDecoder | decode audio mpeg4-generic 8000x1
+2026-04-03 17:25:44 2026-04-03 17:25:44.461 I [MediaServer] [8-event poller 2] Transcode.cpp:463 FFmpegDecoder | 打开解码器成功:aac
+2026-04-03 17:25:44 2026-04-03 17:25:44.462 I [MediaServer] [8-event poller 2] Transcode.cpp:279 getCodec_l | got encoder:opus
+2026-04-03 17:25:44 2026-04-03 17:25:44.462 I [MediaServer] [8-event poller 2] Transcode.cpp:942 openAudioCodec | openAudioCodec libopus 48000x2
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 I [MediaServer] [8-event poller 2] Transcode.cpp:873 FFmpegEncoder | 打开编码器成功:libopus, frameSize 960
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 D [MediaServer] [8-event poller 2] MediaSink.cpp:149 emitAllTrackReady | All track ready use 25ms
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:fmp4://__defaultVhost__/live/866652022498332
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 I [MediaServer] [8-event poller 2] MultiMediaSourceMuxer.cpp:387 onAllTrackReady | stream: rtmp://192.168.144.213:1935/live/866652022498332 , codec info: H264[1920/1080/0] mpeg4-generic[8000/1/16] 
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtsp://__defaultVhost__/live/866652022498332
+2026-04-03 17:25:44 2026-04-03 17:25:44.463 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:ts://__defaultVhost__/live/866652022498332
+2026-04-03 17:25:44 2026-04-03 17:25:44.473 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtmp://__defaultVhost__/live/866652022498332
+2026-04-03 17:25:44 2026-04-03 17:25:44.548 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtc://__defaultVhost__/live/866652022498332
+2026-04-03 17:26:07 2026-04-03 17:26:07.210 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -1460
+2026-04-03 17:26:37 2026-04-03 17:26:37.209 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -1466
+2026-04-03 17:27:07 2026-04-03 17:27:07.208 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -992
+2026-04-03 17:27:36 2026-04-03 17:27:36.287 T [MediaServer] [8-event poller 2] HttpSession.cpp:27 HttpSession | 2-89(172.19.0.1:58568) 
+2026-04-03 17:27:36 2026-04-03 17:27:36.288 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:417 WebRtcTransportImp | zlm_1
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:456 CreateSslCtx | setting SRTP cryptoSuites for DTLS: SRTP_AEAD_AES_256_GCM:SRTP_AEAD_AES_128_GCM:SRTP_AES128_CM_SHA1_80:SRTP_AES128_CM_SHA1_32
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:538 GenerateFingerprints | sha-1   fingerprint: C8:C4:33:DB:80:39:0F:19:D5:C1:D2:39:F4:07:88:08:97:D4:F4:9C
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:538 GenerateFingerprints | sha-224 fingerprint: 86:96:0D:4C:BA:FB:D1:F3:78:25:9B:9F:BF:E2:84:43:04:54:88:06:B4:CA:30:C7:AD:5E:AD:55
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:538 GenerateFingerprints | sha-256 fingerprint: 07:DF:50:C2:5C:08:BE:F2:A1:4E:18:A8:92:1D:3C:0D:65:0A:7C:D1:92:B4:3F:5F:CC:DA:5F:74:42:AA:25:85
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:538 GenerateFingerprints | sha-384 fingerprint: 4B:51:49:03:AF:62:37:7D:9D:EA:8B:A4:A8:DF:E0:24:BF:79:B4:93:45:CB:3D:78:26:87:C0:52:3F:B6:E2:C2:89:17:C5:DE:8D:51:9C:A6:5B:72:FD:0C:1A:31:23:12
+2026-04-03 17:27:36 2026-04-03 17:27:36.290 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:538 GenerateFingerprints | sha-512 fingerprint: BE:31:DA:12:77:9F:AB:F9:88:33:17:58:60:4B:9B:52:C9:B5:A9:15:0A:97:23:AC:15:7A:C7:92:7C:5D:59:3D:72:00:4E:A5:20:AA:4D:8C:18:44:E9:01:B8:A7:8C:AF:75:4C:96:1C:CF:4A:CE:FB:E1:D3:B0:96:AC:18:F9:E4
+2026-04-03 17:27:36 2026-04-03 17:27:36.417 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 3-90(:0) end of file
+2026-04-03 17:27:36 2026-04-03 17:27:36.417 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 3-90(:0) 
+2026-04-03 17:27:36 2026-04-03 17:27:36.417 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 4-91(:0) end of file
+2026-04-03 17:27:36 2026-04-03 17:27:36.417 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 4-91(:0) 
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 I [MediaServer] [8-event poller 2] WebRtcSession.cpp:89 onRecv_l | 6-91(172.19.0.1:38555) 
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 D [MediaServer] [8-event poller 2] IceServer.cpp:354 HandleTuple | transition from state 'new' to 'completed'
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:128 OnIceServerSelectedTuple | zlm_1 select tuple udp 172.19.0.1:38555
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:138 OnIceServerCompleted | zlm_1
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:173 OnDtlsTransportConnecting | zlm_1
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:740 Run | running [role:server]
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1452 OnSslInfo | DTLS handshake start
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:27:36 2026-04-03 17:27:36.449 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'before SSL initialization']
+2026-04-03 17:27:36 2026-04-03 17:27:36.450 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client hello']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server hello']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write key exchange']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate request']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'SSLv3/TLS write server done']
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 706 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:27:36 2026-04-03 17:27:36.451 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 99ms
+2026-04-03 17:27:36 2026-04-03 17:27:36.452 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client certificate']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client key exchange']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read certificate verify']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read change cipher spec']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read finished']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write change cipher spec']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write finished']
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1456 OnSslInfo | DTLS handshake done
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 67 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1207 CheckRemoteFingerprint | valid remote fingerprint
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1381 GetNegotiatedSrtpCryptoSuite | chosen SRTP crypto suite: SRTP_AEAD_AES_256_GCM
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:155 OnDtlsTransportConnected | zlm_1
+2026-04-03 17:27:36 2026-04-03 17:27:36.453 D [MediaServer] [8-event poller 2] SrtpSession.cpp:97 DepLibSRTP | libsrtp version: "libsrtp2 2.2.0"
+2026-04-03 17:27:36 2026-04-03 17:27:36.457 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 95ms
+2026-04-03 17:27:36 2026-04-03 17:27:36.591 I [MediaServer] [8-event poller 2] RtcMediaSource.cpp:86 inputFrame | start transcode mpeg4-generic,112852->Opus
+2026-04-03 17:27:36 2026-04-03 17:27:36.653 I [MediaServer] [8-event poller 2] Transcode.cpp:685 inputFrame | swr_alloc_set_opts:fltp -> s16
+2026-04-03 17:27:36 2026-04-03 17:27:36.653 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 0->112852
+2026-04-03 17:27:37 2026-04-03 17:27:37.208 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -1368
+2026-04-03 17:27:46 2026-04-03 17:27:46.508 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 5-90(:0) end of file
+2026-04-03 17:27:46 2026-04-03 17:27:46.508 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 5-90(:0) 
+2026-04-03 17:27:48 2026-04-03 17:27:48.132 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:417 WebRtcTransportImp | zlm_2
+2026-04-03 17:27:48 2026-04-03 17:27:48.216 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 8-90(:0) end of file
+2026-04-03 17:27:48 2026-04-03 17:27:48.216 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 8-90(:0) 
+2026-04-03 17:27:48 2026-04-03 17:27:48.216 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 9-93(:0) end of file
+2026-04-03 17:27:48 2026-04-03 17:27:48.216 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 9-93(:0) 
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 I [MediaServer] [8-event poller 2] WebRtcSession.cpp:89 onRecv_l | 10-90(172.19.0.1:37139) 
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 D [MediaServer] [8-event poller 2] IceServer.cpp:354 HandleTuple | transition from state 'new' to 'completed'
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:128 OnIceServerSelectedTuple | zlm_2 select tuple udp 172.19.0.1:37139
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:138 OnIceServerCompleted | zlm_2
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:173 OnDtlsTransportConnecting | zlm_2
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:740 Run | running [role:server]
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1452 OnSslInfo | DTLS handshake start
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:27:48 2026-04-03 17:27:48.259 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'before SSL initialization']
+2026-04-03 17:27:48 2026-04-03 17:27:48.261 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client hello']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server hello']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write key exchange']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate request']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'SSLv3/TLS write server done']
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 707 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:27:48 2026-04-03 17:27:48.262 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 99ms
+2026-04-03 17:27:48 2026-04-03 17:27:48.267 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:27:48 2026-04-03 17:27:48.267 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client certificate']
+2026-04-03 17:27:48 2026-04-03 17:27:48.267 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client key exchange']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read certificate verify']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read change cipher spec']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read finished']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write change cipher spec']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write finished']
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1456 OnSslInfo | DTLS handshake done
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 67 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1207 CheckRemoteFingerprint | valid remote fingerprint
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1381 GetNegotiatedSrtpCryptoSuite | chosen SRTP crypto suite: SRTP_AEAD_AES_256_GCM
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:155 OnDtlsTransportConnected | zlm_2
+2026-04-03 17:27:48 2026-04-03 17:27:48.268 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 99ms
+2026-04-03 17:27:48 2026-04-03 17:27:48.289 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:878 createRtpChannel | create rtp receiver of ssrc:662540940, rid:, codec:PCMU
+2026-04-03 17:27:48 2026-04-03 17:27:48.289 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtc://__defaultVhost__/live/test
+2026-04-03 17:27:48 2026-04-03 17:27:48.308 D [MediaServer] [8-event poller 2] MediaSink.cpp:149 emitAllTrackReady | All track ready use 40ms
+2026-04-03 17:27:48 2026-04-03 17:27:48.309 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:fmp4://__defaultVhost__/live/test
+2026-04-03 17:27:48 2026-04-03 17:27:48.309 I [MediaServer] [8-event poller 2] MultiMediaSourceMuxer.cpp:387 onAllTrackReady | stream: rtc://localhost:8081/live/test?app=live&stream=test&type=push&session=2-89 , codec info: PCMU[8000/1/16] 
+2026-04-03 17:27:48 2026-04-03 17:27:48.309 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtmp://__defaultVhost__/live/test
+2026-04-03 17:27:48 2026-04-03 17:27:48.309 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:rtsp://__defaultVhost__/live/test
+2026-04-03 17:27:48 2026-04-03 17:27:48.309 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注册:ts://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 7-92(:0) end of file
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 7-92(:0) 
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 W [MediaServer] [8-event poller 2] DtlsTransport.cpp:1432 OnSslInfo | received DTLS warning alert: close notify
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 67 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:976 CheckStatus | disconnected
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 W [MediaServer] [8-event poller 2] DtlsTransport.cpp:883 Reset | resetting DTLS transport
+2026-04-03 17:27:54 2026-04-03 17:27:54.940 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1436 OnSslInfo | sending DTLS warning alert: close notify
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注销:ts://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注销:rtsp://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注销:rtmp://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注销:fmp4://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] MediaSource.cpp:527 emitEvent | 媒体注销:rtc://__defaultVhost__/live/test
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:182 OnDtlsTransportClosed | zlm_2
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 W [MediaServer] [8-event poller 2] WebRtcTransport.cpp:1062 onShutdown | dtls close notify received
+2026-04-03 17:27:54 2026-04-03 17:27:54.974 W [MediaServer] [8-event poller 2] WebRtcSession.cpp:108 onError | 10-90(172.19.0.1:37139) dtls close notify received
+2026-04-03 17:27:54 2026-04-03 17:27:54.975 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:1070 removeTuple | zlm_2 remove tuple 172.19.0.1:37139
+2026-04-03 17:27:54 2026-04-03 17:27:54.975 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:147 OnIceServerDisconnected | zlm_2
+2026-04-03 17:27:54 2026-04-03 17:27:54.975 W [MediaServer] [8-event poller 2] WebRtcPusher.cpp:128 onDestory | RTC推流器(__defaultVhost__/live/test)结束推流,耗时(s):6
+2026-04-03 17:27:54 2026-04-03 17:27:54.975 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:421 ~WebRtcTransportImp | zlm_2
+2026-04-03 17:27:54 2026-04-03 17:27:54.975 I [MediaServer] [8-event poller 2] WebRtcSession.cpp:55 ~WebRtcSession | 10-90(172.19.0.1:37139) 
+2026-04-03 17:28:07 2026-04-03 17:28:07.207 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -465
+2026-04-03 17:28:08 2026-04-03 17:28:08.192 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 144192->144393
+2026-04-03 17:28:14 2026-04-03 17:28:14.306 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 150413->150655
+2026-04-03 17:28:14 2026-04-03 17:28:14.541 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 150915->150712
+2026-04-03 17:28:37 2026-04-03 17:28:37.207 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -708
+2026-04-03 17:28:46 2026-04-03 17:28:46.842 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 182832->183033
+2026-04-03 17:29:07 2026-04-03 17:29:07.207 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -757
+2026-04-03 17:29:18 2026-04-03 17:29:18.944 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 214913->215114
+2026-04-03 17:29:37 2026-04-03 17:29:37.205 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -1056
+2026-04-03 17:29:40 2026-04-03 17:29:40.398 T [MediaServer] [8-event poller 3] HttpSession.cpp:27 HttpSession | 11-90(172.19.0.1:46076) 
+2026-04-03 17:29:40 2026-04-03 17:29:40.415 T [MediaServer] [8-event poller 3] HttpSession.cpp:27 HttpSession | 12-93(172.19.0.1:46084) 
+2026-04-03 17:29:51 2026-04-03 17:29:51.037 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 246994->247195
+2026-04-03 17:29:56 2026-04-03 17:29:56.127 T [MediaServer] [8-event poller 3] HttpSession.cpp:119 onError | 12-93(172.19.0.1:46084) session timeout
+2026-04-03 17:29:56 2026-04-03 17:29:56.127 T [MediaServer] [8-event poller 3] HttpSession.cpp:119 onError | 11-90(172.19.0.1:46076) session timeout
+2026-04-03 17:29:56 2026-04-03 17:29:56.127 T [MediaServer] [8-event poller 3] HttpSession.cpp:33 ~HttpSession | 12-93(172.19.0.1:46084) 
+2026-04-03 17:29:56 2026-04-03 17:29:56.128 T [MediaServer] [8-event poller 3] HttpSession.cpp:33 ~HttpSession | 11-90(172.19.0.1:46076) 
+2026-04-03 17:30:07 2026-04-03 17:30:07.205 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -804
+2026-04-03 17:30:23 2026-04-03 17:30:23.310 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 279315->279517
+2026-04-03 17:30:36 2026-04-03 17:30:36.544 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:417 WebRtcTransportImp | zlm_3
+2026-04-03 17:30:36 2026-04-03 17:30:36.652 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 13-90(:0) end of file
+2026-04-03 17:30:36 2026-04-03 17:30:36.652 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 13-90(:0) 
+2026-04-03 17:30:36 2026-04-03 17:30:36.652 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 14-93(:0) end of file
+2026-04-03 17:30:36 2026-04-03 17:30:36.652 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 14-93(:0) 
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 I [MediaServer] [8-event poller 2] WebRtcSession.cpp:89 onRecv_l | 16-90(172.19.0.1:46481) 
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 D [MediaServer] [8-event poller 2] IceServer.cpp:354 HandleTuple | transition from state 'new' to 'completed'
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:128 OnIceServerSelectedTuple | zlm_3 select tuple udp 172.19.0.1:46481
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:138 OnIceServerCompleted | zlm_3
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:173 OnDtlsTransportConnecting | zlm_3
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:740 Run | running [role:server]
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1452 OnSslInfo | DTLS handshake start
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:30:36 2026-04-03 17:30:36.683 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'before SSL initialization']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'before SSL initialization']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client hello']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server hello']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write key exchange']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write certificate request']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1448 OnSslInfo | role: server, waiting:'SSLv3/TLS write server done']
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 706 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:30:36 2026-04-03 17:30:36.685 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 99ms
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write server done']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client certificate']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read client key exchange']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read certificate verify']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read change cipher spec']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS read finished']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write change cipher spec']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1410 OnSslInfo | [role:server, action:'SSLv3/TLS write finished']
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1456 OnSslInfo | DTLS handshake done
+2026-04-03 17:30:36 2026-04-03 17:30:36.687 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1018 SendPendingOutgoingDtlsData | 67 bytes of DTLS data ready to sent to the peer
+2026-04-03 17:30:36 2026-04-03 17:30:36.688 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1207 CheckRemoteFingerprint | valid remote fingerprint
+2026-04-03 17:30:36 2026-04-03 17:30:36.688 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1381 GetNegotiatedSrtpCryptoSuite | chosen SRTP crypto suite: SRTP_AEAD_AES_256_GCM
+2026-04-03 17:30:36 2026-04-03 17:30:36.688 I [MediaServer] [8-event poller 2] WebRtcTransport.cpp:155 OnDtlsTransportConnected | zlm_3
+2026-04-03 17:30:36 2026-04-03 17:30:36.690 D [MediaServer] [8-event poller 2] DtlsTransport.cpp:1056 SetTimeout | DTLS timer set in 97ms
+2026-04-03 17:30:37 2026-04-03 17:30:37.204 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -354
+2026-04-03 17:30:38 2026-04-03 17:30:38.673 I [MediaServer] [8-event poller 2] Transcode.cpp:617 Write | reset base_tsp 294757->295006
+2026-04-03 17:30:46 2026-04-03 17:30:46.728 W [MediaServer] [8-event poller 3] WebRtcSession.cpp:108 onError | 15-130(:0) end of file
+2026-04-03 17:30:46 2026-04-03 17:30:46.728 I [MediaServer] [8-event poller 3] WebRtcSession.cpp:55 ~WebRtcSession | 15-130(:0) 
+2026-04-03 17:31:07 2026-04-03 17:31:07.204 W [MediaServer] [8-stamp thread] util.cpp:385 operator() | Stamp expired is abnormal: -425
+
+
+http://192.168.144.213:8081/index/api/getMediaList?secret=035c73f7-bb6b-4889-a715-d9eb2d1925cc
+{
+	"code" : 0,
+	"data" : 
+	[
+		{
+			"aliveSecond" : 236,
+			"app" : "live",
+			"bytesSpeed" : 372178,
+			"createStamp" : 1775208344,
+			"isRecordingHLS" : false,
+			"isRecordingMP4" : true,
+			"originSock" : 
+			{
+				"identifier" : "1-87",
+				"local_ip" : "172.19.0.8",
+				"local_port" : 1935,
+				"peer_ip" : "172.19.0.1",
+				"peer_port" : 59030
+			},
+			"originType" : 1,
+			"originTypeStr" : "rtmp_push",
+			"originUrl" : "rtmp://192.168.144.213:1935/live/866652022498332",
+			"readerCount" : 1,
+			"schema" : "rtc",
+			"stream" : "866652022498332",
+			"totalReaderCount" : 1,
+			"tracks" : 
+			[
+				{
+					"codec_id" : 0,
+					"codec_id_name" : "H264",
+					"codec_type" : 0,
+					"fps" : 10.0,
+					"frames" : 2358,
+					"gop_interval_ms" : 1048,
+					"gop_size" : 10,
+					"height" : 1080,
+					"key_frames" : 236,
+					"ready" : true,
+					"width" : 1920
+				},
+				{
+					"channels" : 1,
+					"codec_id" : 2,
+					"codec_id_name" : "mpeg4-generic",
+					"codec_type" : 1,
+					"frames" : 1834,
+					"ready" : true,
+					"sample_bit" : 16,
+					"sample_rate" : 8000
+				}
+			],
+			"vhost" : "__defaultVhost__"
+		},
+		{
+			"aliveSecond" : 236,
+			"app" : "live",
+			"bytesSpeed" : 361303,
+			"createStamp" : 1775208344,
+			"isRecordingHLS" : false,
+			"isRecordingMP4" : true,
+			"originSock" : 
+			{
+				"identifier" : "1-87",
+				"local_ip" : "172.19.0.8",
+				"local_port" : 1935,
+				"peer_ip" : "172.19.0.1",
+				"peer_port" : 59030
+			},
+			"originType" : 1,
+			"originTypeStr" : "rtmp_push",
+			"originUrl" : "rtmp://192.168.144.213:1935/live/866652022498332",
+			"readerCount" : 0,
+			"schema" : "rtmp",
+			"stream" : "866652022498332",
+			"totalReaderCount" : 1,
+			"tracks" : 
+			[
+				{
+					"codec_id" : 0,
+					"codec_id_name" : "H264",
+					"codec_type" : 0,
+					"fps" : 10.0,
+					"frames" : 2358,
+					"gop_interval_ms" : 1048,
+					"gop_size" : 10,
+					"height" : 1080,
+					"key_frames" : 236,
+					"ready" : true,
+					"width" : 1920
+				},
+				{
+					"channels" : 1,
+					"codec_id" : 2,
+					"codec_id_name" : "mpeg4-generic",
+					"codec_type" : 1,
+					"frames" : 1834,
+					"ready" : true,
+					"sample_bit" : 16,
+					"sample_rate" : 8000
+				}
+			],
+			"vhost" : "__defaultVhost__"
+		},
+		{
+			"aliveSecond" : 236,
+			"app" : "live",
+			"bytesSpeed" : 404997,
+			"createStamp" : 1775208344,
+			"isRecordingHLS" : false,
+			"isRecordingMP4" : true,
+			"originSock" : 
+			{
+				"identifier" : "1-87",
+				"local_ip" : "172.19.0.8",
+				"local_port" : 1935,
+				"peer_ip" : "172.19.0.1",
+				"peer_port" : 59030
+			},
+			"originType" : 1,
+			"originTypeStr" : "rtmp_push",
+			"originUrl" : "rtmp://192.168.144.213:1935/live/866652022498332",
+			"readerCount" : 0,
+			"schema" : "ts",
+			"stream" : "866652022498332",
+			"totalReaderCount" : 1,
+			"tracks" : 
+			[
+				{
+					"codec_id" : 0,
+					"codec_id_name" : "H264",
+					"codec_type" : 0,
+					"fps" : 10.0,
+					"frames" : 2358,
+					"gop_interval_ms" : 1048,
+					"gop_size" : 10,
+					"height" : 1080,
+					"key_frames" : 236,
+					"ready" : true,
+					"width" : 1920
+				},
+				{
+					"channels" : 1,
+					"codec_id" : 2,
+					"codec_id_name" : "mpeg4-generic",
+					"codec_type" : 1,
+					"frames" : 1834,
+					"ready" : true,
+					"sample_bit" : 16,
+					"sample_rate" : 8000
+				}
+			],
+			"vhost" : "__defaultVhost__"
+		},
+		{
+			"aliveSecond" : 236,
+			"app" : "live",
+			"bytesSpeed" : 432260,
+			"createStamp" : 1775208344,
+			"isRecordingHLS" : false,
+			"isRecordingMP4" : true,
+			"originSock" : 
+			{
+				"identifier" : "1-87",
+				"local_ip" : "172.19.0.8",
+				"local_port" : 1935,
+				"peer_ip" : "172.19.0.1",
+				"peer_port" : 59030
+			},
+			"originType" : 1,
+			"originTypeStr" : "rtmp_push",
+			"originUrl" : "rtmp://192.168.144.213:1935/live/866652022498332",
+			"readerCount" : 0,
+			"schema" : "fmp4",
+			"stream" : "866652022498332",
+			"totalReaderCount" : 1,
+			"tracks" : 
+			[
+				{
+					"codec_id" : 0,
+					"codec_id_name" : "H264",
+					"codec_type" : 0,
+					"fps" : 10.0,
+					"frames" : 2358,
+					"gop_interval_ms" : 1048,
+					"gop_size" : 10,
+					"height" : 1080,
+					"key_frames" : 236,
+					"ready" : true,
+					"width" : 1920
+				},
+				{
+					"channels" : 1,
+					"codec_id" : 2,
+					"codec_id_name" : "mpeg4-generic",
+					"codec_type" : 1,
+					"frames" : 1834,
+					"ready" : true,
+					"sample_bit" : 16,
+					"sample_rate" : 8000
+				}
+			],
+			"vhost" : "__defaultVhost__"
+		},
+		{
+			"aliveSecond" : 236,
+			"app" : "live",
+			"bytesSpeed" : 375548,
+			"createStamp" : 1775208344,
+			"isRecordingHLS" : false,
+			"isRecordingMP4" : true,
+			"originSock" : 
+			{
+				"identifier" : "1-87",
+				"local_ip" : "172.19.0.8",
+				"local_port" : 1935,
+				"peer_ip" : "172.19.0.1",
+				"peer_port" : 59030
+			},
+			"originType" : 1,
+			"originTypeStr" : "rtmp_push",
+			"originUrl" : "rtmp://192.168.144.213:1935/live/866652022498332",
+			"readerCount" : 0,
+			"schema" : "rtsp",
+			"stream" : "866652022498332",
+			"totalReaderCount" : 1,
+			"tracks" : 
+			[
+				{
+					"codec_id" : 0,
+					"codec_id_name" : "H264",
+					"codec_type" : 0,
+					"fps" : 10.0,
+					"frames" : 2358,
+					"gop_interval_ms" : 1048,
+					"gop_size" : 10,
+					"height" : 1080,
+					"key_frames" : 236,
+					"ready" : true,
+					"width" : 1920
+				},
+				{
+					"channels" : 1,
+					"codec_id" : 2,
+					"codec_id_name" : "mpeg4-generic",
+					"codec_type" : 1,
+					"frames" : 1834,
+					"ready" : true,
+					"sample_bit" : 16,
+					"sample_rate" : 8000
+				}
+			],
+			"vhost" : "__defaultVhost__"
+		}
+	]
+}
+
+
+https://192.168.144.213:8949/index/api/getMediaList?secret=035c73f7-bb6b-4889-a715-d9eb2d1925cc
+502 Bad Gateway
+nginx/1.28.0

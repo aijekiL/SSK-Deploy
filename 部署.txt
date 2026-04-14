@@ -1,0 +1,17 @@
+docker compose -f docker-compose.main.yml --env-file .env.main up -d
+
+docker compose -f docker-compose.compreface.yml --env-file .env.compreface up -d
+
+
+Get-ChildItem *.tar, *.tar.gz | ForEach-Object { docker load -i $_.FullName }
+
+
+Invoke-RestMethod -Uri "http://192.168.144.213:5010/caps/device/gas/report" -Method Post -ContentType "application/json" -Body '{
+  "sn": "0090b0123456",
+  "list": [
+    { "dict_id": "a19001", "val": 21.9, "flag": 0, "unit": "ppm", "time": 1774774847 },
+    { "dict_id": "a21005", "val": 2,  "flag": 0, "unit": "ppm", "time": 1774774847 },
+    { "dict_id": "a21028", "val": 0.0,  "flag": 0, "unit": "ppm", "time": 1774774847 },
+    { "dict_id": "qt00001", "val": 0.0, "flag": 0, "unit": "ppm", "time": 1774774847 }
+  ]
+}'

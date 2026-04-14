@@ -180,7 +180,7 @@ public class CapsDeviceServiceImpl implements ICapsDeviceService
      * "uwb_device_id": "",
      * "voice_pkg": null,
      * "fb_id": null,
-     * "min_o2": "19.0",
+     * "min_o2": "19.5",
      * "max_o2": "23.5",
      * "watch": "",
      * "local_record": "0",
@@ -233,7 +233,7 @@ public class CapsDeviceServiceImpl implements ICapsDeviceService
 //            jsonObject.put("uwb_device_id", "");
 //            jsonObject.put("voice_pkg", "");
 //            jsonObject.put("fb_id", "");
-            jsonObject.put("min_o2", "19.0");
+            jsonObject.put("min_o2", "19.5");
             jsonObject.put("max_o2", "23.5");
 //            jsonObject.put("watch", "");
 //            jsonObject.put("local_record", "0");

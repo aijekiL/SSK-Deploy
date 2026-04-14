@@ -23,17 +23,25 @@ services:
     image: ${registry:-exadel/}compreface-core:${CORE_VERSION:-1.2.0}
     container_name: compreface-core
     restart: always
+    cpus: "${COMPREFACE_CORE_CPUS:-1.5}"
     environment:
       ML_PORT: 3000
       IMG_LENGTH_LIMIT: ${max_detect_size:-640}
       UWSGI_PROCESSES: ${uwsgi_processes:-1}
       UWSGI_THREADS: ${uwsgi_threads:-1}
+      OMP_NUM_THREADS: ${compreface_core_omp_threads:-1}
+      OPENBLAS_NUM_THREADS: ${compreface_core_openblas_threads:-1}
+      MKL_NUM_THREADS: ${compreface_core_mkl_threads:-1}
+      NUMEXPR_NUM_THREADS: ${compreface_core_numexpr_threads:-1}
+      VECLIB_MAXIMUM_THREADS: ${compreface_core_veclib_threads:-1}
+      KMP_BLOCKTIME: ${compreface_core_kmp_blocktime:-0}
       TZ: ${TZ:-Asia/Shanghai}
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://localhost:3000/healthcheck || exit 1"]
       interval: 10s
-      timeout: 1s
-      retries: 20
+      timeout: 3s
+      retries: 30
+      start_period: 120s
     networks:
       - compreface-net
 

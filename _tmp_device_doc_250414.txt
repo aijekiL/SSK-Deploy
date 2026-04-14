@@ -1,0 +1,1273 @@
+
+
+===== PAGE 1 =====
+对接设备端接口文档  
+编写日期： 2025/4/14
+ 
+常见问题说明：  
+对接基本流程请详细查看目录下前三点
+1 、设备端跟服务端统一采用 json 数据格式交互，参数说明表格中无结构展示，数据结构可从对应 json 报文
+示例查看
+2 、因软件版本不同，设备部分参数有上报但没有是说明可以不用，看关键参数说明即可
+ca_backup_data   离线定位数据上传  
+get_user_fence   获取围栏的接口  
+这些可以不处理
+ 
+ 
+目录  
+1 、获取配置
+2 、设备登录
+3 、上报实时数据
+4 、报警推送
+5 、广播对讲
+6 、后台指令控制设备
+7 、照片上传
+8 、本地视频上传
+9 、监控推流
+10 、音视频通话
+11 、指定设备连接 wifi
+12 、设备 webrtc 通话方案
+ 
+ 
+正文  
+
+===== PAGE 2 =====
+1. 获取配置  
+首先设备开机联网后会调用获取配置接口，帽子本地内置了一个获取配置接口的 url ，默认获取配置地址是
+在设备去调用这个接口时会在 url 后面拼接当前设备号和版本信息
+拼接结果：
+这个接口返回响应参数中会包括一个 http 请求地址（参数名为 api_url, 获取后设备发送 http 请求会基于这个
+地址发送，例如文件上传等操作）和长连接地址（ websocket 地址，参数名为 ws_url ，获取后设备登录、上
+报实时定位等数据和接受服务端指令报文，都是基于这个地址去发送和接收）
+关于设备上报地址的更改方案：
+方案一 ：让设备在我们 caps 平台获取数据上报地址，如上所说帽子内置了从我们后台获取配置接口的地址，
+开机时便会去调用，也就是说获取配置接口返回用于设备上传数据两个地址，可以用设备对应的管理员账号
+登录我们指挥调度平台，在开关设置里更改对应参（ HTTP 请求地址和长连接地址）。
+这个方法在高端和低端型号帽子上都可用，流程是： 设备开机 → 从公网在我们平台调用接口获取配置 → 接口
+响应返回数据上传地址
+ 
+方案二 ：修改帽子获取配置地址，对于高端型号设备（可以理解为带有摄像头的帽子）来说，有方法可以修
+改内置的获取配置地址，可达到指定设备往目标平台调用接口获取配置的效果。
+修改方法一、修改方法二，这两个方法仅对高端设备有效，低端型号设备建议用方案一，或者定制版本刷机
+修改内置获取配置地址。
+ 
+采用方案二需求后台实现获取配置的接口，接口说明：
+实现这个接口时避免出差错，建议 url 里的路径名和路径要求格式中保持一致 ( 即使不是使用 php 后端开发 ) ，
+查询字符串参数和响应返回参数格式也保持一致，返回参数可跟参数示例保持一致，主要更改 api_url 和
+ws_url 两个参数即可。
+请求路径要求格式： http:// [ 目标服务器 ip:port 或  域名 ]/api/index.php?ctl=config&act=get_config
+请求协议： HTTP 、请求方式： GET
+接口返回参数示例： https://mg.runde.pro/api/index.php?ctl=config&act=get_config
+https://mg.runde.pro/api/index.php?
+ctl=config&act=get_config&device_id=866652020618592&ca_ver=rd_aqm3702-n0.66-5Ah-
+370202A-NP-runde-user-svn4212-v2.7.8-20210830_1842&app_version=RD38
+{
+    "status": true,
+    "msg": "获取成功！ ",
+    "data": {
+        "account_id": "11444",
+
+===== PAGE 3 =====
+参数名 说明 备注关键参数说明：        "config": "
+{\"api_url\":\"http://caps.runde.pro/api/\",\"ws_url\":\"ws://47.106.114.236:9511\",
+\"sos_tmpt\":\"70\",\"power_off_tmpt\":\"95\",\"off_hat_time\":\"10\",\"offhat_time_
+interval\":\"45\",\"face_switch\":\"1\",\"nomove_time_interval\":\"45\",\"local_vide
+o_record\":\"1\",\"electrostatic\":\"1\",\"picture_quality\":\"2\",\"hanger_language
+\":\"1\",\"hanger_boradcast\":1,\"upload_video\":\"1\",\"fence_bluetooth_switch\":0,
+\"open_video_segmentation\":\"0\",\"local_record_time\":\"60\",\"power_save_interval
+_time\":\"0\",\"private_switch\":\"0\",\"location_type\":\"0\",\"ftp_host\":\"47.107
+.100.134\",\"ftp_user\":\"uftp\",\"ftp_pwd\":\"uftp123\",\"dmr_model\":\"\",\"dmr_va
+l\":\"\",\"power_save_status\":1,\"privacy_switch\":\"0\",\"video_pre\":null}",
+        "notice_switch": "
+{\"isWear\":\"0\",\"fenceAlarm\":\"0\",\"temperature\":\"0\",\"fallAlarm\":\"0\",\"c
+ollisionAlarm\":\"0\",\"silentAlarm\":\"0\",\"nearpowerAlarm\":\"0\",\"ascendAlarm\"
+:\"0\",\"lowBattery\":\"0\",\"reminder\":\"0\",\"sos_switch\":\"0\"}",
+        "ai_broadcast": "[]",
+        "upgrade": {
+            "check_upgrade": 0,
+            "new_apk_version": 0,
+            "new_apk_url": "",
+            "file_md5": ""
+        },
+        "fota_upgrade": {
+            "check_upgrade": 0,
+            "new_apk_url": "",
+            "file_md5": ""
+        },
+        "model_switch": "
+{\"bodycheck_switch\":\"1\",\"heightcheck_switch\":\"1\",\"electriccheck_switch\":\"
+0\",\"audiocheck_switch\":\"1\",\"gascheck_switch\":\"1\",\"tk_switch\":\"0\",\"sos_
+switch\":1,\"private_switch\":\"0\"}",
+        "voice_pkg_md5": "",
+        "pkg_url": "",
+        "low_report_time": 450,
+        "ca_report_time": 0,
+        "extra": {
+            "watch_mac": "",
+            "headset_mac": "",
+            "gas_mac": "",
+            "watch_imei": ""
+        },
+        "gj_ble_mac": "123",
+        "time": 1715842741
+    },
+    "msg_code": "GetSucc"
+}
+
+===== PAGE 4 =====
+参数名 说明 备注
+status返回状态
+true or false 
+msg 返回消息  
+api_urlhttp 请求地
+址建议以正斜杠结尾
+ws_url 长连接地址  
+sos_tmpt 报警温度 单位：摄氏度
+power_off_tmpt 关机温度 单位：摄氏度
+off_hat_time脱帽延迟报
+警时间单位：秒
+offhat_time_interval脱帽报警间
+隔时长单位：分钟
+face_switch人脸检测方
+式1 为关闭  
+2 为库对比模式  
+3 为人脸验证模式
+nomove_time_interval静默报警间
+隔时长单位：分钟
+local_video_record开机后是否
+自动开机本
+地录制0 开1 关
+electrostatic静电报警档
+位1:220V() ，  2:10000V ， 3:35000V ， 4:110000 ，
+5:220000
+picture_quality 监控画质 1 高清， 2 超清
+hanger_language挂钩播报语
+言1 中文， 2 英文， 3 日文
+hanger_boradcast挂钩播报次
+数 
+upload_video本地视频上
+传配置1 不自动上传； 2 网络自动上传； 3wifi 自动上传
+fence_bluetooth_switch蓝牙信标扫
+描开关0 关1 开
+open_video_segmentation是否开启视
+频分割0 关1 开
+
+===== PAGE 5 =====
+参数名 说明 备注
+local_record_time本地录制时
+长单位：秒
+power_save_interval_time进入省电模
+式（分钟）0 为关闭， 10/20/30 [ 分钟 ]
+private_switch隐私模式 ( 手
+动设置 :0; 平
+台设置 :1)手动设置 : 设备可手动进入隐私模式  
+平台设置 : 设备不可手动进入隐私模式
+location_type 定位类型0 ：GPS+ 北斗  
+1 ：GPS 
+2 ：北斗
+ftp_host 弃用 -
+ftp_user 弃用 -
+ftp_pwd 弃用 -
+dmr_model DMR 模式 1 数字直通， 2 模拟直通， 3 数字中继
+dmr_val 频点 MHz  
+power_save_status省电模式开
+关0 开1 关
+video_pre本地录制视
+频前缀一般本地录制视频文件名：
+20241108123729.mp4 ，设置前缀如 abc 后，录制文
+件名为 abc_20241108123729.mp4
+notice_switch提示音效开
+关以下所以的音效开关都为 0 开 1 关
+isWear是否佩戴音
+效-
+fenceAlarm围栏报警音
+效-
+temperature温度报警音
+效-
+fallAlarm跌落报警音
+效-
+collisionAlarm碰撞报警音
+效-
+silentAlarm静默报警音
+效-
+
+===== PAGE 6 =====
+参数名 说明 备注
+nearpowerAlarm近电报警音
+效-
+ascendAlarm登高报警音
+效-
+lowBattery低电量提醒
+音效-
+reminder本地录制提
+醒音效-
+sos_switch sos 报警音效 -
+ai_broadcastai 语音配置信
+息-
+upgradeapk 升级配置
+信息-
+check_upgrade是否开启检
+测apk 升级0 关1 开
+new_apk_version 新apk 版本号 -
+new_apk_url新apk 下载地
+址-
+file_md5新apk 文件
+md5 值-
+fota_upgrade系统升级配
+置信息-
+check_upgrade是否开启检
+测系统升级0 关1 开
+new_apk_url新版本系统
+文件下载地
+址-
+file_md5新版本系统
+文件 md5 值-
+model_switch 模块开关 以下所以的模块开关都为 0 开  1 关
+bodycheck_switch体征检测模
+块-
+
+===== PAGE 7 =====
+参数名 说明 备注
+heightcheck_switch高度检测模
+块-
+electriccheck_switch进电检测模
+块-
+audiocheck_switch语音识别模
+块-
+gascheck_switch气体检测模
+块-
+tk_switch对讲模块模
+块-
+sos_switchSOS 检测模
+块-
+voice_pkg_md5设备语音资
+源包 md5 值-
+pkg_url设备语音资
+源包下载地
+址-
+low_report_time低端帽子上
+报定位的间
+隔时间单位：秒
+ca_report_time高端设备心
+跳时间间隔单位：秒
+extra额外预留字
+段对象-
+watch_mac 手环 mac 号 -
+headset_mac蓝牙耳机
+mac-
+gas_mac气体检测仪
+mac 地址-
+watch_imei 手环 imei 号 -
+gj_ble_mac挂钩 mac 地
+址-
+time当前的秒级
+时间戳设备用于校准本地时间
+
+===== PAGE 8 =====
+参数名 说明 备注
+wifi_account wifi 账户 -
+wifi_pwd wifi 密码 -
+msg_code 消息编码  
+参数名 值 说明
+act ca_login 报文标识
+device_id 设备号   
+ 
+2. 设备登录  
+设备在获取配置后，根据 ws_url 参数值的地址去建立长连接，连接建立成功后发送报文
+设备发送：
+参数说明：
+ 
+websocket 服务端响应示例：（ data 、 sip_info 返回不能为空）{
+"act": "ca_login",
+"device_id": "866652020900370"
+}
+{
+    "cmd": "ca_login",
+    "status": true,
+    "msg": "登陆成功！ ",
+    "data": {
+        "user_id": "84990",
+        "device_id": "866652021057907",
+        "bt_scanner": null,
+        "ca_ver": "rd_aqm6811-q0.mp1-L5.0Ah-PV1-6811GasRtk-m6811gasrtk-user-svn6857-
+v1.2.2-20231025_1753",
+        "mobile": "11111111111",
+        "sim": "89860321442012792856",
+        "user_name": "acsa",
+        "real_name": "acsa",
+        "f_id": "0",
+        "cap_type": 2,
+        "b1": "",
+
+===== PAGE 9 =====
+参数名 说明 备注
+cmd 指令标识 此处值为 "ca_login"
+status 返回状态  true or false  
+msg 返回消息  关键参数说明：        "b2": "",
+        "sos_height": "10000.00",
+        "tk": "2",
+        "nearvolt": "2",
+        "health": "2",
+        "pressure": "2",
+        "account_id": "11444",
+        "w_id": null,
+        "acc_list": "11444,11636,11847",
+        "c_user_id": "11847",
+        "gas_volt": "0",
+        "new_low": 0,
+        "uwb_device_id": "",
+        "voice_pkg": null,
+        "fb_id": null,
+        "min_o2": "19.5",
+        "max_o2": "23.5",
+        "watch": "",
+        "local_record": "0",
+        "watch_mac": "",
+        "co": "10.0",
+        "nh3": null,
+        "h2s": null,
+        "ch4": null,
+        "shrink": null,
+        "diastolic": null,
+        "video_pre": null,
+        "obstacle_distance_up": null,
+        "obstacle_distance_rear": null
+    },
+    "sip_info": {
+        "sip_id": "1004227",
+        "sip_pwd": "0000",
+        "sip_host": "47.106.114.236:11011",
+        "wss_url": "wss:\/\/caps.runde.pro\/fs",
+        "stun_host": "47.106.114.236:40998",
+        "turn_host": "47.106.114.236:40998",
+        "turn_user": "fstest",
+        "turn_pwd": "123456"
+    }
+}
+
+===== PAGE 10 =====
+参数名 说明 备注
+user_id 用户 ID  
+device_id 设备号  
+bt_scanner    
+ca_ver    
+mobile    
+sim    
+user_name    
+real_name    
+f_id    
+cap_type    
+b1    
+b2    
+sos_height    
+tk    
+nearvolt    
+health    
+pressure    
+account_id    
+w_id    
+acc_list    
+c_user_id    
+gas_volt    
+new_low    
+uwb_device_id    
+voice_pkg    
+fb_id    
+min_o2    
+
+===== PAGE 11 =====
+参数名 说明 备注
+max_o2    
+watch    
+local_record    
+watch_mac    
+co    
+nh3    
+h2s    
+ch4    
+shrink    
+diastolic    
+video_pre    
+obstacle_distance_up    
+obstacle_distance_rear    
+sip_infosip 视频通话所用相关参
+数后头需要有 sip 通话服务才可对接，值不能为
+空
+sip_id    
+sip_pwd    
+sip_host    
+wss_url    
+stun_host    
+turn_host    
+turn_user    
+turn_pwd    
+ 
+ 
+
+===== PAGE 12 =====
+3. 上报实时数据  
+设备在发送登录报文，后台响应登录成功的指令后，便会周期性上报实时数据 , 默认是 10 秒上报一次（这个频
+率可能因版本不同有所变动，上报频率是写死的，如要求改动可以联系商务定制版本）
+设备发送：
+关键参数说明：{
+    "act": "ca_report_location",
+    "altitude": "0.0",
+    "bat_l": "100",
+    "bat_v": "4187",
+    "body_info": "",
+    "body_simple_info": "",
+    "bt_signal_info": "",
+    "c_accuracy": "0.0",
+    "c_speed": "0.0",
+    "c_startcount": "0",
+    "c_trust": "0",
+    "charging": "0",
+    "gas_data": "",
+    "gps": "0",
+    "gps_level": "-1",
+    "hanger_a_bat": "-1",
+    "hanger_a_status": "-1",
+    "hanger_b_bat": "-1",
+    "hanger_b_status": "-1",
+    "in_use": "1",
+    "is_weared": "2",
+    "lights_switch": "0",
+    "mic_switch": "0",
+    "net_strenth": "4",
+    "net_type": "2",
+    "notuploaded_video_count": "3",
+    "online_type": "2",
+    "oxygen_data": "",
+    "phoneNumber": "89860321442012792856",
+    "rail_status": "0",
+    "record_switch": "false",
+    "sim_data_num": "0",
+    "sim_status": "2",
+    "stepCount": 0,
+    "stepCountTime": 1715842744575,
+    "tcard_status": "1",
+    "tempdata": "mtktsbtsmdpa--16954",
+    "user_id": "84990",
+    "x_point": "22.629483506944446",
+    "y_point": "114.13026909722223"
+}
+
+===== PAGE 13 =====
+参数 说明 备注
+act 上报实时数据 ca_report_location
+altitude相对高度 ( 单位：米 ) 当前高度相对于帽子开机
+时的高度，帽子安装高度模块后才会有高度数
+据 
+bat_l 当前电量百分比  
+bat_v 当前电池电压 单位： mV
+body_info    
+body_simple_info    
+bt_signal_info 蓝牙设备信息  
+c_accuracy    
+c_speed 速度  
+c_startcount    
+c_trust    
+charging 充电状态0: 正在充电  1: 未在
+充电
+gas_data    
+gps 定位类型0 基站定位，
+1gps ， 2wifi 定
+位， X 其他
+gps_level GPS 信号强度0 ：信号弱  1 ：信号
+强 -1 ：无信号
+hanger_a_bat    
+hanger_a_status    
+hanger_b_bat    
+hanger_b_status    
+in_use 帽子状态1: 在线  2: 监控  3: 视
+频通话
+is_weared 佩戴状态默认 0 1: 未佩戴  2:
+已佩戴未做说明的字段包含部分调试信息无实际意义
+
+===== PAGE 14 =====
+参数 说明 备注
+lights_switch    
+mic_switch    
+net_strenth 网络信号强度0-5 ， 0: 最低， 5: 最
+高
+net_type 网络类型 1 表示 4G 2 表示 wifi
+notuploaded_video_count 未上传视频数量  
+online_type    
+oxygen_data    
+phoneNumber 当前 sim 卡号  
+rail_status 围栏状态0: 没有绑定围栏  1:
+围栏外  2: 围栏内
+record_switch    
+sim_data_num 当月已用流量 ( 单位 :MB)  
+sim_status sim 卡检测0: 未知  1: 有 sim 卡 2:
+没有 sim 卡
+stepCount    
+stepCountTime    
+tcard_status 内存卡检测0: 未知  1: 有内存卡
+2: 没有内存卡
+tempdata 只取主板温度 ( 单位：摄氏度 )  
+user_id 用户 id( 长连接登录时后台返回的同名参数 )  
+x_point 纬度 ( 坐标系：高德地图  GCJ-02)  
+y_point 经度  
+websocket 服务端响应示例：
+
+===== PAGE 15 =====
+参数名 说明 备注
+cmd 指令标识 此处值为 "ca_report_location"
+status 返回状态  true or false  
+msg 返回消息  
+f_id 围栏 id  
+f_key    
+bt_beacon    
+report_time    
+参数 说明 备注
+act ca_sos 自动上报关键参数说明：
+ 
+ 
+4. 报警推送  
+设备端长连接推送报文
+参数说明：{
+    "cmd": "ca_report_location",
+    "status": true,
+    "msg": "上报成功 ",
+    "f_id": "0",
+    "f_key": "d751713988987e9331980363e24189ce",
+    "bt_beacon": "",
+    "report_time": 0
+}
+{
+    "act": "ca_sos",
+    "device_id": "866652021005716",
+    "stepCount": 0,
+    "stepCountTime": 0,
+    "type": "6",
+    "x_point": "22.62946343315972",
+    "y_point": "114.13039306640626"
+}
+
+===== PAGE 16 =====
+参数 说明 备注
+device_id 设备号  
+stepCount    
+stepCountTime    
+type    
+x_point 纬度 ( 坐标系：高德地图  GCJ-02)  
+y_point 经度  
+ 1 脱帽报警  
+2 离开工作区域 ( 围栏报警 ) 
+3 温度报警  
+4 跌落（撞击）报警  
+5 进入禁区 ( 围栏报警 ) 
+6 静默报警  
+7 SOS 报警  
+11 近电报警  
+12 登高报警  
+17 进入蓝牙信标报警  
+18 离开蓝牙信标报警  
+20 体温报警  
+21 心率报警  
+22 血压报警报警类型
+websocket 服务端返回：
+ 
+ 
+手动按 SOS 按钮时推送报文：{
+    "cmd": "ca_sos",
+    "status": true,
+    "msg": "上报成功！ "
+}
+
+===== PAGE 17 =====
+参数名 值 说明
+cmd ca_sip_sos 指令标识
+status true 返回状态
+msg 报警成功 ! 返回消息
+room_id  服务器返回一个可用的  sip 房间号，  设备会呼叫进入房间进行群组视频
+通话。
+msg_code    服务端返回：
+参数说明：
+ 
+5 、广播对讲  
+5.1 高端型号设备发送录音广播到后台  
+帽子 在长按录音按钮松手后，会调用上传音频文件接口（帽子主动调用接口）
+上传音频文件接口说明：
+请求协议： http
+请求方式： POST
+请求地址：{
+    "act": "ca_sip_sos",
+    "device_id": "866652021005716",
+    "stepCount": 0,
+    "stepCountTime": 0,
+    "type": "0",
+    "x_point": "22.629635687934027",
+    "y_point": "114.13015923394097"
+}
+{
+    "cmd": "ca_sip_sos",
+    "status": true,
+    "msg": "报警成功 !",
+    "room_id": "9944986163",
+    "msg_code": "DoSucc"
+}
+api_url (获取配置返回的 api_url 同名参数 ) +"index.php?ctl=file&act=save_audio"
+
+===== PAGE 18 =====
+参数名 说明 备注
+file 音频文件对象  
+参数名 说明 备注
+statustrue or
+false返回状态
+msg   返回消息
+url   值为上传对应音频文件在服务器中的唯一标志，可以理解为音频文件 id
+msg_code   消息代码请求体参数说明：
+postman 调用示例：
+ 
+接口响应参数说明：
+ 
+设备通过长连接通知后台发送广播
+高端设备发送：
+ 
+低端设备发送：（设备通过 websocket 发送到后台）{
+"status": true,
+"msg": "上传成功！ ",
+"data": {
+"url": "1650705464606209"
+},
+"msg_code": "UploadSucc"
+}
+{
+"act": "ca_sending_message",
+"message": "1650706461597364"
+}
+{
+"act": "ca_sending_message",
+"message":
+"IyFBTVIKDAo8P5bZg2fpRo6iRTIMCjw/ltmDZ+lGjqJFMgwKPD+W2YNn6UaOokUyDBjPMwSfyul/b7x
+
+===== PAGE 19 =====
+参数名 值 说明
+act ca_sending_message 发送广播消息到后台
+message  对于后台处理这个值分为两种形式：
+高端型号帽子：发送的值是上传音频文件接口返回的音频
+低端型号帽子：低端的帽子不会去调用上传音频文件接
+口，而是直接本地把录制好的 amr 音频转成 base64 编码  
+携带在这个参数值中至后台
+ 
+5.2 后台通过长链接发送音频广播给设备  
+后台给高端帽子发送4p0oMBGM3BJyI4rSWBE3o/AyeSD9EAQiPVkpEAg0ODL3IbyAPhOH67SgqAQwMvZRvJAOH54JlZmzkeAy
+9SDckoI/OuEosjaj8DL2UrwSLBwomSWkrfawMjGM1KAemlUuL1jJ4tAzmgzckhoiO9LgHZlAKDLTOPwC
+fD7PSLAF7BbYMpNYAJJQDhGCdBcEbMAykSABlHQOESrMxDRaYDLVvACMFjokg7J0EHNoMNkAAIByHz3f
+EC8dm9AwYBwAEiYd06cyJYESKDCR3AEgjjnvJjkpmgKYMlAcICBIPvaFVBgQxyAxuEQgDHAq5oZgJhnN
+ADIx3jwSYC4mOlBFBNigMbhFHKJiHxv5yLsacQAwmdwDA4IMGnnGWCZYQDO4RhyQXh+F7ias5GCAMoXc
+ARIONC35zBFRdCgwmEQBHHYbapOkPQQUUDKF3AIiHjcKm40+AhJgMoREAeUuPwwbzB4KleAyhEQBGTo+
+DjuENdBUSDCQRAIW0j4Nu7mrXDVIMJBEAqMuLw6bggRMGSgw0EQAqLYeKbuMcALYoDCIWAFE/h4vE5x0
+uqHQMtTYAmb+EC8b0Qia+YgwiDwC/eoBaBcucyjHwDPBYAJ58yXh45K6U914M7NYILj0OvuClue5DaAy
+XTABNL4zjexMJ8AG0DBsWAOmziw6mqgwiRBgMHK0ATS8NwAwLxAgB4gyerQCIvw9KwJYYFAX6DAsMAIt
+oD4uo3WRADlAMAD4Am28OAyiOheeJuAzYiADT/AhIoA0QzoTeDMDdAP9zAQrYmg/m2MIMRAI9vskgro0
+zpZUObgzYQzOSOc9h6r3GqriMDJhrN5HCigHsuYCVd7oM2M03bv6AFQQ2FmRsWgxEmDZ1v519JyhjGjT
+CDGLgP5I7Kyb4cr/k+dAMTKUAlaoKCFjWPGQj/AwtfACItwPF2kpOw6L8DLeXAItEjIjU8CIO6DgMl8c
+AkS+Ogh59AqSZUAwcdwCJIo+IfuaO5M7iDDR3AGd9gkuXxKQcREIMA0RPS24SCrfR2YMikgxJ8QBzP46
+EH5oPIxh2DCIYAH5jjXCBjATCtyQMABgAedONd4nSLmOAhgwLgABs+oN5iUYRnwm4DBhIAGm9ifd4Om2
+CKUYMGNYAib+HRv5vJw1wLgwDsQCFv4+G3gkDy9FKDARjAHnLgoBSSifnIcAMGLEAkbkDx/BVASQDNAw
+EsQCRnwDAEE8L5P0+DASxP422hKEyf5HhDkgMBLE9rc4gXJDtdR96BAwEgz+SMgaAFFAMGWoIDASDNm2
+3lEdZ4yQUvW4MBM41ba+of3eMDnvDmgwEzjeRuYN9kQqLqlAyDBg7N247g+zSBeqgACoMBLEya35HJQ2
+8AqmPkgwHgy6d/+URM3HcMSBkDAvINXv+sBt+aIeIV6AMjFAz7+0Bd5RJT2RmIAwEUC3bX1n5vjbSKr2
+sDOHyNr64kBRtkjUaQ0YMWs8AmnYCDRAMK4EF7gx8dgBx/gEH0FYHqxoIDHwpALrbjwQ8hAWC65oMwHl
+HX+tFGabVm5fAogx1+Bja9IcHknTEV/BEDLVQAG7BiAaeKwJBPCAMdXwAUFOLBtY2C9qwOgyxiwCFHY+
+ItrKM5bTODHzwAKWPiob+cwVMgiQMfAMAkY+Gjq5rJGIpMAx8FgCo94950VVQNAQYDHUWCHORDLedEyq
+CCBwMIssIbeYEthHILOWgTgwsywhJIgszK4OLEICADMyACGS2D/h/9Cf2WD4M7GQIRa0L+ZfiiiaoIAw
+W4Ahor0nY+/QIYUK2DKGACGy/CXkf9GcYi6gMFoAIkUquqPXrGhQ8zgyhgAgsz70oVMIO4hRADKOlCEE
+j9oQQWhrKCjoMgaUIRSX1hVhTEyXcTgyBvwhFJ/0DvmOnChcqDIG/CCjL+9+FlQ3QMlIMgb8IRRP/c7d
+hhwC3RAyBBw9IJo7BaB+DKGM+DIG/F0kLBwX3ggmbDDIMgcsXbLUP4/RjRUGctAwEBxcqKYwSfglhMLZ
+GDKOlFy2/j+P/S8FVIpgMSxYfSeO/Y9BZmwRMuAyjyyduYgf0E3cp8ROgDARAJpEy09T7bQabDAQMFkw
+vbU+BlJNFSSvxVAxMmDVhmXDUHlJ8Q3dq"
+}
+{
+"cmd": "server_push_ma_broadcast",
+"message": "http:\/\/caps-video.runde.pro\/caps-audio\/166761523825125.amr",
+"message_type": 0
+}
+
+===== PAGE 20 =====
+参数名 值 说明
+act ca_sending_message 发送广播消息到后台
+message  对于后台处理这个值分为两种形式：  高端型号帽子：发送的值
+是上传音频文件接口返回的音频  低端型号帽子：低端的帽子不
+会去调用上传音频文件接  口，而是直接本地把录制好的 amr 音
+频转成 base64 编码  携带在这个参数值中至后台 
+后台给低端帽子发送
+ {
+"cmd": "server_push_ma_broadcast",
+"message":
+"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
+vbU+BlJNFSSvxVAxMmDVhmXDUHlJ8Q3dq"
+}
+
+===== PAGE 21 =====
+参数名 值 说明
+cmd server_push_set_sos_height 指令标识
+local_record 0: 开启录制  1: 关闭录制 录制开关
+record_video_name  规定本地视频录制好后以什么名称命名
+（不规定可以为空字符串），
+设备会以这个名称拼接录制时间保存文
+件，一直录制的情况下 5 分钟一段的保存
+参数名 值 说明
+act toggle_localrecord 指令标识
+type 0 开启录制， 1 关闭录制 设备本地录制状态
+device_id   设备编号6. 后台指令控制设备  
+6.1 后台发送指令控制设备开启 / 关闭本地录制
+websocket 服务端发送指令：
+参数说明：
+ 
+6.1.1  设备上报当前本地录制状态
+websocket 服务端接收设备上报本地录制状态：
+参数说明：
+websocket 服务端响应返回：{
+"cmd": "server_push_set_sos_height",
+"local_record": "0",
+"record_video_name": "test_filename"
+}
+{
+    "act": "toggle_localrecord",
+    "device_id": "866652021005716",
+    "type": "0"
+}
+
+===== PAGE 22 =====
+参数名 说明 备注
+file 上传文件对象   
+ 
+ 
+6.2 后台发送指令控制设备拍照
+ 
+7 照片上传  
+7.1 设备端手动按拍照按钮拍照，并调接口上传  
+照片上传接口
+请求路径：
+请求方式： POST
+请求体参数：
+postman 调用示例：
+ 
+接口响应参数说明：{
+    "cmd": "toggle_localrecord",
+    "status": true,
+    "msg": "操作成功！ "
+}
+{
+"cmd": "server_push_take_photo"
+}
+api_url (获取配置返回的 api_url 同名参数 ) index.php?ctl=image&act=save_image
+
+===== PAGE 23 =====
+参数名 说明 备注
+status 状态  true or false  
+msg 返回消息  
+data 返回数据  
+url 图片保存路径  
+msg_code 消息编码  
+参数名 说明 备注
+device_id 设备号  
+image_url 图片路径，由照片上传接口返回  
+x_point 纬度 ( 坐标系：高德地图  GCJ-02)  
+y_point 经度   
+7.1.2  设备收到上传图片接口响应成功的报文后，将当前设备号和图片路径通过 http 和 websocket 协议再次
+发送报文，通知后台做图片与设备的绑定 
+绑定图片接口
+请求路径：
+请求方式： POST
+请求体参数：
+接口响应参数：{
+"status": true,
+"msg": "上传成功！ ",
+"data": {
+"url": "https://mg.runde.pro/public/images/1650609679993165.png"
+},
+"msg_code": "UploadSucc"
+}
+api_url (获取配置返回的 api_url 同名参数 ) index.php?ctl=report&act=add_image
+
+===== PAGE 24 =====
+参数名 说明 备注 ·
+cmd指令标识，此处对应值为：
+server_push_get_local_video_list这个指令没有对应设备号参数是因为最开
+始
+设备在长连接登录时，服务端就已经拿设
+备
+登录时上报的设备号跟对应长连接会话对
+象
+做绑定了
+talkback_id 一次控制上传文件的事务标识 可随机生成 
+长连接上报绑定消息：
+参数说明：
+与上面接口上报参数相同
+ 
+8  本地视频上传  
+8.1   服务端 websocket 发送指令，查看设备本地视频列表  
+参数说明：{
+"status": true,
+"msg": "添加成功！ ",
+"data": [],
+"msg_code": "AddSucc"
+}
+{
+"act": "ca_upload_photo",
+"device_id": "866652020618592",
+"image_url": "https://mg.runde.pro/public/images/1650612488880588.jpg",
+"x_point": "22.651952465770552",
+"y_point": "114.1216905401004"
+}
+{
+"cmd": "server_push_get_local_video_list",
+"talkback_id": "7ae5fe63e71c59623d53ed89a28bc8b2",
+"start_time": "20220412000000",
+"end_time": "20220419192929",
+"video_type": "1"
+}
+
+===== PAGE 25 =====
+参数名 说明 备注 ·
+start_time 开始时间  
+end_time 结束时间  
+video_type视频清晰度： 1 为高清、 2 为压缩，默认
+为1 
+参数名 说明 备注
+act 指令标识，此处值为： push_to_client  
+res 响应结果  
+data 数据，有多个视频时就有多少个数组集合例如： data:[{...},{...},{...}]  
+file_md5 文件 md5 值   
+8.2  设备端收到指令后上报本地视频记录  
+有视频记录返回结果
+无视频记录返回结果
+参数说明：{
+"act": "push_to_client",
+"res": {
+"data": [{
+"file_md5": "2vr6e1blu9d80d1qffg9go5o9p",
+"file_name": "20220419192833.mp4"
+}],
+"msg": "获取成功 ",
+"status": true
+},
+"talkback_id": "7ae5fe63e71c59623d53ed89a28bc8b2"
+}
+{
+"act": "push_to_client",
+"res": {
+"msg": "无匹配视频 ",
+"status": false
+},
+"talkback_id": "ae47322c4865602cd1e884d8d125bea9"
+}
+
+===== PAGE 26 =====
+参数名 说明 备注
+file_name 文件名称  
+msg 消息：获取成功  or 无匹配视频  
+status 状态： true of false  
+talkback_id 一次控制上传文件的事务标识  
+参数名 说明 备注
+cmd 指令标识，此处值为： server_push_upload_video  
+talkback_id 一次控制上传文件的事务标识  
+file_list文件列表，有多个视频时就有多少个集合，例如：
+file_list["xxx.mp4",''xxx.mp4"] 
+参数名 说明 备注
+file post 文件上传对象   
+8.3  服务端选择文件上传  
+ 
+8.4.1  帽子收到后调用 http 接口上传文件  
+请求方式： POST
+URL:  
+例如：  
+请求体中的的参数{
+"cmd": "server_push_upload_video",
+"talkback_id": "2cf6f1e7879b9640989d8af72c5da1a9",
+"file_list": ["20220419195612.mp4"]
+}
+api_url(配置接口返回 ) upload?device_id=[ 设备号 ]&X-Progress-ID=[md5 值，文件唯一标志 ]
+https://caps.runde.pro/api/upload?device_id=866652020618592&X-Progress-
+ID=5t3jqp0fr9jlkgljl85trto1cu
+
+===== PAGE 27 =====
+参数名 说明 备注
+status 返回状态  true of false  
+msg 返回消息  
+url 上传完成后视频所在路径  
+参数名 说明 备注
+act 指令标识，此处值为： push_to_client  
+res 响应  
+msg 文本消息  
+status 上传状态  true or false  postman 模拟设备调用上传文件，如图：
+ 
+接口返回示例：
+参数说明：
+ 
+8.4.2  设备发送开始上传报文  
+ 
+服务端响应：{
+"status": true,
+"msg": "success",
+"data": {
+"url": 
+"https://caps•video.runde.pro/record/36147_38222/2021/09/12/20210912104423.mp4"
+},
+"msg_code": "Success"
+}
+{
+"act": "push_to_client",
+"res": {
+"msg": "开始上传 ",
+"status": true
+},
+"talkback_id": "2cf6f1e7879b9640989d8af72c5da1a9"
+}
+
+===== PAGE 28 =====
+参数名 说明 备注
+status 状态  true or false  
+msg 消息  
+msg_code 消息代码  
+参数名 说明 备注
+act 指令标志，此处值为： upload_video_success  
+file_name 文件名称  
+url 上传后的文件路径  
+参数名 值 说明
+cmd server_push_open_rtsp 后台发送指令控制设备开启推流
+push_url   rtmp 推流地址 
+8.5 设备文件上传完成后继续通过 websocket 上报状态给服务端【已弃用】  
+ 
+ 
+9 监控推流  
+9.1.1  后台发送指令控制设备开启推流
+参数说明：{"status":true,"msg":" 推送成功 ","msg_code":"PushSucc"}
+{
+"act": "upload_video_success",
+"file_name": "20220419195612.mp4",
+"url": "https://caps-
+video.runde.pro/record/36147_38222/2022/04/19/20220419195612.mp4"
+}
+{
+"cmd": "server_push_open_rtsp",
+"push_url": "rtmp:\/\/120.24.235.50:11006\/live\/36147_38222"
+}
+
+===== PAGE 29 =====
+参数名 值 备注
+cmd server_push_stop_rtsp 后台发送指令控制设备关闭推流9.1.2  后台确认设备推流成功回调接口
+说明：部分设备可能版本不同而推流时不会调用此接口，设备端收到后台长连接发送
+server_push_open_rtsp 指令后开启推流，过几秒调用此接口确认是否推流成功，没推流成功便会重复
+这个步骤
+请求协议： HTTP
+请求方式： POST
+请求路径 :api_url ( 获取配置返回的 api_url 同名参数 )index.php?user_id=[ 用户
+id]&ctl=device&act=check_stream
+后台根据根据设备是否推流成功返回对应状态信息：
+推流成功返回：
+未推流成功返回：
+ 
+9.2 后台发送指令控制设备关闭推流
+ 
+ {
+"status": true,
+"msg": "正在推流！ ",
+"data": {
+"push": true
+}
+}
+{
+"status": false,
+"msg": "未推流！ ",
+"data": {
+"push": false
+}
+}
+{
+"cmd": "server_push_stop_rtsp"
+}
+
+===== PAGE 30 =====
+参数名 值 说明
+cmd ca_sip_sos 指令标识
+statustrue or
+false返回状态
+room_id  服务器返回一个可用的  sip 房间号，设备会呼叫进入房间进行群组视频通
+话。
+msg   返回消息10  音视频通话  
+说明：设备采用标准的 sip 通话协议，所以需对接音视频通话，后台需求 sip 通话服务，若需要我们帮忙
+搭建 sip 通话服务和流媒体服务请问我们商务人员联系。
+基本流程：设备在长连接登录后，会根据后台返回报文中的 sip_info 字段自动注册至 sip 服务器。其他 sip
+服务下的 sip 终端设备便可通过 sip_id 呼叫到对应帽子，帽子端会自动接听。
+帽子端手动按 sos 按钮呼叫时：
+设备端长连接发送报文
+服务端返回：
+参数说明：
+ 
+ {
+"act": "ca_sip_sos",
+"device_id": "866652020618592",
+"type": "0",
+"x_point": "22.65197086344056",
+"y_point": "114.12161066398758"
+}
+{
+"cmd": "ca_sip_sos",
+"status": true,
+"msg": "报警成功 !",
+"room_id": "9944938222",
+"msg_code": "DoSucc"
+}
+
+===== PAGE 31 =====
+参数名 值 说明
+act ca_upload_wifi_list 上线 wifi 列表指令
+device_id   设备号
+wifi_list   wifi 列表
+intensity 0-4 信号强度， 4 信号最强， 0 最弱
+pwd   应该是预留字段，可忽略
+spot   wifi 名称
+status 0 或 1 是否已经连接此 wifi ， 1 为已经连接11 指定设备链接 WiFi  
+此功能是适用于高端型号设备（视频款）
+11.1  服务端发送指令，获取设备端附近 wifi 列表
+服务端发送：
+设备端上报：
+服务端收到 wifi 列表后做出回应：{"cmd":"server_pull_wifi_list"}
+{
+    "act": "ca_upload_wifi_list",
+    "device_id": "866652020699402",
+    "wifi_list": [{
+        "intensity": 4,
+        "pwd": 1,
+        "spot": "刘学杰的 iPhone",
+        "status": 1
+    }, {
+        "intensity": 4,
+        "pwd": 1,
+        "spot": "RUNDE-2.4",
+        "status": 0
+    }, {
+        "intensity": 3,
+        "pwd": 1,
+        "spot": "runde2020-1",
+        "status": 0
+    }]
+}
+
+===== PAGE 32 =====
+参数名 值 说明
+cmd server_push_set_wifi 设置 wifi 指令
+act app_set_wifi 设置 wifi 指令
+pwd   wifi 密码
+spot   wifi 名称
+wifi_enabled 0 或 1wifi 连接状态，为 1 表示连接 wifi ，为 0 表示断开 wifi ， 
+为0 时 spot 和 pwd 可为空 
+11.2  服务端发送命令，指定帽子连接对应 wifi
+服务端发送：
+ 
+设备收到连接 wifi 指令后会出现两种情况
+1.wifi 连接成功时：在切换至对应 wifi 后  设备端长链接会因网络变更导致断开，并重新发送 ca_login 登录的
+操作
+ 
+2.wifi 连接失败时，设备端发送：{
+"cmd": "ca_upload_wifi_list",
+"status": true,
+"msg": "上传成功并推送成功！ "
+}
+{
+    "cmd": "server_push_set_wifi",
+    "data": {
+        "act": "app_set_wifi",
+        "pwd": "runde8888",
+        "spot": "RUNDE",
+        "wifi_enabled": 1
+    }
+}
+
+===== PAGE 33 =====
+参数名 值 说明
+act ca_report_wifi_connect_status wifi 连接状态
+device_id   设备号
+msg   返回消息
+spot   wifi 名称
+status   连接状态
+ 
+服务端收到 wifi 列表后做出回应：
+ 
+ 
+12 设备 webrtc 通话方案  
+说明：平台需搭建 zlmediakit 流媒体服务（ https://github.com/zlmediakit/ZLMediaKit ），此方案是基
+于视频流双向传输实现的通话方案（设备端需要特定版本支持）
+12.1 开启 webrtc 通话  
+基本流程： web 端通过点击通话按钮，设备将收到下列指令。当设备收到下列指令时，设备将进入通话状
+态，设备端具体逻辑如下：
+1. 遍历 members 成员列表，找到属于自己端的流信息（ is_caps=1 && id 为自己设备号），通过 rtc_url[2]
+的rtmp 流地址将本地流推送到流媒体服务器。
+2. 遍历到其他端的流信息时，当成员流状态 status=1 正常时，设备将通过 rtc_url[0] 流地址，拉取该成员的
+流进行播放。{
+    "act": "ca_report_wifi_connect_status",
+    "device_id": "866652020699402",
+    "msg": "密码错误 ",
+    "spot": "RUNDE",
+    "status": false
+}
+{
+"cmd": "ca_upload_wifi_list",
+"status": true,
+"msg": "上传成功并推送成功！ "
+}
+{
+    "cmd": "server_push_webrtc_call",
+
+===== PAGE 34 =====
+参数名 值 备注
+cmd server_push_webrtc_call 后台发送指令控制设备开启通话
+room_id   房间 id
+members   成员列表
+members.id   成员 id ，管理员 id 或设备编号
+members.is_caps 0/1 是否为设备， 0 否 1 是
+members.rtc_url  同一成员的流地址列表：拉流地址、推流地址、
+[rtmp 流地址，仅当设备端时有 rtmp 流地址 ]
+members.user_id  当成员为设备端时，此为用户 id ，若为管理员
+端，则无此字段
+members.status   流状态： 0 异常， 1 正常    "room_id": "webrtc_room:single_866652021639308",
+    "members": [{
+        "id": "11282",
+        "is_caps": 0,
+        "type": 1,
+        "rtc_url": ["https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_11282_1467283&type=play", 
+"https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_11282_1467283&type=push"],
+        "status": 1,
+        "stream": "36147_11282_1467283",
+        "udid": "70300ea41e72909392f191aeeaf3ce2241201743966909",
+        "room_id": "webrtc_room:single_866652021639308"
+    }, {
+        "id": "866652021639308",
+        "is_caps": 1,
+        "type": 1,
+        "rtc_url": ["https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_73760&type=play", 
+"https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_73760&type=push", 
+"rtmp://n2rtc.runde.pro:31935/live/36147_73760"],
+        "user_id": "73760",
+        "status": 1,
+        "stream": "36147_73760",
+        "room_id": "webrtc_room:single_866652021639308"
+    }],
+    "type": 1,
+    "status": true,
+    "msg": "开启 webrtc 单人通话 ",
+    "msg_code": "PushSucc"
+}
+
+===== PAGE 35 =====
+参数名 值 备注
+members.stream   流地址对应的 stream
+members.udid   管理员登录时的 udid （同一浏览器唯一）
+members.room_id   房间 id
+type   通话类型（ 1 音视频通话）
+status true / false 业务接口状态
+msg   业务接口结果
+参数名 值 说明
+act get_webrtc_video_list 指令标识
+room_id   房间 id 
+12.2  设备刷新 webrtc 房间成员列表信息
+设备在通话过程中，将定时通过发送下列指令，向平台端请求刷新房间成员列表，服务端需要返回对应房间
+的最新信息给设备端，以供设备端刷新房间成员流数据。
+参数说明：
+服务端返回：{
+    "act": "get_webrtc_video_list",
+    "room_id": "webrtc_room:single_866652021639308"  
+}
+{
+    "cmd": "get_webrtc_video_list",
+    "status": true,
+    "msg": "获取成功 !",
+    "room_id": "webrtc_room:single_866652021639308",
+    "data": {
+        "room_id": "webrtc_room:single_866652021639308",
+        "members": [{
+            "id": "11282",
+            "is_caps": 0,
+            "type": 1,
+            "rtc_url": ["https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_11282_1467283&type=play", 
+"https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_11282_1467283&type=push"],
+            "status": 1,
+
+===== PAGE 36 =====
+参数名 值 说明
+cmd get_webrtc_video_list 指令标识
+status true or false 返回状态
+room_id   房间 id
+data.room_id   房间 id
+data.members   房间成员列表（字段用法如 12.1 ）
+data.type   通话类型（ 1 音视频通话）参数说明：
+ 
+12.3  挂断 webrtc 通话
+当通话结束时，平台端需下发下列指令给设备端结束通话。
+参数说明：            "stream": "36147_11282_1467283",
+            "udid": "70300ea41e72909392f191aeeaf3ce2241201743966909",
+            "room_id": "webrtc_room:single_866652021639308"
+        }, {
+            "id": "866652021639308",
+            "is_caps": 1,
+            "type": 1,
+            "rtc_url": ["https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_73760&type=play", 
+"https://caps.runde.pro/n3zlv/index/api/webrtc?
+app=live&stream=36147_73760&type=push", 
+"rtmp://n2rtc.runde.pro:31935/live/36147_73760"],
+            "user_id": "73760",
+            "status": 1,
+            "stream": "36147_73760",
+            "room_id": "webrtc_room:single_866652021639308"
+        }],
+        "type": 1
+    }
+}
+{
+    "cmd": "server_push_stop_webrtc_call",
+    "status": true,
+    "msg": "停止 webrtc 通话 ",
+    "room_id": "webrtc_room:single_866652021639308",
+    "msg_code": "StopWebrtcCall"
+}
+
+===== PAGE 37 =====
+参数名 值 说明
+cmd server_push_stop_webrtc_call 指令标识
+room_id   房间 id
+status true / false 业务接口状态
+msg   业务接口结果
+ 
+ 
+ 
+ 
+ 

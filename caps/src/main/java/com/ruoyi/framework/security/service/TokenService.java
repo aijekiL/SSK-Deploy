@@ -65,10 +65,6 @@ public class TokenService
         String token = getToken(request);
         if (StringUtils.isNotEmpty(token))
         {
-            if (!isJwtToken(token))
-            {
-                return null;
-            }
             try
             {
                 Claims claims = parseToken(token);
@@ -221,24 +217,15 @@ public class TokenService
     private String getToken(HttpServletRequest request)
     {
         String token = request.getHeader(header);
-        if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX))
+        if (StringUtils.isEmpty(token))
         {
-            token = token.replace(Constants.TOKEN_PREFIX, "");
+            return null;
         }
-        return token;
-    }
-
-    private boolean isJwtToken(String token)
-    {
-        int dotCount = 0;
-        for (int i = 0; i < token.length(); i++)
+        if (!token.startsWith(Constants.TOKEN_PREFIX))
         {
-            if (token.charAt(i) == '.')
-            {
-                dotCount++;
-            }
+            return null;
         }
-        return dotCount == 2;
+        return token.replace(Constants.TOKEN_PREFIX, "");
     }
 
     private String getTokenKey(String uuid)

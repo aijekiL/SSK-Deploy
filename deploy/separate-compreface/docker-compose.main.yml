@@ -79,6 +79,7 @@ services:
       - "${ZLM_RTSP_PORT:-8554}:554"
       - "${ZLM_RTP_PROXY_TCP_PORT:-10000}:10000"
       - "${ZLM_RTP_PROXY_UDP_PORT:-10000}:10000/udp"
+      - "${ZLM_RTP_SERVER_PORT:-8000}:8000"
       - "${ZLM_RTP_SERVER_PORT:-8000}:8000/udp"
       - "${ZLM_WEBRTC_UDP_PORT:-9000}:9000/udp"
     volumes:
@@ -102,6 +103,8 @@ services:
     environment:
       TZ: ${TZ:-Asia/Shanghai}
       SPRING_PROFILES_ACTIVE: druid
+      LOGGING_LEVEL_COM_RUOYI: info
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: info
       SPRING_DATASOURCE_DRUID_MASTER_URL: jdbc:mysql://mysql:3306/${CAPS_DB_NAME:-ry-zhdj}?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia%2FShanghai
       SPRING_DATASOURCE_DRUID_MASTER_USERNAME: ${CAPS_DB_USER:-root}
       SPRING_DATASOURCE_DRUID_MASTER_PASSWORD: ${CAPS_DB_PASSWORD:-123456}
@@ -146,6 +149,8 @@ services:
       - ./publish:/app
     ports:
       - "${SSK_PORT:-9991}:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - ssk-net
 

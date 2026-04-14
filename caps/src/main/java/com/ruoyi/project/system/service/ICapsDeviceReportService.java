@@ -4,55 +4,75 @@ import java.util.List;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.project.system.domain.CapsDeviceReport;
-import com.ruoyi.project.system.domain.dto.CapsGasMonitorReportDto;
+import com.ruoyi.project.system.domain.dto.CapsGasReportRequestDto;
 
 /**
- * Safety helmet realtime report service.
+ * 安全帽设备实时数据Service接口
+ *
+ * @author ruoyi
+ * @date 2025-04-16
  */
 public interface ICapsDeviceReportService
 {
     /**
-     * Query by primary key.
+     * 查询安全帽设备实时数据
+     *
+     * @param id 安全帽设备实时数据主键
+     * @return 安全帽设备实时数据
      */
-    CapsDeviceReport selectCapsDeviceReportById(Integer id);
+    public CapsDeviceReport selectCapsDeviceReportById(Integer id);
 
     /**
-     * Query report list.
+     * 查询安全帽设备实时数据列表
+     *
+     * @param capsDeviceReport 安全帽设备实时数据
+     * @return 安全帽设备实时数据集合
      */
-    List<CapsDeviceReport> selectCapsDeviceReportList(CapsDeviceReport capsDeviceReport);
+    public List<CapsDeviceReport> selectCapsDeviceReportList(CapsDeviceReport capsDeviceReport);
 
     /**
-     * Insert one report.
+     * 新增安全帽设备实时数据
+     *
+     * @param capsDeviceReport 安全帽设备实时数据
+     * @return 结果
      */
-    int insertCapsDeviceReport(CapsDeviceReport capsDeviceReport);
+    public int insertCapsDeviceReport(CapsDeviceReport capsDeviceReport);
 
     /**
-     * Update one report.
+     * 修改安全帽设备实时数据
+     *
+     * @param capsDeviceReport 安全帽设备实时数据
+     * @return 结果
      */
-    int updateCapsDeviceReport(CapsDeviceReport capsDeviceReport);
+    public int updateCapsDeviceReport(CapsDeviceReport capsDeviceReport);
 
     /**
-     * Batch delete by ids.
+     * 批量删除安全帽设备实时数据
+     *
+     * @param ids 需要删除的安全帽设备实时数据主键集合
+     * @return 结果
      */
-    int deleteCapsDeviceReportByIds(Integer[] ids);
+    public int deleteCapsDeviceReportByIds(Integer[] ids);
 
     /**
-     * Delete by id.
+     * 删除安全帽设备实时数据信息
+     *
+     * @param id 安全帽设备实时数据主键
+     * @return 结果
      */
-    int deleteCapsDeviceReportById(Integer id);
-
+    public int deleteCapsDeviceReportById(Integer id);
     /**
-     * Parse report payload from websocket.
+     * 解析安全帽心跳数据包
+     * @param data    数据包
      */
     String parseCapsDeviceReport(JSONObject data);
-
     /**
-     * Save gas monitor push payload.
-     */
-    int saveGasMonitorReport(CapsGasMonitorReportDto gasReportDto);
-
-    /**
-     * Query latest report by device id.
+     * 根据设备id查询最新的一条实时数据
      */
     CapsDeviceReport selectCapsDeviceReportByDeviceId(String deviceId);
+
+    /**
+     * 接收气体监测仪上报并转换为前端当前使用的气体字段
+     */
+    int saveGasReport(CapsGasReportRequestDto gasReportRequest);
 }
