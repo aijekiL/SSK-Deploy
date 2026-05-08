@@ -12,6 +12,7 @@ import com.ruoyi.project.system.service.IAudibleVoiceAlarmService;
 import com.ruoyi.project.system.service.ICapsDeviceReportService;
 import com.ruoyi.project.system.service.ICapsDeviceService;
 import com.ruoyi.project.system.websocket.WebSocketServer;
+import com.ruoyi.project.system.websocket.CapsNetworkQualityTracker;
 import com.ruoyi.project.system.websocket.WebSocketUsers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,7 +54,7 @@ public class CapsConfigApi
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("account_id", "11444");
-        jsonObject.put("config", getConfig().toJSONString());
+        jsonObject.put("config", getConfig(request).toJSONString());
         jsonObject.put("notice_switch", getNoticeSwitch().toJSONString());
         jsonObject.put("ai_broadcast", "[]");
         jsonObject.put("upgrade", getUpGradeJSON());
@@ -114,17 +115,24 @@ public class CapsConfigApi
                         String elapsed = formatElapsedSeconds(pushCmdState == null ? 0L : now - pushCmdState.getCommandTimeMs());
                         log.info("stream publish detected: deviceId={}, elapsed={}s, rtmp={}",
                                 deviceId, elapsed, rtmpUrl);
-                        WebSocketUsers.clearPushCmdState(deviceId);
+                        WebSocketUsers.markPushStreamActive(deviceId);
                     } else if (pushCmdState != null) {
-                        long elapsedMs = now - pushCmdState.getCommandTimeMs();
-                        String elapsed = formatElapsedSeconds(elapsedMs);
-                        if (elapsedMs >= WebSocketUsers.getPushDetectTimeoutMs()) {
-                            log.warn("stream not detected after push command: deviceId={}, elapsed={}s, expect_rtmp={}",
-                                    deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
+                        if (pushCmdState.isStreamActive()) {
+                            log.warn("stream lost after publish: deviceId={}, last_rtmp={}",
+                                    deviceId, pushCmdState.getSourceRtmpUrl());
+                            CapsNetworkQualityTracker.recordStreamInterrupted(deviceId, "stream_lost_after_publish");
                             WebSocketUsers.clearPushCmdState(deviceId);
                         } else {
-                            log.info("waiting stream publish: deviceId={}, elapsed={}s, expect_rtmp={}",
-                                    deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
+                            long elapsedMs = now - pushCmdState.getCommandTimeMs();
+                            String elapsed = formatElapsedSeconds(elapsedMs);
+                            if (elapsedMs >= WebSocketUsers.getPushDetectTimeoutMs()) {
+                                log.warn("stream not detected after push command: deviceId={}, elapsed={}s, expect_rtmp={}",
+                                        deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
+                                WebSocketUsers.clearPushCmdState(deviceId);
+                            } else {
+                                log.info("waiting stream publish: deviceId={}, elapsed={}s, expect_rtmp={}",
+                                        deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
+                            }
                         }
                     } else {
                         log.info("stream check without push state: deviceId={}, userId={}, expect_rtmp={}",
@@ -256,11 +264,14 @@ public class CapsConfigApi
         return AjaxResultNew.success("closeDialog success");
     }
 
-    private JSONObject getConfig()
+    private JSONObject getConfig(HttpServletRequest request)
     {
         JSONObject config = new JSONObject();
-        config.put("api_url", CapsConstants.getIpAddress() + "/caps/api");
-        config.put("ws_url", CapsConstants.getSocketAddress() + "/websocket/message");
+        String apiUrl = CapsConstants.getIpAddress(request) + "/caps/api";
+        String wsUrl = CapsConstants.getSocketAddress(request) + "/websocket/message";
+        log.info("resolved device config endpoint: apiUrl={}, wsUrl={}", apiUrl, wsUrl);
+        config.put("api_url", apiUrl);
+        config.put("ws_url", wsUrl);
         config.put("sos_tmpt", "70");
         config.put("power_off_tmpt", "95");
         config.put("off_hat_time", "10");

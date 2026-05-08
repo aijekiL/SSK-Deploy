@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.project.system.domain.CapsDevice;
 import com.ruoyi.project.system.domain.dto.CapsDeviceUpdateDto;
+import com.ruoyi.project.system.service.ICapsDeviceReportService;
 import com.ruoyi.project.system.service.ICapsDeviceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +33,9 @@ public class CapsDeviceController extends BaseController
     @Autowired
     private ICapsDeviceService capsDeviceService;
 
+    @Autowired
+    private ICapsDeviceReportService capsDeviceReportService;
+
     /**
      * 查询安全帽设备信息列表
      */
@@ -42,6 +46,13 @@ public class CapsDeviceController extends BaseController
         startPage();
         List<CapsDevice> list = capsDeviceService.selectCapsDeviceList(capsDevice);
         return getDataTable(list);
+    }
+
+    @GetMapping("/watchLatest")
+    public AjaxResult watchLatest(@RequestParam("personId") String personId,
+                                  @RequestParam(value = "excludeDeviceId", required = false) String excludeDeviceId)
+    {
+        return success(capsDeviceReportService.selectWatchLatestByPersonId(personId, excludeDeviceId));
     }
 
     /**

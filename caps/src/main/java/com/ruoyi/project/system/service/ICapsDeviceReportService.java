@@ -75,4 +75,8 @@ public interface ICapsDeviceReportService
      * 接收气体监测仪上报并转换为前端当前使用的气体字段
      */
     int saveGasReport(CapsGasReportRequestDto gasReportRequest);
+
+    int saveWatchReport(String deviceId, JSONObject watchMetrics, String rawFrame);
+
+    JSONObject selectWatchLatestByPersonId(String personId, String excludeDeviceId);
 }

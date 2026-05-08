@@ -17,8 +17,8 @@ window.config.alarmUrl = `${wsProtocol}//${baseHost}`;
 window.config.projectInfoUrl = `${wsProtocol}//${projectHost}`;
 window.config.projectUrl = `${httpProtocol}//${projectHost}`;
 window.config.baseUrl = `${httpProtocol}//${baseHost}`;
-window.config.playerUrl = isLocalhost
-  ? `${httpProtocol}//${localPlayerHost}`
-  : `https://${securePlayerHost}`;
+window.config.playerUrl = window.location.protocol === 'https:'
+  ? `https://${securePlayerHost}`
+  : `${httpProtocol}//${localPlayerHost}`;
 
 window.config.hiddenButton = false;

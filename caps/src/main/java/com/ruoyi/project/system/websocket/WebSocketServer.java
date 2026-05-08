@@ -79,21 +79,21 @@ public class WebSocketServer
         boolean semaphoreFlag = SemaphoreUtils.tryAcquire(socketSemaphore);
         if (!semaphoreFlag)
         {
-            LOGGER.error("websocket rejected: online count exceeds limit {}", socketMaxOnlineCount);
-            WebSocketUsers.sendMessageToUserByText(session, "current online count exceeds limit: " + socketMaxOnlineCount);
+            LOGGER.error("拒绝websocket连接: 在线数量超过限制 {}", socketMaxOnlineCount);
+            WebSocketUsers.sendMessageToUserByText(session, "当前在线数量超过限制: " + socketMaxOnlineCount);
             session.close();
             return;
         }
 
         WebSocketUsers.put(session.getId(), session);
-        LOGGER.info("websocket connected: sessionId={}, currentUsers={}", session.getId(), WebSocketUsers.getUsers().size());
+        LOGGER.info("websocket已连接: sessionId={}, currentUsers={}", session.getId(), WebSocketUsers.getUsers().size());
     }
 
     @OnClose
     public void onClose(Session session)
     {
-        LOGGER.info("websocket closing: sessionId={}", session.getId());
-        cleanupSession(session, "websocket closed");
+        LOGGER.info("websocket关闭: sessionId={}", session.getId());
+        cleanupSession(session, "websocket关闭");
         boolean removeFlag = WebSocketUsers.remove(session.getId());
         if (!removeFlag)
         {
@@ -109,10 +109,10 @@ public class WebSocketServer
             session.close();
         }
         String sessionId = session == null ? "null" : session.getId();
-        LOGGER.error("websocket error: sessionId={}", sessionId, exception);
+        LOGGER.error("websocket异常: sessionId={}", sessionId, exception);
         if (session != null)
         {
-            cleanupSession(session, "websocket error");
+            cleanupSession(session, "websocket异常");
             WebSocketUsers.remove(sessionId);
         }
         SemaphoreUtils.release(socketSemaphore);
@@ -127,7 +127,7 @@ public class WebSocketServer
     @OnMessage
     public void onMessage(String message, Session session)
     {
-        LOGGER.info("websocket message: sessionId={}, payload={}", session.getId(), message);
+        LOGGER.info("收到websocket消息: sessionId={}, payload={}", session.getId(), message);
         JSONObject jsonObject = JSONObject.parseObject(message);
         String act = jsonObject.getString("act");
         String event = "";
@@ -136,21 +136,25 @@ public class WebSocketServer
 
         if (CapsConstants.SOCKET_EVENT_LOGIN.equals(act)) {
             deviceId = jsonObject.getString("device_id");
-            sessionMap.remove(deviceId);
-            LOGGER.info("device login received: deviceId={}, sessionId={}", deviceId, session.getId());
+            Session previousSession = sessionMap.remove(deviceId);
+            LOGGER.info("收到设备登录: deviceId={}, sessionId={}, previousSessionId={}, previousSessionOpen={}",
+                    deviceId, session.getId(), sessionIdOf(previousSession), previousSession != null && previousSession.isOpen());
             try {
                 if (deviceId != null && !deviceId.isEmpty()) {
                     sessionMap.put(deviceId, session);
+                    LOGGER.info("设备会话绑定: source={}, deviceId={}, sessionId={}, sessionKeys={}",
+                            "登录",
+                            deviceId, session.getId(), sessionMap.keySet());
                 }
                 JSONObject loginData = capsDeviceService.buildLoginResponse(deviceId);
                 result.put("msg", "login success");
                 result.put("status", true);
                 result.put("data", loginData);
                 event = CapsConstants.SOCKET_EVENT_LOGIN;
-                LOGGER.info("device login registered: deviceId={}, sessionId={}, sessionKeys={}",
+                LOGGER.info("设备登录登记完成: deviceId={}, sessionId={}, sessionKeys={}",
                         deviceId, session.getId(), sessionMap.keySet());
             } catch (Exception e) {
-                LOGGER.error("device login failed: deviceId={}, sessionId={}", deviceId, session.getId(), e);
+                LOGGER.error("设备登录处理失败: deviceId={}, sessionId={}", deviceId, session.getId(), e);
                 result.put("msg", "login failed:" + e.getMessage());
                 result.put("status", false);
                 result.put("data", "");
@@ -168,13 +172,29 @@ public class WebSocketServer
                 result.put("bt_beacon", "");
                 result.put("report_time", 0);
                 event = CapsConstants.SOCKET_EVENT_REPORT;
-                if (deviceId != null && !sessionMap.containsKey(deviceId)) {
-                    sessionMap.put(deviceId, session);
+                if (deviceId != null && !deviceId.isEmpty()) {
+                    Session mappedSession = sessionMap.get(deviceId);
+                    if (mappedSession == null) {
+                        sessionMap.put(deviceId, session);
+                        LOGGER.info("设备会话绑定: source={}, deviceId={}, reportSessionId={}, sessionKeys={}",
+                                "上报首次发现", deviceId, session.getId(), sessionMap.keySet());
+                    } else if (!mappedSession.getId().equals(session.getId())) {
+                        LOGGER.warn("设备会话不一致: deviceId={}, reportSessionId={}, mappedSessionId={}, mappedSessionOpen={}, sessionKeys={}",
+                                deviceId, session.getId(), mappedSession.getId(), mappedSession.isOpen(), sessionMap.keySet());
+                    }
                 }
-                LOGGER.info("device report registered: deviceId={}, userId={}, sessionId={}, sessionKeys={}",
-                        deviceId, jsonObject.getString("user_id"), session.getId(), sessionMap.keySet());
+                LOGGER.info("设备上报登记完成: deviceId={}, userId={}, sessionId={}, onlineType={}, inUse={}, jkVideoSize={}, notuploadedVideoCount={}, sessionKeys={}",
+                        deviceId,
+                        jsonObject.getString("user_id"),
+                        session.getId(),
+                        jsonObject.getString("online_type"),
+                        jsonObject.getString("in_use"),
+                        jsonObject.getString("jkVideoSize"),
+                        jsonObject.getString("notuploaded_video_count"),
+                        sessionMap.keySet());
+                CapsNetworkQualityTracker.recordReport(deviceId, session.getId(), jsonObject, WebSocketUsers.getPushCmdState(deviceId));
             } catch (Exception e) {
-                LOGGER.error("device report failed: sessionId={}, payload={}", session.getId(), message, e);
+                LOGGER.error("设备上报处理失败: sessionId={}, payload={}", session.getId(), message, e);
                 result.put("cmd", "ca_report_location");
                 result.put("msg", "report failed:" + e.getMessage());
                 result.put("status", false);
@@ -194,7 +214,7 @@ public class WebSocketServer
             capsDeviceAlarm.setCreateTime(new Date());
             capsDeviceAlarmService.insertCapsDeviceAlarm(capsDeviceAlarm);
             String jsonString = JSONObject.toJSONString(capsDeviceAlarm);
-            LOGGER.info("device sos received: deviceId={}, type={}, sessionId={}", deviceId, type, session.getId());
+            LOGGER.info("收到设备SOS: deviceId={}, type={}, sessionId={}", deviceId, type, session.getId());
             String personId = null;
             List<String> alarmDeviceCodes = new ArrayList<>();
             CapsDevice capsDevice = capsDeviceService.selectCapsDeviceByDeviceId(deviceId);
@@ -231,24 +251,24 @@ public class WebSocketServer
             }
         } else if ("web_one_register".equals(act)) {
             String personId = jsonObject.getString("person_id");
-            LOGGER.info("web client register: personId={}, sessionId={}", personId, session.getId());
+            LOGGER.info("网页端注册: personId={}, sessionId={}", personId, session.getId());
             WEB_ONE_SESSION_IDS.add(session.getId() + "-" + personId);
             isRunning.set(true);
         } else if ("web_one_stop".equals(act)) {
             String personId = jsonObject.getString("person_id");
-            LOGGER.info("web client stop: personId={}, sessionId={}", personId, session.getId());
+            LOGGER.info("网页端停止监听: personId={}, sessionId={}", personId, session.getId());
             WEB_ONE_SESSION_IDS.removeIf(s -> s.contains(personId));
         } else if ("get_webrtc_video_list".equals(act)) {
             Set<String> dialogMap = CapsConfigApi.dialogMap;
             String roomId = jsonObject.getString("room_id");
-            LOGGER.info("get_webrtc_video_list request: roomId={}, sessionId={}, dialogMap={}",
+            LOGGER.info("收到获取WebRTC视频列表请求: roomId={}, sessionId={}, dialogMap={}",
                     roomId, session.getId(), dialogMap);
             String[] split = roomId.split("-");
             deviceId = split[0];
             String code = split[1];
             String stream = split[2];
             if (getActiveSession(deviceId) == null) {
-                LOGGER.warn("get_webrtc_video_list rejected: deviceId={} not found in sessionMap. sessionKeys={}",
+                LOGGER.warn("获取WebRTC视频列表被拒绝: deviceId={} 未在sessionMap中找到. sessionKeys={}",
                         deviceId, sessionMap.keySet());
                 result.put("cmd", "server_push_stop_webrtc_call");
                 result.put("status", true);
@@ -298,14 +318,14 @@ public class WebSocketServer
                 data.put("members", jsonArray);
                 data.put("type", "1");
                 result.put("data", data);
-                LOGGER.info("get_webrtc_video_list response: roomId={}, payload={}", roomId, result.toJSONString());
+                LOGGER.info("返回WebRTC视频列表: roomId={}, payload={}", roomId, result.toJSONString());
             } else {
-                LOGGER.warn("get_webrtc_video_list skipped: roomId={} not found in dialogMap={}", roomId, dialogMap);
+                LOGGER.warn("跳过获取WebRTC视频列表: roomId={} 未在dialogMap中找到, dialogMap={}", roomId, dialogMap);
             }
         } else if ("ping".equals(jsonObject.getString("type"))) {
-            LOGGER.debug("websocket ping: sessionId={}", session.getId());
+            LOGGER.debug("收到websocket心跳: sessionId={}", session.getId());
         } else {
-            LOGGER.info("websocket message ignored: sessionId={}, act={}, payload={}",
+            LOGGER.info("忽略未识别的websocket消息: sessionId={}, act={}, payload={}",
                     session.getId(), act, message);
         }
 
@@ -336,10 +356,11 @@ public class WebSocketServer
 
         if (session.isOpen())
         {
+            LOGGER.debug("已找到可用设备会话: deviceId={}, sessionId={}", deviceId, session.getId());
             return session;
         }
 
-        cleanupDeviceSession(deviceId, "stale websocket session");
+        cleanupDeviceSession(deviceId, "websocket会话已失效");
         return null;
     }
 
@@ -374,9 +395,15 @@ public class WebSocketServer
 
         Session removedSession = sessionMap.remove(deviceId);
         boolean dialogRemoved = CapsConfigApi.dialogMap.removeIf(roomId -> roomId.startsWith(deviceId + "-"));
+        WebSocketUsers.PushCmdState pushCmdState = WebSocketUsers.getPushCmdState(deviceId);
+        if (pushCmdState != null && pushCmdState.isStreamActive())
+        {
+            CapsNetworkQualityTracker.recordStreamInterrupted(deviceId, "websocket_session_cleanup");
+        }
+        CapsNetworkQualityTracker.recordWebsocketDisconnect(deviceId, reason);
         WebSocketUsers.clearPushCmdState(deviceId);
         LOGGER.info(
-                "device session cleaned: deviceId={}, reason={}, sessionId={}, dialogRemoved={}, sessionKeys={}, dialogMap={}",
+                "设备会话已清理: deviceId={}, reason={}, sessionId={}, dialogRemoved={}, sessionKeys={}, dialogMap={}",
                 deviceId,
                 reason,
                 removedSession == null ? "null" : removedSession.getId(),
@@ -384,5 +411,10 @@ public class WebSocketServer
                 sessionMap.keySet(),
                 CapsConfigApi.dialogMap
         );
+    }
+
+    private static String sessionIdOf(Session session)
+    {
+        return session == null ? "null" : session.getId();
     }
 }

@@ -22,6 +22,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
 {
+    private static final String WATCH_METRIC_HEART_RATE = "heartRate";
+    private static final String WATCH_METRIC_SPO2 = "spo2";
+    private static final String WATCH_METRIC_SYSTOLIC = "systolic";
+    private static final String WATCH_METRIC_DIASTOLIC = "diastolic";
+
     @Autowired
     private CapsDeviceReportMapper capsDeviceReportMapper;
 
@@ -210,6 +215,110 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         return updatedCount;
     }
 
+    @Override
+    public int saveWatchReport(String deviceId, JSONObject watchMetrics, String rawFrame)
+    {
+        if (StringUtils.isEmpty(deviceId) || watchMetrics == null || watchMetrics.isEmpty()) {
+            return 0;
+        }
+
+        CapsDevice watchDevice = capsDeviceMapper.selectCapsDeviceByDeviceId(deviceId);
+        if (watchDevice == null || StringUtils.isEmpty(watchDevice.getPersonId())) {
+            return 0;
+        }
+
+        JSONObject mergedMetrics = new JSONObject();
+        CapsDeviceReport helmetReport = selectLatestPersonReport(watchDevice.getPersonId(), deviceId);
+        if (helmetReport == null || helmetReport.getId() == null) {
+            return 0;
+        }
+
+        if (StringUtils.isNotEmpty(helmetReport.getRemark())) {
+            JSONObject latestMetrics = parseJsonObject(helmetReport.getRemark());
+            if (latestMetrics != null && !latestMetrics.isEmpty()) {
+                mergedMetrics.putAll(latestMetrics);
+            }
+        }
+        mergedMetrics.putAll(watchMetrics);
+        mergedMetrics.put("protocol", "watch_tcp");
+        mergedMetrics.put("watchDeviceId", deviceId);
+        mergedMetrics.put("watchUpdateTime", DateUtils.getTime());
+        if (StringUtils.isNotEmpty(rawFrame)) {
+            mergedMetrics.put("rawFrame", rawFrame);
+        }
+
+        CapsDeviceReport updateReport = new CapsDeviceReport();
+        updateReport.setId(helmetReport.getId());
+        updateReport.setRemark(mergedMetrics.toJSONString());
+        return capsDeviceReportMapper.updateCapsDeviceReport(updateReport);
+    }
+
+    @Override
+    public JSONObject selectWatchLatestByPersonId(String personId, String excludeDeviceId)
+    {
+        if (StringUtils.isEmpty(personId)) {
+            return null;
+        }
+
+        CapsDevice query = new CapsDevice();
+        query.setPersonId(personId);
+        List<CapsDevice> devices = capsDeviceMapper.selectCapsDeviceList(query);
+        if (devices == null || devices.isEmpty()) {
+            return null;
+        }
+
+        CapsDeviceReport latestWatchReport = null;
+        String latestDeviceId = null;
+        for (CapsDevice device : devices) {
+            if (device == null || StringUtils.isEmpty(device.getDeviceId())) {
+                continue;
+            }
+            if (StringUtils.isNotEmpty(excludeDeviceId) && excludeDeviceId.equals(device.getDeviceId())) {
+                continue;
+            }
+
+            CapsDeviceReport report = capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(device.getDeviceId());
+            if (report == null || StringUtils.isEmpty(report.getRemark())) {
+                continue;
+            }
+
+            JSONObject remarkJson = parseJsonObject(report.getRemark());
+            if (remarkJson == null || remarkJson.isEmpty() || !hasWatchMetric(remarkJson)) {
+                continue;
+            }
+
+            if (latestWatchReport == null || isReportNewer(report, latestWatchReport)) {
+                latestWatchReport = report;
+                latestDeviceId = device.getDeviceId();
+            }
+        }
+
+        if (latestWatchReport == null || StringUtils.isEmpty(latestWatchReport.getRemark())) {
+            return null;
+        }
+
+        JSONObject watchMetrics = parseJsonObject(latestWatchReport.getRemark());
+        if (watchMetrics == null || watchMetrics.isEmpty()) {
+            return null;
+        }
+
+        JSONObject result = new JSONObject();
+        result.put("deviceId", latestDeviceId);
+        result.put(WATCH_METRIC_HEART_RATE, watchMetrics.getString(WATCH_METRIC_HEART_RATE));
+        result.put(WATCH_METRIC_SPO2, watchMetrics.getString(WATCH_METRIC_SPO2));
+        result.put(WATCH_METRIC_SYSTOLIC, watchMetrics.getString(WATCH_METRIC_SYSTOLIC));
+        result.put(WATCH_METRIC_DIASTOLIC, watchMetrics.getString(WATCH_METRIC_DIASTOLIC));
+        String systolic = watchMetrics.getString(WATCH_METRIC_SYSTOLIC);
+        String diastolic = watchMetrics.getString(WATCH_METRIC_DIASTOLIC);
+        result.put("bloodPressure",
+                StringUtils.isNotEmpty(systolic) && StringUtils.isNotEmpty(diastolic) ? systolic + "/" + diastolic : null);
+        Date reportTime = getReportTime(latestWatchReport);
+        if (reportTime != null) {
+            result.put("updateTime", reportTime);
+        }
+        return result;
+    }
+
     private CapsDeviceReport buildReportFromLatest(String deviceId, String userId)
     {
         CapsDeviceReport capsDeviceReport = new CapsDeviceReport();
@@ -229,9 +338,83 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         return capsDeviceReport;
     }
 
+    private CapsDeviceReport selectLatestPersonReport(String personId, String excludeDeviceId)
+    {
+        if (StringUtils.isEmpty(personId)) {
+            return null;
+        }
+
+        CapsDevice query = new CapsDevice();
+        query.setPersonId(personId);
+        List<CapsDevice> devices = capsDeviceMapper.selectCapsDeviceList(query);
+        if (devices == null || devices.isEmpty()) {
+            return null;
+        }
+
+        CapsDeviceReport latestReport = null;
+        for (CapsDevice device : devices) {
+            if (device == null || StringUtils.isEmpty(device.getDeviceId())) {
+                continue;
+            }
+            if (StringUtils.isNotEmpty(excludeDeviceId) && excludeDeviceId.equals(device.getDeviceId())) {
+                continue;
+            }
+
+            CapsDeviceReport report = capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(device.getDeviceId());
+            if (report == null || report.getId() == null) {
+                continue;
+            }
+            if (latestReport == null || isReportNewer(report, latestReport)) {
+                latestReport = report;
+            }
+        }
+        return latestReport;
+    }
+
     private String toPlainString(BigDecimal value)
     {
         return value == null ? null : value.toPlainString();
+    }
+
+    private JSONObject parseJsonObject(String text)
+    {
+        if (StringUtils.isEmpty(text)) {
+            return null;
+        }
+        try {
+            return JSONObject.parseObject(text);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    private boolean hasWatchMetric(JSONObject metrics)
+    {
+        return StringUtils.isNotEmpty(metrics.getString(WATCH_METRIC_HEART_RATE))
+                || StringUtils.isNotEmpty(metrics.getString(WATCH_METRIC_SPO2))
+                || StringUtils.isNotEmpty(metrics.getString(WATCH_METRIC_SYSTOLIC))
+                || StringUtils.isNotEmpty(metrics.getString(WATCH_METRIC_DIASTOLIC));
+    }
+
+    private Date getReportTime(CapsDeviceReport report)
+    {
+        if (report == null) {
+            return null;
+        }
+        return report.getUpdateTime() != null ? report.getUpdateTime() : report.getCreateTime();
+    }
+
+    private boolean isReportNewer(CapsDeviceReport candidate, CapsDeviceReport current)
+    {
+        Date candidateTime = getReportTime(candidate);
+        Date currentTime = getReportTime(current);
+        if (candidateTime == null) {
+            return false;
+        }
+        if (currentTime == null) {
+            return true;
+        }
+        return candidateTime.after(currentTime);
     }
 
     private boolean applyGasValues(CapsDeviceReport targetReport, List<CapsGasReportItemDto> items)

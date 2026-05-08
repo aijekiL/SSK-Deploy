@@ -1,6 +1,7 @@
 package com.ruoyi.common.constant;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
@@ -52,6 +53,16 @@ public class CapsConstants
         return "ws://" + rtmpIp + ":5010";
     }
 
+    public static String getIpAddress(HttpServletRequest request)
+    {
+        return buildBaseAddress(request, false);
+    }
+
+    public static String getSocketAddress(HttpServletRequest request)
+    {
+        return buildBaseAddress(request, true);
+    }
+
     public static String getWebrtcAddress()
     {
         return "https://" + rtmpIp + ":8949";
@@ -60,5 +71,69 @@ public class CapsConstants
     public static String getRtmpAddress()
     {
         return "rtmp://" + rtmpIp + ":1935";
+    }
+
+    private static String buildBaseAddress(HttpServletRequest request, boolean websocket)
+    {
+        if (request == null)
+        {
+            return websocket ? getSocketAddress() : getIpAddress();
+        }
+
+        String scheme = firstHeaderValue(request, "X-Forwarded-Proto");
+        if (scheme == null || scheme.isEmpty())
+        {
+            scheme = request.getScheme();
+        }
+        if (websocket)
+        {
+            scheme = "https".equalsIgnoreCase(scheme) ? "wss" : "ws";
+        }
+
+        String host = firstHeaderValue(request, "X-Forwarded-Host");
+        if (host == null || host.isEmpty())
+        {
+            host = request.getHeader("Host");
+        }
+        if (host == null || host.isEmpty())
+        {
+            host = request.getServerName();
+            int port = request.getServerPort();
+            if (shouldAppendPort(scheme, port))
+            {
+                host = host + ":" + port;
+            }
+        }
+
+        return scheme + "://" + host;
+    }
+
+    private static String firstHeaderValue(HttpServletRequest request, String headerName)
+    {
+        String value = request.getHeader(headerName);
+        if (value == null || value.trim().isEmpty())
+        {
+            return null;
+        }
+
+        int commaIndex = value.indexOf(',');
+        return (commaIndex >= 0 ? value.substring(0, commaIndex) : value).trim();
+    }
+
+    private static boolean shouldAppendPort(String scheme, int port)
+    {
+        if (port <= 0)
+        {
+            return false;
+        }
+        if (("http".equalsIgnoreCase(scheme) || "ws".equalsIgnoreCase(scheme)) && port == 80)
+        {
+            return false;
+        }
+        if (("https".equalsIgnoreCase(scheme) || "wss".equalsIgnoreCase(scheme)) && port == 443)
+        {
+            return false;
+        }
+        return true;
     }
 }

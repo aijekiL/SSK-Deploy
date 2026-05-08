@@ -112,11 +112,13 @@ services:
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
       RTMP_URL: ${RTMP_URL}
+      WATCH_TCP_PORT: ${WATCH_TCP_PORT}
     volumes:
       - ./caps/ruoyi.jar:/app/ruoyi.jar:ro
       - ./caps/app/logs:/app/logs
     ports:
       - "${CAPS_PORT}:5010"
+      - "${WATCH_TCP_PORT}:5011"
     networks:
       - ssk-net
 
