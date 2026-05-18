@@ -116,24 +116,26 @@ public class CapsConfigApi
                         log.info("stream publish detected: deviceId={}, elapsed={}s, rtmp={}",
                                 deviceId, elapsed, rtmpUrl);
                         WebSocketUsers.markPushStreamActive(deviceId);
+                        WebSocketUsers.clearPushCmdState(deviceId); // 清理状态以确保下次不会重复发送命令
                     } else if (pushCmdState != null) {
                         if (pushCmdState.isStreamActive()) {
                             log.warn("stream lost after publish: deviceId={}, last_rtmp={}",
                                     deviceId, pushCmdState.getSourceRtmpUrl());
                             CapsNetworkQualityTracker.recordStreamInterrupted(deviceId, "stream_lost_after_publish");
-                            WebSocketUsers.clearPushCmdState(deviceId);
                         } else {
                             long elapsedMs = now - pushCmdState.getCommandTimeMs();
                             String elapsed = formatElapsedSeconds(elapsedMs);
                             if (elapsedMs >= WebSocketUsers.getPushDetectTimeoutMs()) {
                                 log.warn("stream not detected after push command: deviceId={}, elapsed={}s, expect_rtmp={}",
                                         deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
-                                WebSocketUsers.clearPushCmdState(deviceId);
                             } else {
                                 log.info("waiting stream publish: deviceId={}, elapsed={}s, expect_rtmp={}",
                                         deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
                             }
                         }
+                        // 当ZLM检测不到流时，清理该设备的推流命令状态
+                        // 这样下一次设备上报时，shouldSendPushCommand() 会重新放行并下发 server_push_open_rtsp
+                        WebSocketUsers.clearPushCmdState(deviceId);
                     } else {
                         log.info("stream check without push state: deviceId={}, userId={}, expect_rtmp={}",
                                 deviceId, user_id, WebSocketUsers.buildPushUrl(deviceId));

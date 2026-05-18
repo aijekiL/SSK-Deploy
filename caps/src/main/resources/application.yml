@@ -144,5 +144,8 @@ gen:
 rtmp:
   url: ${RTMP_URL:192.168.144.213}
 
+webrtc:
+  url: ${WEBRTC_URL:}
+
 api:
   secret: 'X5k2B9n6P8m7Z1q4'

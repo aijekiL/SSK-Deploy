@@ -9,7 +9,6 @@ import javax.websocket.Session;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.constant.CapsConstants;
-import com.ruoyi.common.utils.MediaUtil;
 import com.ruoyi.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -190,42 +189,10 @@ public class WebSocketUsers
             return true;
         }
 
-        if (state.isStreamActive())
-        {
-            LOGGER.debug("跳过重复推流命令: deviceId={}, reason={}, pushUrl={}",
-                    deviceId, "流已激活", state.getPushUrl());
-            return false;
-        }
-
         long elapsedMs = System.currentTimeMillis() - state.getCommandTimeMs();
-        if (elapsedMs < PUSH_DETECT_TIMEOUT_MS)
-        {
-            LOGGER.info("跳过重复推流命令: deviceId={}, reason={}, elapsed={}ms, pushUrl={}",
-                    deviceId, "仍在等待设备推流", elapsedMs, state.getPushUrl());
-            return false;
-        }
-
-        try
-        {
-            MediaUtil.StreamMetrics metrics = MediaUtil.getStreamMetrics(deviceId);
-            if (metrics.isStreamPresent())
-            {
-                markPushStreamActive(deviceId);
-                LOGGER.info("跳过重复推流命令: deviceId={}, reason={}, pushUrl={}, {}",
-                        deviceId, "ZLM已检测到流", state.getPushUrl(), MediaUtil.describeStreamMetrics(metrics));
-                return false;
-            }
-            LOGGER.warn("重发前探测流失败: deviceId={}, pushUrl={}, {}",
-                    deviceId, state.getPushUrl(), MediaUtil.describeStreamMetrics(metrics));
-        }
-        catch (Exception e)
-        {
-            LOGGER.warn("重发前探测ZLM流列表失败: deviceId={}, err={}", deviceId, e.getMessage());
-        }
-
-        LOGGER.warn("推流命令等待超时，准备重发: deviceId={}, elapsed={}ms, pushUrl={}",
-                deviceId, elapsedMs, state.getPushUrl());
-        return true;
+        LOGGER.info("skip duplicate server_push_open_rtsp: deviceId={}, elapsed={}ms, streamActive={}, pushUrl={}",
+                deviceId, elapsedMs, state.isStreamActive(), state.getPushUrl());
+        return false;
     }
 
     public static void sendMessageToUsersByText(String message)
@@ -272,10 +239,10 @@ public class WebSocketUsers
                         JSONObject result = new JSONObject();
                         result.put("cmd", "server_push_open_rtsp");
                         result.put("push_url", pushUrl);
-                        recordPushCmdState(deviceId, pushUrl, pushUrl);
                         LOGGER.info("下发推流命令: deviceId={}, sessionId={}, wsOpen={}, payload={}",
                                 deviceId, session.getId(), session.isOpen(), result);
-                        sendMessageToUserByText(session, result.toString());
+                        session.getBasicRemote().sendText(result.toString());
+                        recordPushCmdState(deviceId, pushUrl, pushUrl);
                     }
                 }
                 else

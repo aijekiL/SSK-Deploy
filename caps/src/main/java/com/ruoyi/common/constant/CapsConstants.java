@@ -25,9 +25,13 @@ public class CapsConstants
     public static final String SOCKET_EVENT_SIP_SOS = "ca_sip_sos";
 
     private static String rtmpIp = DEFAULT_RTMP_IP;
+    private static String webrtcAddress;
 
     @Value("${rtmp.url:" + DEFAULT_RTMP_IP + "}")
     private String configuredRtmpIp;
+
+    @Value("${webrtc.url:}")
+    private String configuredWebrtcAddress;
 
     @PostConstruct
     public void init()
@@ -35,6 +39,10 @@ public class CapsConstants
         if (configuredRtmpIp != null && !configuredRtmpIp.trim().isEmpty())
         {
             rtmpIp = configuredRtmpIp.trim();
+        }
+        if (configuredWebrtcAddress != null && !configuredWebrtcAddress.trim().isEmpty())
+        {
+            webrtcAddress = trimTrailingSlash(configuredWebrtcAddress.trim());
         }
     }
 
@@ -65,7 +73,7 @@ public class CapsConstants
 
     public static String getWebrtcAddress()
     {
-        return "https://" + rtmpIp + ":8949";
+        return webrtcAddress == null || webrtcAddress.isEmpty() ? "https://" + rtmpIp + ":8949" : webrtcAddress;
     }
 
     public static String getRtmpAddress()
@@ -135,5 +143,14 @@ public class CapsConstants
             return false;
         }
         return true;
+    }
+
+    private static String trimTrailingSlash(String value)
+    {
+        while (value.endsWith("/"))
+        {
+            value = value.substring(0, value.length() - 1);
+        }
+        return value;
     }
 }

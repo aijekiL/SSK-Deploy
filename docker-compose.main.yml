@@ -112,6 +112,7 @@ services:
       SPRING_REDIS_PORT: 6379
       SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
       RTMP_URL: ${RTMP_URL}
+      WEBRTC_URL: ${WEBRTC_URL}
       WATCH_TCP_PORT: ${WATCH_TCP_PORT}
     volumes:
       - ./caps/ruoyi.jar:/app/ruoyi.jar:ro
@@ -171,8 +172,10 @@ services:
     volumes:
       - ./publish/wwwroot:/usr/share/nginx/html:ro
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certs:/etc/nginx/certs:ro
     ports:
       - "${MANAGE_FRONTEND_PORT}:80"
+      - "${MANAGE_FRONTEND_HTTPS_PORT}:443"
     networks:
       - ssk-net
 

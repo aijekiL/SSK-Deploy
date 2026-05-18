@@ -141,6 +141,7 @@ public class WebSocketServer
                     deviceId, session.getId(), sessionIdOf(previousSession), previousSession != null && previousSession.isOpen());
             try {
                 if (deviceId != null && !deviceId.isEmpty()) {
+                    WebSocketUsers.clearPushCmdState(deviceId);
                     sessionMap.put(deviceId, session);
                     LOGGER.info("设备会话绑定: source={}, deviceId={}, sessionId={}, sessionKeys={}",
                             "登录",
