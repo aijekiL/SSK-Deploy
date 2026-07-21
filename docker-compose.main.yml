@@ -113,7 +113,6 @@ services:
       SPRING_REDIS_PASSWORD: ${REDIS_PASSWORD}
       RTMP_URL: ${RTMP_URL}
       WEBRTC_URL: ${WEBRTC_URL}
-      WATCH_TCP_PORT: ${WATCH_TCP_PORT}
       CAPS_STREAM_STARTING_GRACE_MS: ${CAPS_STREAM_STARTING_GRACE_MS:-40000}
       CAPS_STREAM_LOST_GRACE_MS: ${CAPS_STREAM_LOST_GRACE_MS:-40000}
       CAPS_STREAM_OPEN_RTSP_MIN_INTERVAL_MS: ${CAPS_STREAM_OPEN_RTSP_MIN_INTERVAL_MS:-60000}
@@ -125,7 +124,6 @@ services:
       - ./caps/app/logs:/app/logs
     ports:
       - "${CAPS_PORT}:5010"
-      - "${WATCH_TCP_PORT}:5011"
     networks:
       - ssk-net
 
@@ -155,10 +153,13 @@ services:
       CompreFace__RecognitionPath: ${COMPREFACE_RECOGNITION_PATH}
       CompreFace__ApiKey: ${SSK_COMPREFACE_API_KEY}
       CompreFace__GroupApiKeys__zny: ${SSK_COMPREFACE_API_KEY}
+      WATCH_TCP_PORT: 5011
+      WatchTcp__Port: 5011
     volumes:
       - ./publish:/app
     ports:
       - "${SSK_PORT}:80"
+      - "${WATCH_TCP_PORT}:5011"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:

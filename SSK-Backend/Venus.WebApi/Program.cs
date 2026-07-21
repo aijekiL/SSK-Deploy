@@ -194,6 +194,8 @@ namespace Venus.WebApi
             services.AddHttpClient();
             services.Configure<CompreFaceOptions>(builder.Configuration.GetSection("CompreFace"));
             services.AddTransient<CompreFaceClient>();
+            services.AddSingleton<WatchConnectionRegistry>();
+            services.AddHostedService<WatchTcpHostedService>();
 
             //静态化Services
             AppService.Services = builder.Services;

@@ -83,6 +83,11 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
             public string Device1 { get; set; } = string.Empty;
 
             /// <summary>
+            /// 手表IMEI
+            /// </summary>
+            public string WatchImei { get; set; } = string.Empty;
+
+            /// <summary>
             /// 附件ID
             /// </summary>
             public Guid AttachmentId { get; set; }
@@ -163,6 +168,21 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
                 }
             }
 
+            var normalizedWatchImei = string.IsNullOrWhiteSpace(dto.WatchImei) ? null : dto.WatchImei.Trim();
+            if (!string.IsNullOrWhiteSpace(normalizedWatchImei))
+            {
+                var duplicateWatch = _dbContext.Set<SM_StaffInfo>().FirstOrDefault(o =>
+                    !o.Deleted &&
+                    o.ProjectId == dto.ParentId &&
+                    o.WatchImei == normalizedWatchImei &&
+                    o.ObjectId != dto.ObjectId &&
+                    o.Status != 0);
+                if (duplicateWatch != null)
+                {
+                    return WebResponseContent.Instance.Error("手表IMEI已绑定。");
+                }
+            }
+
             SM_StaffInfo? staffInfo = null;
             if (dto.ObjectId != null)
             {
@@ -181,6 +201,7 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
                     company = dto.company,
                     department = dto.department,
                     Device1 = dto.Device1,
+                    WatchImei = normalizedWatchImei,
                     Status = 1, // 登记中状态
                     CreateDate = DateTime.Now,
                     CurrentStep = 1
@@ -197,6 +218,7 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
                 staffInfo.company = dto.company;
                 staffInfo.department = dto.department;
                 staffInfo.Device1 = dto.Device1;
+                staffInfo.WatchImei = normalizedWatchImei;
                 // 只有在不是已完成登记状态时才设置为登记中
                 if (staffInfo.Status != 2)
                 {
@@ -350,6 +372,7 @@ namespace Venus.WebApi.Controllers.SecurityMonitorService
                 o.department,
                 o.Status,
                 o.Device1,
+                o.WatchImei,
                 o.CreateDate,
                 djzAtt = djzAtt
             }).FirstOrDefault();

@@ -289,7 +289,19 @@ public final class CapsNetworkQualityTracker
         {
             return "IDLE";
         }
-        return pushState.isStreamActive() ? "ACTIVE" : "AWAITING_PUBLISH";
+        if (WebSocketUsers.PushStatus.STREAMING.equals(pushState.getStatus()))
+        {
+            return "ACTIVE";
+        }
+        if (WebSocketUsers.PushStatus.LOST_GRACE.equals(pushState.getStatus()))
+        {
+            return "LOST_GRACE";
+        }
+        if (WebSocketUsers.PushStatus.FAILED.equals(pushState.getStatus()))
+        {
+            return "FAILED";
+        }
+        return "AWAITING_PUBLISH";
     }
 
     private static void trimWindow(Deque<Long> timestamps, long now)
@@ -355,11 +367,16 @@ public final class CapsNetworkQualityTracker
         }
         if ("DEGRADED".equals(controlLink)
                 && (("AWAITING_PUBLISH".equals(pushStatus) && publishDelayMs != null && publishDelayMs > PUBLISH_TIMEOUT_MS)
-                || "ACTIVE".equals(pushStatus)))
+                || "ACTIVE".equals(pushStatus)
+                || "LOST_GRACE".equals(pushStatus)))
         {
             return "RISKY";
         }
-        if ("AWAITING_PUBLISH".equals(pushStatus) || "ACTIVE".equals(pushStatus))
+        if ("FAILED".equals(pushStatus))
+        {
+            return "NO";
+        }
+        if ("AWAITING_PUBLISH".equals(pushStatus) || "ACTIVE".equals(pushStatus) || "LOST_GRACE".equals(pushStatus))
         {
             return "UNKNOWN";
         }
@@ -386,9 +403,14 @@ public final class CapsNetworkQualityTracker
             return "STREAM_PRESENT_BUT_IDLE";
         }
 
-        if ("ACTIVE".equals(pushStatus))
+        if ("ACTIVE".equals(pushStatus) || "LOST_GRACE".equals(pushStatus))
         {
             return "STREAM_DROPPED_AFTER_ACTIVE";
+        }
+
+        if ("FAILED".equals(pushStatus))
+        {
+            return "STREAM_PUSH_FAILED";
         }
 
         if ("AWAITING_PUBLISH".equals(pushStatus) && publishDelayMs != null && publishDelayMs > PUBLISH_TIMEOUT_MS)
@@ -435,6 +457,14 @@ public final class CapsNetworkQualityTracker
         if ("AWAITING_PUBLISH".equals(value))
         {
             return "等待设备推流";
+        }
+        if ("LOST_GRACE".equals(value))
+        {
+            return "断流宽限期";
+        }
+        if ("FAILED".equals(value))
+        {
+            return "推流失败";
         }
         if ("IDLE".equals(value))
         {
@@ -514,6 +544,10 @@ public final class CapsNetworkQualityTracker
         if ("WAITING_DEVICE_TO_PUBLISH".equals(value))
         {
             return "等待设备开始推流";
+        }
+        if ("STREAM_PUSH_FAILED".equals(value))
+        {
+            return "本次推流失败";
         }
         if ("IDLE".equals(value))
         {

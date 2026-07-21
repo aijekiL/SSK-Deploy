@@ -78,5 +78,7 @@ public interface ICapsDeviceReportService
 
     int saveWatchReport(String deviceId, JSONObject watchMetrics, String rawFrame);
 
+    int saveAlarmHistory(String deviceId, String xPoint, String yPoint, String reason);
+
     JSONObject selectWatchLatestByPersonId(String personId, String excludeDeviceId);
 }

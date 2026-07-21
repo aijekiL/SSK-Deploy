@@ -147,6 +147,74 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <insert id="insertCapsDeviceReportHistory" parameterType="CapsDeviceReport" useGeneratedKeys="true" keyProperty="id">
+        insert into caps_device_report_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">device_id,</if>
+            <if test="altitude != null and altitude != ''">altitude,</if>
+            <if test="batL != null and batL != ''">bat_l,</if>
+            <if test="batV != null and batV != ''">bat_v,</if>
+            <if test="btSignalInfo != null and btSignalInfo != ''">bt_signal_info,</if>
+            <if test="cSpeed != null and cSpeed != ''">c_speed,</if>
+            <if test="charging != null and charging != ''">charging,</if>
+            <if test="gps != null and gps != ''">gps,</if>
+            <if test="gpsLevel != null and gpsLevel != ''">gps_level,</if>
+            <if test="inUse != null and inUse != ''">in_use,</if>
+            <if test="isWeared != null and isWeared != ''">is_weared,</if>
+            <if test="netStrenth != null and netStrenth != ''">net_strenth,</if>
+            <if test="netType != null and netType != ''">net_type,</if>
+            <if test="phoneNumber != null and phoneNumber != ''">phoneNumber,</if>
+            <if test="simDataNum != null and simDataNum != ''">sim_data_num,</if>
+            <if test="simStatus != null and simStatus != ''">sim_status,</if>
+            <if test="tcardStatus != null and tcardStatus != ''">tcard_status,</if>
+            <if test="tempdata != null and tempdata != ''">tempdata,</if>
+            <if test="userId != null and userId != ''">user_id,</if>
+            <if test="xPoint != null and xPoint != ''">x_point,</if>
+            <if test="yPoint != null and yPoint != ''">y_point,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="ch4 != null">ch4,</if>
+            <if test="o2 != null">o2,</if>
+            <if test="co != null">co,</if>
+            <if test="h2s != null">h2s,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null and deviceId != ''">#{deviceId},</if>
+            <if test="altitude != null and altitude != ''">#{altitude},</if>
+            <if test="batL != null and batL != ''">#{batL},</if>
+            <if test="batV != null and batV != ''">#{batV},</if>
+            <if test="btSignalInfo != null and btSignalInfo != ''">#{btSignalInfo},</if>
+            <if test="cSpeed != null and cSpeed != ''">#{cSpeed},</if>
+            <if test="charging != null and charging != ''">#{charging},</if>
+            <if test="gps != null and gps != ''">#{gps},</if>
+            <if test="gpsLevel != null and gpsLevel != ''">#{gpsLevel},</if>
+            <if test="inUse != null and inUse != ''">#{inUse},</if>
+            <if test="isWeared != null and isWeared != ''">#{isWeared},</if>
+            <if test="netStrenth != null and netStrenth != ''">#{netStrenth},</if>
+            <if test="netType != null and netType != ''">#{netType},</if>
+            <if test="phoneNumber != null and phoneNumber != ''">#{phoneNumber},</if>
+            <if test="simDataNum != null and simDataNum != ''">#{simDataNum},</if>
+            <if test="simStatus != null and simStatus != ''">#{simStatus},</if>
+            <if test="tcardStatus != null and tcardStatus != ''">#{tcardStatus},</if>
+            <if test="tempdata != null and tempdata != ''">#{tempdata},</if>
+            <if test="userId != null and userId != ''">#{userId},</if>
+            <if test="xPoint != null and xPoint != ''">#{xPoint},</if>
+            <if test="yPoint != null and yPoint != ''">#{yPoint},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="ch4 != null">#{ch4},</if>
+            <if test="o2 != null">#{o2},</if>
+            <if test="co != null">#{co},</if>
+            <if test="h2s != null">#{h2s},</if>
+         </trim>
+    </insert>
+
     <update id="updateCapsDeviceReport" parameterType="CapsDeviceReport">
         update caps_device_report
         <trim prefix="SET" suffixOverrides=",">
@@ -196,6 +264,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectCapsDeviceReportByDeviceId" parameterType="String" resultMap="CapsDeviceReportResult">
-        select * from caps_device_report where device_id = #{deviceId} order by create_time desc limit 1
+        select * from caps_device_report where device_id = #{deviceId} order by update_time desc, create_time desc limit 1
+    </select>
+
+    <select id="selectLatestCapsDeviceReportHistoryByDeviceId" parameterType="String" resultMap="CapsDeviceReportResult">
+        select * from caps_device_report_history where device_id = #{deviceId} order by create_time desc limit 1
     </select>
 </mapper>

@@ -142,10 +142,19 @@ gen:
   allowOverwrite: false
 
 rtmp:
-  url: ${RTMP_URL:192.168.144.213}
+  url: ${RTMP_URL:192.168.144.52}
 
 webrtc:
   url: ${WEBRTC_URL:}
+
+caps:
+  stream:
+    starting-grace-ms: ${CAPS_STREAM_STARTING_GRACE_MS:40000}
+    lost-grace-ms: ${CAPS_STREAM_LOST_GRACE_MS:40000}
+    open-rtsp-min-interval-ms: ${CAPS_STREAM_OPEN_RTSP_MIN_INTERVAL_MS:60000}
+    failed-restart-delay-ms: ${CAPS_STREAM_FAILED_RESTART_DELAY_MS:5000}
+    auto-restart-reset-ms: ${CAPS_STREAM_AUTO_RESTART_RESET_MS:300000}
+    auto-restart-limit: ${CAPS_STREAM_AUTO_RESTART_LIMIT:1}
 
 api:
   secret: 'X5k2B9n6P8m7Z1q4'

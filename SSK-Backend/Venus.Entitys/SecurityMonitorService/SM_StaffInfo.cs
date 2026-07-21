@@ -64,6 +64,12 @@ namespace Venus.Entitys.SecurityMonitorService
         public string? Device1 { get; set; }
 
         /// <summary>
+        /// Watch IMEI.
+        /// </summary>
+        [MaxLength(32)]
+        public string? WatchImei { get; set; }
+
+        /// <summary>
         /// 褰撳墠姝ラ
         /// </summary>
         public int CurrentStep { get; set; }

@@ -180,7 +180,8 @@ public class WebSocketServer
                         LOGGER.info("设备会话绑定: source={}, deviceId={}, reportSessionId={}, sessionKeys={}",
                                 "上报首次发现", deviceId, session.getId(), sessionMap.keySet());
                     } else if (!mappedSession.getId().equals(session.getId())) {
-                        LOGGER.warn("设备会话不一致: deviceId={}, reportSessionId={}, mappedSessionId={}, mappedSessionOpen={}, sessionKeys={}",
+                        sessionMap.put(deviceId, session);
+                        LOGGER.warn("设备会话不一致，已切换到最新上报会话: deviceId={}, reportSessionId={}, mappedSessionId={}, mappedSessionOpen={}, sessionKeys={}",
                                 deviceId, session.getId(), mappedSession.getId(), mappedSession.isOpen(), sessionMap.keySet());
                     }
                 }
@@ -214,6 +215,7 @@ public class WebSocketServer
             capsDeviceAlarm.setyPoint(yPoint);
             capsDeviceAlarm.setCreateTime(new Date());
             capsDeviceAlarmService.insertCapsDeviceAlarm(capsDeviceAlarm);
+            capsDeviceReportService.saveAlarmHistory(deviceId, xPoint, yPoint, capsDeviceAlarm.getTypeInfo());
             String jsonString = JSONObject.toJSONString(capsDeviceAlarm);
             LOGGER.info("收到设备SOS: deviceId={}, type={}, sessionId={}", deviceId, type, session.getId());
             String personId = null;

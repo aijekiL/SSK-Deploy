@@ -3,6 +3,7 @@ package com.ruoyi.project.system.service.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.ruoyi.common.constant.CapsConstants;
@@ -26,6 +27,13 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
     private static final String WATCH_METRIC_SPO2 = "spo2";
     private static final String WATCH_METRIC_SYSTOLIC = "systolic";
     private static final String WATCH_METRIC_DIASTOLIC = "diastolic";
+    private static final long HISTORY_INTERVAL_MS = 60 * 1000L;
+    private static final BigDecimal GAS_CHANGE_THRESHOLD = new BigDecimal("0.1");
+    private static final BigDecimal MIN_O2 = new BigDecimal("19.5");
+    private static final BigDecimal MAX_O2 = new BigDecimal("23.5");
+    private static final BigDecimal MAX_CO = new BigDecimal("10");
+    private static final BigDecimal MAX_H2S = new BigDecimal("0.1");
+    private static final BigDecimal MAX_CH4 = new BigDecimal("0.1");
 
     @Autowired
     private CapsDeviceReportMapper capsDeviceReportMapper;
@@ -89,7 +97,10 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         }
 
         String deviceId = capsDevice.getDeviceId();
-        CapsDeviceReport capsDeviceReport = buildReportFromLatest(deviceId, userId);
+        Date reportTime = DateUtils.getNowDate();
+        CapsDeviceReport latestReport = capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(deviceId);
+        CapsDeviceReport previousReport = copyReport(latestReport);
+        CapsDeviceReport capsDeviceReport = buildReportFromLatest(deviceId, userId, latestReport, reportTime);
 
         if (data.containsKey("CD4")) {
             String cd4 = data.getString("CD4");
@@ -154,7 +165,8 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         if (data.containsKey("y_point")) {
             capsDeviceReport.setyPoint(data.getString("y_point"));
         }
-        capsDeviceReportMapper.insertCapsDeviceReport(capsDeviceReport);
+        saveLatestReport(latestReport, capsDeviceReport, reportTime);
+        saveHistoryIfNeeded(previousReport, capsDeviceReport, reportTime);
         return deviceId;
     }
 
@@ -188,11 +200,13 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         for (CapsDevice capsDevice : capsDevices) {
             CapsDeviceReport latestReport =
                     capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(capsDevice.getDeviceId());
+            CapsDeviceReport previousReport = copyReport(latestReport);
             CapsDeviceReport targetReport = latestReport;
             if (targetReport == null) {
                 targetReport = new CapsDeviceReport();
                 targetReport.setDeviceId(capsDevice.getDeviceId());
                 targetReport.setUserId(capsDevice.getUserId());
+                targetReport.setCreateTime(reportTime);
             }
             boolean mappedCurrentDevice = applyGasValues(targetReport, gasReportRequest.getList());
             if (!mappedCurrentDevice) {
@@ -201,10 +215,11 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
             hasMappedValue = true;
             targetReport.setUpdateTime(reportTime);
             if (latestReport == null) {
-                insertCapsDeviceReport(targetReport);
+                capsDeviceReportMapper.insertCapsDeviceReport(targetReport);
             } else {
                 capsDeviceReportMapper.updateCapsDeviceReport(targetReport);
             }
+            saveHistoryIfNeeded(previousReport, targetReport, reportTime);
             updatedCount++;
         }
 
@@ -251,6 +266,30 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         updateReport.setId(helmetReport.getId());
         updateReport.setRemark(mergedMetrics.toJSONString());
         return capsDeviceReportMapper.updateCapsDeviceReport(updateReport);
+    }
+
+    @Override
+    public int saveAlarmHistory(String deviceId, String xPoint, String yPoint, String reason)
+    {
+        if (StringUtils.isEmpty(deviceId)) {
+            return 0;
+        }
+
+        Date now = DateUtils.getNowDate();
+        CapsDeviceReport latestReport = capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(deviceId);
+        CapsDeviceReport historyReport = latestReport == null ? new CapsDeviceReport() : copyReport(latestReport);
+        historyReport.setId(null);
+        historyReport.setDeviceId(deviceId);
+        if (StringUtils.isNotEmpty(xPoint)) {
+            historyReport.setxPoint(xPoint);
+        }
+        if (StringUtils.isNotEmpty(yPoint)) {
+            historyReport.setyPoint(yPoint);
+        }
+        historyReport.setCreateTime(now);
+        historyReport.setUpdateTime(now);
+        historyReport.setRemark(reason);
+        return capsDeviceReportMapper.insertCapsDeviceReportHistory(historyReport);
     }
 
     @Override
@@ -319,23 +358,118 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
         return result;
     }
 
-    private CapsDeviceReport buildReportFromLatest(String deviceId, String userId)
+    private CapsDeviceReport buildReportFromLatest(String deviceId, String userId, CapsDeviceReport latestReport, Date reportTime)
     {
         CapsDeviceReport capsDeviceReport = new CapsDeviceReport();
-        CapsDeviceReport latestReport = capsDeviceReportMapper.selectCapsDeviceReportByDeviceId(deviceId);
         if (latestReport != null) {
             BeanUtils.copyBeanProp(capsDeviceReport, latestReport);
         }
-        capsDeviceReport.setId(null);
         capsDeviceReport.setDeviceId(deviceId);
         if (StringUtils.isNotEmpty(userId)) {
             capsDeviceReport.setUserId(userId);
         }
-        capsDeviceReport.setCreateBy(null);
-        capsDeviceReport.setCreateTime(DateUtils.getNowDate());
+        if (latestReport == null) {
+            capsDeviceReport.setId(null);
+            capsDeviceReport.setCreateBy(null);
+            capsDeviceReport.setCreateTime(reportTime);
+        }
         capsDeviceReport.setUpdateBy(null);
-        capsDeviceReport.setUpdateTime(null);
+        capsDeviceReport.setUpdateTime(reportTime);
         return capsDeviceReport;
+    }
+
+    private void saveLatestReport(CapsDeviceReport latestReport, CapsDeviceReport capsDeviceReport, Date reportTime)
+    {
+        capsDeviceReport.setUpdateTime(reportTime);
+        if (latestReport == null) {
+            capsDeviceReport.setCreateTime(reportTime);
+            capsDeviceReportMapper.insertCapsDeviceReport(capsDeviceReport);
+        } else {
+            capsDeviceReport.setId(latestReport.getId());
+            capsDeviceReportMapper.updateCapsDeviceReport(capsDeviceReport);
+        }
+    }
+
+    private void saveHistoryIfNeeded(CapsDeviceReport previousReport, CapsDeviceReport currentReport, Date reportTime)
+    {
+        if (!shouldSaveHistory(previousReport, currentReport, reportTime)) {
+            return;
+        }
+
+        CapsDeviceReport historyReport = copyReport(currentReport);
+        historyReport.setId(null);
+        historyReport.setCreateTime(reportTime);
+        historyReport.setUpdateTime(reportTime);
+        capsDeviceReportMapper.insertCapsDeviceReportHistory(historyReport);
+    }
+
+    private boolean shouldSaveHistory(CapsDeviceReport previousReport, CapsDeviceReport currentReport, Date reportTime)
+    {
+        if (currentReport == null || StringUtils.isEmpty(currentReport.getDeviceId())) {
+            return false;
+        }
+        if (previousReport == null) {
+            return true;
+        }
+        if (isWearChanged(previousReport, currentReport) || hasGasChanged(previousReport, currentReport)) {
+            return true;
+        }
+        if (!isAbnormalReport(previousReport) && isAbnormalReport(currentReport)) {
+            return true;
+        }
+
+        CapsDeviceReport latestHistory =
+                capsDeviceReportMapper.selectLatestCapsDeviceReportHistoryByDeviceId(currentReport.getDeviceId());
+        Date latestHistoryTime = getReportTime(latestHistory);
+        return latestHistoryTime == null || reportTime.getTime() - latestHistoryTime.getTime() >= HISTORY_INTERVAL_MS;
+    }
+
+    private CapsDeviceReport copyReport(CapsDeviceReport source)
+    {
+        if (source == null) {
+            return null;
+        }
+        CapsDeviceReport target = new CapsDeviceReport();
+        BeanUtils.copyBeanProp(target, source);
+        return target;
+    }
+
+    private boolean isWearChanged(CapsDeviceReport previousReport, CapsDeviceReport currentReport)
+    {
+        return !Objects.equals(previousReport.getIsWeared(), currentReport.getIsWeared());
+    }
+
+    private boolean hasGasChanged(CapsDeviceReport previousReport, CapsDeviceReport currentReport)
+    {
+        return isGasChanged(previousReport.getO2(), currentReport.getO2())
+                || isGasChanged(previousReport.getCo(), currentReport.getCo())
+                || isGasChanged(previousReport.getH2s(), currentReport.getH2s())
+                || isGasChanged(previousReport.getCh4(), currentReport.getCh4());
+    }
+
+    private boolean isGasChanged(String previousValue, String currentValue)
+    {
+        BigDecimal previous = parseDecimal(previousValue);
+        BigDecimal current = parseDecimal(currentValue);
+        if (previous == null || current == null) {
+            return previous != current;
+        }
+        return previous.subtract(current).abs().compareTo(GAS_CHANGE_THRESHOLD) > 0;
+    }
+
+    private boolean isAbnormalReport(CapsDeviceReport report)
+    {
+        if (report == null) {
+            return false;
+        }
+        BigDecimal o2 = parseDecimal(report.getO2());
+        BigDecimal co = parseDecimal(report.getCo());
+        BigDecimal h2s = parseDecimal(report.getH2s());
+        BigDecimal ch4 = parseDecimal(report.getCh4());
+        return (o2 != null && (o2.compareTo(MIN_O2) < 0 || o2.compareTo(MAX_O2) > 0))
+                || (co != null && co.compareTo(MAX_CO) > 0)
+                || (h2s != null && h2s.compareTo(MAX_H2S) > 0)
+                || (ch4 != null && ch4.compareTo(MAX_CH4) > 0);
     }
 
     private CapsDeviceReport selectLatestPersonReport(String personId, String excludeDeviceId)
@@ -374,6 +508,18 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
     private String toPlainString(BigDecimal value)
     {
         return value == null ? null : value.toPlainString();
+    }
+
+    private BigDecimal parseDecimal(String value)
+    {
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        try {
+            return new BigDecimal(value.trim());
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     private JSONObject parseJsonObject(String text)

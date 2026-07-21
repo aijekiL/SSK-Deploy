@@ -12,7 +12,6 @@ import com.ruoyi.project.system.service.IAudibleVoiceAlarmService;
 import com.ruoyi.project.system.service.ICapsDeviceReportService;
 import com.ruoyi.project.system.service.ICapsDeviceService;
 import com.ruoyi.project.system.websocket.WebSocketServer;
-import com.ruoyi.project.system.websocket.CapsNetworkQualityTracker;
 import com.ruoyi.project.system.websocket.WebSocketUsers;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.websocket.Session;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -104,47 +102,32 @@ public class CapsConfigApi
             if (capsDevice != null) {
                 JSONObject jsonObject = new JSONObject();
                 String deviceId = capsDevice.getDeviceId();
-                WebSocketUsers.PushCmdState pushCmdState = WebSocketUsers.getPushCmdState(deviceId);
-                long now = System.currentTimeMillis();
                 try {
-                    boolean push = MediaUtil.getMediaList(deviceId);
-                    jsonObject.put("push", push);
-
-                    if (push) {
-                        String rtmpUrl = pushCmdState == null ? WebSocketUsers.buildPushUrl(deviceId) : pushCmdState.getSourceRtmpUrl();
-                        String elapsed = formatElapsedSeconds(pushCmdState == null ? 0L : now - pushCmdState.getCommandTimeMs());
-                        log.info("stream publish detected: deviceId={}, elapsed={}s, rtmp={}",
-                                deviceId, elapsed, rtmpUrl);
-                        WebSocketUsers.markPushStreamActive(deviceId);
-                        WebSocketUsers.clearPushCmdState(deviceId); // 清理状态以确保下次不会重复发送命令
-                    } else if (pushCmdState != null) {
-                        if (pushCmdState.isStreamActive()) {
-                            log.warn("stream lost after publish: deviceId={}, last_rtmp={}",
-                                    deviceId, pushCmdState.getSourceRtmpUrl());
-                            CapsNetworkQualityTracker.recordStreamInterrupted(deviceId, "stream_lost_after_publish");
-                        } else {
-                            long elapsedMs = now - pushCmdState.getCommandTimeMs();
-                            String elapsed = formatElapsedSeconds(elapsedMs);
-                            if (elapsedMs >= WebSocketUsers.getPushDetectTimeoutMs()) {
-                                log.warn("stream not detected after push command: deviceId={}, elapsed={}s, expect_rtmp={}",
-                                        deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
-                            } else {
-                                log.info("waiting stream publish: deviceId={}, elapsed={}s, expect_rtmp={}",
-                                        deviceId, elapsed, pushCmdState.getSourceRtmpUrl());
-                            }
-                        }
-                        // 当ZLM检测不到流时，清理该设备的推流命令状态
-                        // 这样下一次设备上报时，shouldSendPushCommand() 会重新放行并下发 server_push_open_rtsp
-                        WebSocketUsers.clearPushCmdState(deviceId);
-                    } else {
-                        log.info("stream check without push state: deviceId={}, userId={}, expect_rtmp={}",
-                                deviceId, user_id, WebSocketUsers.buildPushUrl(deviceId));
-                    }
+                    boolean actualPush = MediaUtil.getMediaList(deviceId);
+                    WebSocketUsers.CheckStreamDecision decision = WebSocketUsers.evaluateCheckStream(deviceId, actualPush);
+                    jsonObject.put("push", decision.isPush());
+                    jsonObject.put("actual_push", decision.isActualPush());
+                    jsonObject.put("stream_state", decision.getState());
+                    jsonObject.put("reason", decision.getReason());
+                    jsonObject.put("grace_remaining_ms", decision.getGraceRemainingMs());
+                    log.info("stream check result: deviceId={}, userId={}, actualPush={}, responsePush={}, state={}, reason={}, graceRemainingMs={}",
+                            deviceId,
+                            user_id,
+                            decision.isActualPush(),
+                            decision.isPush(),
+                            decision.getState(),
+                            decision.getReason(),
+                            decision.getGraceRemainingMs());
                 } catch (Exception e) {
                     jsonObject.put("push", false);
+                    jsonObject.put("actual_push", false);
+                    jsonObject.put("stream_state", "ERROR");
+                    jsonObject.put("reason", "stream_check_exception");
+                    jsonObject.put("grace_remaining_ms", 0);
                     log.warn("stream check failed: deviceId={}, err={}", deviceId, e.getMessage(), e);
                 }
-                return AjaxResultNew.success("success", jsonObject);
+                boolean responsePush = jsonObject.getBooleanValue("push");
+                return responsePush ? AjaxResultNew.success("正在推流！", jsonObject) : AjaxResultNew.error("未推流！", jsonObject);
             }
             log.warn("stream check skipped: userId={} not bound to device", user_id);
         }
@@ -363,8 +346,4 @@ public class CapsConfigApi
         return extra;
     }
 
-    private static String formatElapsedSeconds(long elapsedMs)
-    {
-        return String.format(Locale.ROOT, "%.1f", elapsedMs / 1000.0);
-    }
 }

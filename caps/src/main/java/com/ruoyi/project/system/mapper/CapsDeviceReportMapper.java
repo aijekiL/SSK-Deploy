@@ -36,6 +36,14 @@ public interface CapsDeviceReportMapper
     public int insertCapsDeviceReport(CapsDeviceReport capsDeviceReport);
 
     /**
+     * 新增安全帽设备历史快照数据
+     *
+     * @param capsDeviceReport 安全帽设备历史快照数据
+     * @return 结果
+     */
+    public int insertCapsDeviceReportHistory(CapsDeviceReport capsDeviceReport);
+
+    /**
      * 修改安全帽设备实时数据
      *
      * @param capsDeviceReport 安全帽设备实时数据
@@ -65,4 +73,11 @@ public interface CapsDeviceReportMapper
      * @return CapsDeviceReport
      */
     CapsDeviceReport selectCapsDeviceReportByDeviceId(String deviceId);
+
+    /**
+     * 根据设备id查询最新的历史快照数据
+     * @param deviceId deviceId
+     * @return CapsDeviceReport
+     */
+    CapsDeviceReport selectLatestCapsDeviceReportHistoryByDeviceId(String deviceId);
 }
