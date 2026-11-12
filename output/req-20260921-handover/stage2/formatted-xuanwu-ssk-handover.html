@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="docx-page-size" content="A4">
+  <title>玄武SSK有限空间作业安全管控套装装备交接情况表</title>
+  <style>
+  /* --- CSS @page 页面模型：正文页脚居中页码（模式 1） --- */
+  @page {
+    @bottom-center { content: "— " counter(page) " —"; }
+  }
+
+  :root {
+    /* Typography（formal-government 主题令牌） */
+    --fs-title: var(--typography-fontSize-title, 22pt);
+    --fs-h2: var(--typography-fontSize-h2, 16pt);
+    --fs-h3: var(--typography-fontSize-h3, 14pt);
+    --fs-body: var(--typography-fontSize-body, 14pt);
+    --fs-caption: var(--typography-fontSize-caption, 12pt);
+    --fs-small: var(--typography-fontSize-small, 10pt);
+    --ff-heading: var(--typography-fontFamily-heading, "方正小标宋简体", SimSun, serif);
+    --ff-subheading: var(--typography-fontFamily-subheading, "黑体", SimHei, sans-serif);
+    --ff-body: var(--typography-fontFamily-body, "仿宋", FangSong, serif);
+    --ff-number: var(--typography-fontFamily-number, "Times New Roman", serif);
+    --lh-body: var(--typography-lineHeight-body, 1.5);
+    --lh-dense: var(--typography-lineHeight-dense, 1.25);
+    --fw-bold: var(--typography-fontWeight-heading, bold);
+    --fw-normal: var(--typography-fontWeight-body, normal);
+    /* Color */
+    --color-primary: var(--color-primary, #003087);
+    --color-text: var(--color-text, #000000);
+    --color-muted: var(--color-muted, #666666);
+    --color-border: var(--color-border, #000000);
+    --color-bg: var(--color-background, #ffffff);
+    /* Spacing */
+    --spacing-paragraph: var(--spacing-paragraph, 0em);
+    --spacing-sectionGap: var(--spacing-sectionGap, 1em);
+    --spacing-block: var(--spacing-listItemGap, 0.25em);
+    --spacing-clauses-pad: var(--spacing-indent, 2em);
+    --spacing-cell-pad: var(--spacing-cellPadding, 0.5em 0.7em);
+    --spacing-sign-pad: var(--spacing-signPadding, 1.1em 0.9em);
+    /* Layout */
+    --page-content-width: var(--layout-contentWidth, 15.6cm);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--color-text);
+    background: var(--color-bg);
+    max-width: var(--page-content-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding: var(--spacing-sectionGap) 0;
+  }
+
+  /* 文档主标题 */
+  h1.doc-title {
+    text-align: center;
+    font-family: var(--ff-heading);
+    font-size: var(--fs-title);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-body);
+    color: var(--color-text);
+    margin-top: var(--spacing-sectionGap);
+    margin-bottom: var(--spacing-sectionGap);
+  }
+
+  /* 编号行 */
+  p.doc-number {
+    text-align: right;
+    font-family: var(--ff-body);
+    font-size: var(--fs-caption);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sectionGap);
+  }
+
+  /* 章节标题（一、二、三……） */
+  h2.doc-section {
+    font-family: var(--ff-subheading);
+    font-size: var(--fs-h2);
+    font-weight: var(--fw-bold);
+    color: var(--color-text);
+    text-align: left;
+    margin-top: var(--spacing-sectionGap);
+    margin-bottom: var(--spacing-block);
+  }
+
+  /* 正文段落 */
+  p.doc-para {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    color: var(--color-text);
+    text-align: justify;
+    text-indent: 2em;
+    line-height: var(--lh-body);
+    margin-bottom: var(--spacing-sectionGap);
+  }
+
+  /* 无缩进说明段（合计、随附资料） */
+  p.doc-note {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    color: var(--color-text);
+    text-align: left;
+    margin-top: var(--spacing-block);
+    margin-bottom: var(--spacing-block);
+  }
+
+  /* 编号条款 */
+  ol.doc-clauses {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    color: var(--color-text);
+    text-align: justify;
+    padding-left: var(--spacing-clauses-pad);
+    margin-bottom: var(--spacing-sectionGap);
+  }
+  ol.doc-clauses li {
+    text-indent: 0;
+    line-height: var(--lh-body);
+    margin-bottom: var(--spacing-block);
+  }
+
+  /* 表格通用 */
+  table.doc-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: var(--ff-body);
+    font-size: var(--fs-caption);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-sectionGap);
+  }
+  table.doc-table th, table.doc-table td {
+    border: 1px solid var(--color-text);
+    padding: var(--spacing-cell-pad);
+    line-height: var(--lh-dense);
+    vertical-align: middle;
+  }
+  table.doc-table th {
+    font-family: var(--ff-subheading);
+    font-weight: var(--fw-bold);
+    text-align: center;
+    background: var(--color-highlight, #f2f4f7);
+  }
+  table.doc-table td { text-align: left; }
+  table.doc-table td.cell-center { text-align: center; }
+  table.doc-table td.cell-bold {
+    font-family: var(--ff-subheading);
+    font-weight: var(--fw-bold);
+    text-align: center;
+  }
+
+  /* 交付清单表：说明列紧凑排版 */
+  table.doc-table td.cell-desc {
+    font-size: var(--fs-caption);
+    line-height: var(--lh-dense);
+  }
+
+  /* 签字确认表 */
+  table.doc-table td.cell-sign {
+    padding: var(--spacing-sign-pad);
+    line-height: 2;
+  }
+  table.doc-table td.cell-sign p {
+    font-family: var(--ff-body);
+    font-size: var(--fs-caption);
+    color: var(--color-text);
+    text-align: left;
+    margin-bottom: var(--spacing-block);
+  }
+  </style>
+</head>
+<body>
+  <h1 class="doc-title">玄武SSK有限空间作业安全管控套装<br>装备交接情况表</h1>
+
+  <p class="doc-number">编号：＿＿＿＿＿＿＿＿＿＿</p>
+
+  <h2 class="doc-section">一、交接基本信息</h2>
+  <table class="doc-table">
+    <thead>
+      <tr><th style="width:22%">项目</th><th>内容</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="cell-bold">移交单位</td><td>中国电力工程顾问集团中南电力设计院有限公司</td></tr>
+      <tr><td class="cell-bold">接收单位</td><td>中国能源建设有限公司</td></tr>
+      <tr><td class="cell-bold">交接事项</td><td>玄武SSK有限空间作业安全管控套装装备参展交接</td></tr>
+      <tr><td class="cell-bold">交接依据</td><td>集团总部参展工作部署要求</td></tr>
+      <tr><td class="cell-bold">交接方式</td><td>移交单位代表现场交付，接收单位代表现场核验签收</td></tr>
+      <tr><td class="cell-bold">交接日期</td><td>2026年9月　　日</td></tr>
+      <tr><td class="cell-bold">交接地点</td><td>＿＿＿＿＿＿＿＿＿＿＿＿</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-section">二、装备概况</h2>
+  <p class="doc-para">玄武SSK有限空间作业安全管控套装是面向电力工程建设与检修场景的作业安全数字化管控装备，以"人—机—环"多维感知融合为核心，集成人脸识别实名制准入、智能穿戴健康监测、四合一气体检测、视频监控留痕与作业台账自动生成等能力，实现有限空间作业"事前实名准入、事中实时监测、事后可追溯复盘"的全过程闭环管理。该套装已在电厂检修、应急演练等场景投入应用，本次移交集团总部用于参展展示。</p>
+
+  <h2 class="doc-section">三、交付清单</h2>
+  <table class="doc-table">
+    <thead>
+      <tr>
+        <th style="width:6%">序号</th>
+        <th style="width:16%">装备名称</th>
+        <th style="width:8%">数量</th>
+        <th style="width:8%">单位</th>
+        <th>装备用途及功能说明</th>
+        <th style="width:16%">外观及功能状态</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cell-center">1</td>
+        <td class="cell-center">智能手表</td>
+        <td class="cell-center">1</td>
+        <td class="cell-center">块</td>
+        <td class="cell-desc">作业人员健康监测穿戴设备，实时采集并上报心率、血氧、血压等生命体征数据，支持远程主动下发采样频率等指令</td>
+        <td class="cell-center">全新完好，功能正常</td>
+      </tr>
+      <tr>
+        <td class="cell-center">2</td>
+        <td class="cell-center">便携指挥箱</td>
+        <td class="cell-center">1</td>
+        <td class="cell-center">台</td>
+        <td class="cell-desc">移动指挥调度终端，支持大屏驾驶舱一屏总览在场人员、气体监测、视频监控等现场态势，实现多端协同指挥</td>
+        <td class="cell-center">全新完好，功能正常</td>
+      </tr>
+      <tr>
+        <td class="cell-center">3</td>
+        <td class="cell-center">手持式自组网基站</td>
+        <td class="cell-center">1</td>
+        <td class="cell-center">台</td>
+        <td class="cell-desc">现场应急通信保障设备，在无公网覆盖条件下快速构建自组网通信，保障有限空间作业现场语音、数据链路畅通</td>
+        <td class="cell-center">全新完好，功能正常</td>
+      </tr>
+      <tr>
+        <td class="cell-center">4</td>
+        <td class="cell-center">智能安全帽</td>
+        <td class="cell-center">1</td>
+        <td class="cell-center">顶</td>
+        <td class="cell-desc">智能穿戴安全防护装备，与人员档案绑定，具备定位、状态监测等能力，配合平台实现作业人员实名制管控</td>
+        <td class="cell-center">全新完好，功能正常</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="doc-note">合计：4 件（套）。</p>
+  <p class="doc-note">随附资料：□ 产品说明书　　□ 装箱单　　□ 检验/合格证明　　□ 其他：＿＿＿＿＿＿＿＿＿＿</p>
+
+  <h2 class="doc-section">四、交接情况说明</h2>
+  <ol class="doc-clauses">
+    <li>移交单位确认：上述装备系本单位合法持有，交付前已完成功能检测与外观检查，装备状态与交付清单所列一致，随附资料齐全。</li>
+    <li>接收单位已对交付装备的品名、数量、外观及功能状态进行现场核验，确认与交付清单相符，予以签收。</li>
+    <li>本次交接装备用于集团总部参展展示。展览结束后装备的归还、留用或其他处置方式，由双方另行协商确定。</li>
+    <li>本表一式两份，交接双方各执一份，经双方代表签字（盖章）后生效，作为本次装备交接的凭据。</li>
+  </ol>
+
+  <h2 class="doc-section">五、交接双方签字确认</h2>
+  <table class="doc-table">
+    <thead>
+      <tr><th style="width:50%">移交方</th><th>接收方</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="cell-sign">
+          <p>单位名称（盖章）：中国电力工程顾问集团中南电力设计院有限公司</p>
+          <p>代表签字：＿＿＿＿＿＿＿＿＿＿</p>
+          <p>日期：　　　　年　　月　　日</p>
+        </td>
+        <td class="cell-sign">
+          <p>单位名称（盖章）：中国能源建设有限公司</p>
+          <p>代表签字：＿＿＿＿＿＿＿＿＿＿</p>
+          <p>日期：　　　　年　　月　　日</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>

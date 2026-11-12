@@ -2,14 +2,18 @@ window.config = window.config || {};
 
 const hostname = window.location.hostname;
 const host = window.location.host || hostname;
-const httpProtocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-const wsProtocol = httpProtocol === 'https:' ? 'wss:' : 'ws:';
-const sameOrigin = `${httpProtocol}//${host}`;
+const pageProtocol = window.location.protocol || 'http:';
+const wsProtocol = pageProtocol === 'https:' ? 'wss:' : 'ws:';
 
-window.config.alarmUrl = `${wsProtocol}//${host}`;
-window.config.projectInfoUrl = `${wsProtocol}//${host}`;
-window.config.projectUrl = sameOrigin;
-window.config.baseUrl = sameOrigin;
-window.config.playerUrl = `${sameOrigin}/zlm`;
+const sameOriginHttp = `${pageProtocol}//${host}`;
+const sameOriginWs = `${wsProtocol}//${host}`;
+
+// Keep all browser traffic on the page origin. This avoids mixed-content blocking
+// when the board is opened as https://<server-ip>:3000.
+window.config.alarmUrl = sameOriginWs;
+window.config.projectInfoUrl = sameOriginWs;
+window.config.projectUrl = sameOriginHttp;
+window.config.baseUrl = sameOriginHttp;
+window.config.playerUrl = `${sameOriginHttp}/zlm`;
 
 window.config.hiddenButton = false;

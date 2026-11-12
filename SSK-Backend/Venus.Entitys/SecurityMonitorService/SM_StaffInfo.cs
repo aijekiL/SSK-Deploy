@@ -22,6 +22,11 @@ namespace Venus.Entitys.SecurityMonitorService
         public Guid ProjectId {  get; set; }
 
         /// <summary>
+        /// 人员信息台账ID-SM_EmployeeProfile-ObjectId
+        /// </summary>
+        public Guid? EmployeeProfileId { get; set; }
+
+        /// <summary>
         /// 濮撳悕
         /// </summary>
         public string name {  get; set; } = string.Empty;

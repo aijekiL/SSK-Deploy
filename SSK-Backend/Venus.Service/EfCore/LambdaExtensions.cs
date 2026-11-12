@@ -81,8 +81,8 @@ namespace Venus.Service.EfCore
                 //var ss= LambdaExtensions.CreateExpression<Ly_UserLottery>("", "", expressionType);
 
                 queryable = LinqExpressionType.In == expressionType
-                              ? queryable.Where(x.Name.CreateExpression<TEntity>(x.Value, expressionType))
-                              : queryable.Where(x.Name.CreateExpression<TEntity>(x.Value, expressionType));
+                              ? queryable.Where(property.Name.CreateExpression<TEntity>(x.Value, expressionType))
+                              : queryable.Where(property.Name.CreateExpression<TEntity>(x.Value, expressionType));
             }
 
             #endregion

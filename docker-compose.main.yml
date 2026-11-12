@@ -9,13 +9,14 @@ services:
       MYSQL_DATABASE: ${SSK_DB_NAME}
     command:
       - --default-authentication-plugin=mysql_native_password
+      - --lower-case-table-names=1
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
       - ./db-data/mysql:/var/lib/mysql
-      - ./mysql-initdb:/docker-entrypoint-initdb.d:ro
+      - ./mysql-initdb-v2:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s

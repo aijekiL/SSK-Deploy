@@ -1,0 +1,505 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "有限空间作业安全管控平台 - 对外开放接口（场站内网系统对接）",
+    "description": "第三方（场站内网系统）对接用只读接口：人员监测、手表健康、气体检测、安全帽告警、在线视频流。\n\n**鉴权**：所有接口需携带 ApiKey，二选一：\n1. 请求头 `X-Api-Key: <ApiKey>`（推荐）\n2. URL 参数 `?apiKey=<ApiKey>`\n\n密钥为空或错误返回 HTTP 401；服务端未配置密钥返回 HTTP 500。轮询建议间隔 5~10 秒。",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9991",
+      "description": "本地直连 netcore（推荐本地测试用，无证书问题）"
+    },
+    {
+      "url": "https://localhost:3000",
+      "description": "本地经 nginx HTTPS（自签证书，需在 Apifox 关闭 SSL 校验）"
+    },
+    {
+      "url": "https://192.168.144.211:3000",
+      "description": "服务器环境（示例 IP，以实际部署为准）"
+    }
+  ],
+  "security": [
+    { "ApiKeyHeader": [] },
+    { "ApiKeyQuery": [] }
+  ],
+  "tags": [
+    { "name": "工程信息", "description": "当前作业工程" },
+    { "name": "人员监测", "description": "在场人员、手表健康数据" },
+    { "name": "气体与告警", "description": "安全帽气体检测、告警记录" },
+    { "name": "视频流", "description": "在线视频流与播放地址" }
+  ],
+  "paths": {
+    "/api/OpenApi/CurrentProject": {
+      "get": {
+        "tags": ["工程信息"],
+        "summary": "获取当前工程信息",
+        "description": "未传 projectId 的接口均默认使用本接口返回的当前工程。可在轮询开始时调用一次。",
+        "operationId": "currentProject",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CurrentProjectResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "projectId": "0c9d6a3e-8f2b-4c1d-9a7e-5b3f2e1d0c8a",
+                    "projectName": "XX场站3号井有限空间作业",
+                    "unitName": "XX运维有限公司",
+                    "managerName": "张三",
+                    "managerPhone": "138****0000",
+                    "guardianName": "李四",
+                    "administratorName": "王五",
+                    "startWorkDate": "2026-10-31 08:30:00",
+                    "status": 1
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    },
+    "/api/OpenApi/StaffList": {
+      "get": {
+        "tags": ["人员监测"],
+        "summary": "获取人员列表（含手表健康数据）",
+        "description": "人员监测对接的核心接口。返回人员在场状态、绑定安全帽/手表、入场时间，默认附带每人手表最新健康数据（心率/血氧/血压）。",
+        "operationId": "staffList",
+        "parameters": [
+          { "name": "projectId", "in": "query", "required": false, "schema": { "type": "string" }, "description": "工程ID（GUID），不传取当前工程" },
+          { "name": "onSiteOnly", "in": "query", "required": false, "schema": { "type": "boolean", "default": false }, "description": "true=仅返回在场人员（状态=2）" },
+          { "name": "includeWatch", "in": "query", "required": false, "schema": { "type": "boolean", "default": true }, "description": "是否附带手表最新健康数据" }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/StaffListResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "projectId": "0c9d6a3e-8f2b-4c1d-9a7e-5b3f2e1d0c8a",
+                    "projectName": "XX场站3号井有限空间作业",
+                    "total": 3,
+                    "onSite": 2,
+                    "list": [
+                      {
+                        "staffId": "a1b2c3d4-1111-2222-3333-444455556666",
+                        "name": "张三",
+                        "gender": "男",
+                        "company": "XX运维有限公司",
+                        "department": "运行一班",
+                        "phone": "138****0000",
+                        "status": 2,
+                        "statusText": "在场",
+                        "enterTime": "2026-10-31 08:12:00",
+                        "device1": "865123050001",
+                        "watchImei": "860123060001",
+                        "watch": {
+                          "heartRate": 78,
+                          "spo2": 98,
+                          "systolic": 120,
+                          "diastolic": 80,
+                          "bloodPressure": "120/80",
+                          "updateTime": "2026-10-31 10:00:00"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    },
+    "/api/OpenApi/WatchLatest": {
+      "get": {
+        "tags": ["人员监测"],
+        "summary": "获取单人手表最新健康数据",
+        "description": "staffId 与 watchImei 二选一。StaffList 已附带该数据，此接口用于单独刷新某人。无绑表时 status=true 且 message=未绑定手表；无数据时 message=暂无手表数据。",
+        "operationId": "watchLatest",
+        "parameters": [
+          { "name": "staffId", "in": "query", "required": false, "schema": { "type": "string" }, "description": "人员ID（GUID），与 watchImei 二选一" },
+          { "name": "watchImei", "in": "query", "required": false, "schema": { "type": "string" }, "description": "手表 IMEI，与 staffId 二选一" }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WatchLatestResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "deviceId": "860123060001",
+                    "watchImei": "860123060001",
+                    "staffId": "a1b2c3d4-1111-2222-3333-444455556666",
+                    "heartRate": 78,
+                    "spo2": 98,
+                    "systolic": 120,
+                    "diastolic": 80,
+                    "bloodPressure": "120/80",
+                    "updateTime": "2026-10-31 10:00:00"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    },
+    "/api/OpenApi/GasLatest": {
+      "get": {
+        "tags": ["气体与告警"],
+        "summary": "获取气体检测最新值",
+        "description": "当前在场人员所佩戴安全帽（四合一气体检测仪）的最新气体浓度及越限标记。判定标准与平台作业台账一致：O2 19.5~21 %VOL、CH4<10 %LEL、H2S<7 ppm、CO<25 ppm。窗口内无上报的设备不返回。",
+        "operationId": "gasLatest",
+        "parameters": [
+          { "name": "projectId", "in": "query", "required": false, "schema": { "type": "string" }, "description": "工程ID（GUID），不传取当前工程" },
+          { "name": "recentMinutes", "in": "query", "required": false, "schema": { "type": "integer", "default": 10, "minimum": 1 }, "description": "回看窗口（分钟），默认10" }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GasLatestResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "list": [
+                      {
+                        "deviceId": "865123050001",
+                        "name": "张三",
+                        "o2": 20.8,
+                        "ch4": 0.5,
+                        "h2s": 0.0,
+                        "co": 1.2,
+                        "abnormal": false,
+                        "updateTime": "2026-10-31 10:00:30"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    },
+    "/api/OpenApi/Alarms": {
+      "get": {
+        "tags": ["气体与告警"],
+        "summary": "获取安全帽告警记录",
+        "description": "近 N 分钟内该工程涉及设备的安全帽告警（如 SOS、健康越限等，typeInfo 由安全帽上报），自动关联最近一次佩戴人信息。按时间倒序，最多返回 500 条。建议按 time 字段去重后处理。",
+        "operationId": "alarms",
+        "parameters": [
+          { "name": "projectId", "in": "query", "required": false, "schema": { "type": "string" }, "description": "工程ID（GUID），不传取当前工程" },
+          { "name": "minutes", "in": "query", "required": false, "schema": { "type": "integer", "default": 1440, "minimum": 1, "maximum": 43200 }, "description": "回看窗口（分钟），默认1440（24小时）" }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AlarmsResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "list": [
+                      {
+                        "deviceId": "865123050001",
+                        "name": "张三",
+                        "company": "XX运维有限公司",
+                        "department": "运行一班",
+                        "phone": "138****0000",
+                        "type": 1,
+                        "typeInfo": "SOS",
+                        "time": "2026-10-31 09:45:00"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    },
+    "/api/OpenApi/LiveStreams": {
+      "get": {
+        "tags": ["视频流"],
+        "summary": "获取在线视频流列表",
+        "description": "当前在线的安全帽视频流（数据来自 ZLMediaKit）及各协议播放地址。流名 = live/{安全帽设备ID}。返回空 list 表示当前无安全帽推流，属正常现象。配合播放地址使用方式见对接文档第 5 章。",
+        "operationId": "liveStreams",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/LiveStreamsResp" },
+                "example": {
+                  "status": true,
+                  "message": "获取成功",
+                  "data": {
+                    "list": [
+                      {
+                        "streamId": "865123050001",
+                        "app": "live",
+                        "holder": "张三",
+                        "playUrls": {
+                          "rtsp": "rtsp://192.168.144.211:8554/live/865123050001",
+                          "rtmp": "rtmp://192.168.144.211:1935/live/865123050001",
+                          "httpFlv": "http://192.168.144.211:8081/live/865123050001.live.flv",
+                          "webrtc": "https://192.168.144.211:3000/zlm/index/api/webrtc?app=live&stream=865123050001&type=play"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "500": { "$ref": "#/components/responses/ServerNotConfigured" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Key",
+        "description": "对接密钥（推荐方式），由平台管理员分配"
+      },
+      "ApiKeyQuery": {
+        "type": "apiKey",
+        "in": "query",
+        "name": "apiKey",
+        "description": "对接密钥（URL参数方式）"
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "ApiKey 缺失或无效",
+        "content": {
+          "application/json": {
+            "example": { "message": "ApiKey 无效", "status": false, "code": 401 }
+          }
+        }
+      },
+      "ServerNotConfigured": {
+        "description": "服务端未配置 OpenApi:ApiKey（fail-closed），开放接口不可用",
+        "content": {
+          "application/json": {
+            "example": { "message": "服务端未配置 OpenApi:ApiKey，开放接口不可用", "status": false, "code": 500 }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "WatchData": {
+        "type": "object",
+        "description": "手表最新健康数据（未绑表或无数据时为 null）",
+        "properties": {
+          "heartRate": { "type": "integer", "nullable": true, "description": "心率（次/分）" },
+          "spo2": { "type": "integer", "nullable": true, "description": "血氧饱和度（%）" },
+          "systolic": { "type": "integer", "nullable": true, "description": "收缩压（mmHg）" },
+          "diastolic": { "type": "integer", "nullable": true, "description": "舒张压（mmHg）" },
+          "bloodPressure": { "type": "string", "description": "血压，如 120/80；数据不全时为空串" },
+          "updateTime": { "type": "string", "nullable": true, "description": "上报时间 yyyy-MM-dd HH:mm:ss" }
+        }
+      },
+      "CurrentProjectResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "projectId": { "type": "string", "description": "工程ID（GUID）" },
+              "projectName": { "type": "string", "description": "工程名称" },
+              "unitName": { "type": "string", "description": "作业单位" },
+              "managerName": { "type": "string", "description": "现场负责人" },
+              "managerPhone": { "type": "string", "description": "现场负责人电话" },
+              "guardianName": { "type": "string", "description": "监护人员" },
+              "administratorName": { "type": "string", "description": "安全管理人员" },
+              "startWorkDate": { "type": "string", "description": "开工时间" },
+              "status": { "type": "integer", "description": "工程状态" }
+            }
+          }
+        }
+      },
+      "StaffListResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "projectId": { "type": "string" },
+              "projectName": { "type": "string" },
+              "total": { "type": "integer", "description": "总人数" },
+              "onSite": { "type": "integer", "description": "在场人数" },
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "staffId": { "type": "string", "description": "人员ID（GUID）" },
+                    "name": { "type": "string", "description": "姓名" },
+                    "gender": { "type": "string", "description": "性别" },
+                    "company": { "type": "string", "description": "所属单位" },
+                    "department": { "type": "string", "description": "所属班组/部门" },
+                    "phone": { "type": "string", "description": "联系电话" },
+                    "status": { "type": "integer", "description": "0=离场，1=登记中，2=在场", "enum": [0, 1, 2] },
+                    "statusText": { "type": "string", "description": "状态中文描述" },
+                    "enterTime": { "type": "string", "nullable": true, "description": "最近一次入场时间（未退场时返回）" },
+                    "device1": { "type": "string", "nullable": true, "description": "绑定安全帽设备ID（气体/视频流标识）" },
+                    "watchImei": { "type": "string", "nullable": true, "description": "绑定手表 IMEI" },
+                    "watch": { "$ref": "#/components/schemas/WatchData" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "WatchLatestResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "deviceId": { "type": "string" },
+              "watchImei": { "type": "string" },
+              "staffId": { "type": "string", "nullable": true },
+              "heartRate": { "type": "integer", "nullable": true },
+              "spo2": { "type": "integer", "nullable": true },
+              "systolic": { "type": "integer", "nullable": true },
+              "diastolic": { "type": "integer", "nullable": true },
+              "bloodPressure": { "type": "string" },
+              "updateTime": { "type": "string", "nullable": true }
+            }
+          }
+        }
+      },
+      "GasLatestResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "deviceId": { "type": "string", "description": "安全帽设备ID" },
+                    "name": { "type": "string", "description": "当前佩戴人姓名" },
+                    "o2": { "type": "number", "nullable": true, "description": "氧气浓度（%VOL），正常 19.5~21" },
+                    "ch4": { "type": "number", "nullable": true, "description": "甲烷浓度（%LEL），正常 <10" },
+                    "h2s": { "type": "number", "nullable": true, "description": "硫化氢浓度（ppm），正常 <7" },
+                    "co": { "type": "number", "nullable": true, "description": "一氧化碳浓度（ppm），正常 <25" },
+                    "abnormal": { "type": "boolean", "description": "是否存在越限项" },
+                    "updateTime": { "type": "string", "description": "上报时间" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "AlarmsResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "deviceId": { "type": "string", "description": "安全帽设备ID" },
+                    "name": { "type": "string", "description": "最近一次携带人姓名" },
+                    "company": { "type": "string" },
+                    "department": { "type": "string" },
+                    "phone": { "type": "string" },
+                    "type": { "type": "integer", "description": "告警类型编码" },
+                    "typeInfo": { "type": "string", "description": "告警类型描述（由安全帽上报，以实际推送为准）" },
+                    "time": { "type": "string", "description": "告警时间" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "LiveStreamsResp": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "boolean" },
+          "message": { "type": "string" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "streamId": { "type": "string", "description": "流标识，即安全帽设备ID" },
+                    "app": { "type": "string", "description": "应用名，固定 live" },
+                    "holder": { "type": "string", "description": "当前佩戴人姓名（离场后为空）" },
+                    "playUrls": {
+                      "type": "object",
+                      "properties": {
+                        "rtsp": { "type": "string", "description": "RTSP 拉流地址（推荐服务端拉流）" },
+                        "rtmp": { "type": "string", "description": "RTMP 拉流地址" },
+                        "httpFlv": { "type": "string", "description": "HTTP-FLV 播放地址（网页 flv.js）" },
+                        "webrtc": { "type": "string", "description": "WebRTC 信令地址（需 SDP 交换，ZLMRTCClient）" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

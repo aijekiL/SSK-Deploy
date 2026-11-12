@@ -37,13 +37,30 @@ namespace Venus.WebApi.Services
             using var fileContent = new StreamContent(imageStream);
             if (!string.IsNullOrWhiteSpace(contentType))
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-            form.Add(fileContent, "file", fileName);
+            form.Add(fileContent, "file", NormalizeFileName(fileName));
             request.Content = form;
 
             using var response = await SendAsync(request, cancellationToken);
             var payload = await response.Content.ReadAsStringAsync(cancellationToken);
             EnsureSuccess(response, payload);
             return JsonSerializer.Deserialize<CompreFaceAddFaceResponse>(payload, JsonOptions);
+        }
+
+        public async Task DeleteFaceAsync(string imageId, string? groupId, CancellationToken cancellationToken)
+        {
+            var apiKey = ResolveApiKey(groupId);
+            if (string.IsNullOrWhiteSpace(apiKey))
+                throw new InvalidOperationException("CompreFace API key is not configured.");
+            if (string.IsNullOrWhiteSpace(imageId))
+                throw new ArgumentException("imageId is required", nameof(imageId));
+
+            var url = BuildUrl($"faces/{Uri.EscapeDataString(imageId)}");
+            using var request = new HttpRequestMessage(HttpMethod.Delete, url);
+            request.Headers.Add("x-api-key", apiKey);
+
+            using var response = await SendAsync(request, cancellationToken);
+            var payload = await response.Content.ReadAsStringAsync(cancellationToken);
+            EnsureSuccess(response, payload);
         }
 
         public async Task<CompreFaceRecognizeResponse?> RecognizeAsync(Stream imageStream, string fileName, string? contentType, string? groupId, int? predictionCount, int? limit, CancellationToken cancellationToken)
@@ -67,13 +84,23 @@ namespace Venus.WebApi.Services
             using var fileContent = new StreamContent(imageStream);
             if (!string.IsNullOrWhiteSpace(contentType))
                 fileContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-            form.Add(fileContent, "file", fileName);
+            form.Add(fileContent, "file", NormalizeFileName(fileName));
             request.Content = form;
 
             using var response = await SendAsync(request, cancellationToken);
             var payload = await response.Content.ReadAsStringAsync(cancellationToken);
             EnsureSuccess(response, payload);
             return JsonSerializer.Deserialize<CompreFaceRecognizeResponse>(payload, JsonOptions);
+        }
+
+        /// <summary>
+        /// 规范化上传文件名：CompreFace 按扩展名校验文件，浏览器摄像头拍照常见无扩展名（如 blob），统一回退为 upload.jpg
+        /// </summary>
+        private static string NormalizeFileName(string? fileName)
+        {
+            var name = (fileName ?? string.Empty).Trim();
+            var ext = Path.GetExtension(name).ToLowerInvariant();
+            return ext is ".jpg" or ".jpeg" or ".png" ? name : "upload.jpg";
         }
 
         private string BuildUrl(string path)

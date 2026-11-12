@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Venus.Entitys.SecurityMonitorService
 {
@@ -28,6 +28,21 @@ namespace Venus.Entitys.SecurityMonitorService
         /// 负责人手机号
         /// </summary>
         public string ManagerPhone { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 专职监护人
+        /// </summary>
+        public string? GuardianName { get; set; }
+
+        /// <summary>
+        /// 项目管理员
+        /// </summary>
+        public string? AdministratorName { get; set; }
+
+        /// <summary>
+        /// 作业单位（台账可编辑覆盖；为空时按人员工作单位/工作部门推导）
+        /// </summary>
+        public string? UnitName { get; set; }
 
         /// <summary>
         /// 开工时间

@@ -84,9 +84,10 @@ namespace Venus.WebApi.Services
             try
             {
                 using (client)
-                await using (var stream = client.GetStream())
-                {
-                    while (!stoppingToken.IsCancellationRequested && client.Connected)
+                    await using (var stream = client.GetStream())
+                    {
+                        _registry.AttachStream(connectionId, stream);
+                        while (!stoppingToken.IsCancellationRequested && client.Connected)
                     {
                         var read = await stream.ReadAsync(buffer.AsMemory(0, buffer.Length), stoppingToken);
                         if (read <= 0)
@@ -134,12 +135,19 @@ namespace Venus.WebApi.Services
                     var loginReply = BuildLoginReply();
                     await stream.WriteAsync(loginReply, stoppingToken);
                     _logger.LogInformation("[WatchTcp] login ok imei={Imei}", imei);
+                    await SendDefaultHealthPeriodAsync(imei, stoppingToken);
+                    await FlushPendingCommandsAsync(imei, stoppingToken);
+                    break;
+
+                case 0xC0:
+                    _registry.MarkDownlinkAck(state.WatchImei ?? string.Empty, ToHex(frame));
+                    _logger.LogInformation("[WatchTcp] downlink ack imei={Imei} hex={Hex}", state.WatchImei, ToHex(frame));
                     break;
 
                 case 0xF9:
                     _registry.MarkHeartbeat(state.ConnectionId);
                     await stream.WriteAsync(HeartbeatReply, stoppingToken);
-                    _logger.LogDebug("[WatchTcp] F9 heartbeat imei={Imei}", state.WatchImei);
+                    _logger.LogInformation("[WatchTcp] F9 heartbeat imei={Imei} remote={Remote}", state.WatchImei, state.ConnectionId);
                     break;
 
                 case 0x32:
@@ -191,6 +199,14 @@ namespace Venus.WebApi.Services
                     break;
                 case 0xF9:
                     frameLength = 21;
+                    break;
+                case 0xC0:
+                    // 下行反馈：BDBDBDBD C0 <len:u8> <msgid×len> <checksum>（文档 4.6.1）
+                    if (pending.Count < 6)
+                    {
+                        return false;
+                    }
+                    frameLength = 7 + pending[5];
                     break;
                 case 0x32:
                     if (pending.Count < 12)
@@ -327,6 +343,67 @@ namespace Venus.WebApi.Services
 
             dbContext.Set<SM_WatchHealthReport>().Add(report);
             await dbContext.SaveChangesAsync(stoppingToken);
+        }
+
+        /// <summary>
+        /// 登录成功后自动下发默认健康采样上报频率（0x1C）。
+        /// 频率取配置 WatchTcp:HealthReportMinutes，默认 2 分钟；配置为 0 或负数时不下发。
+        /// 设备最高支持 2 分钟（协议 5.1.4），因此配置小于 2 时按 2 下发。
+        /// </summary>
+        private async Task SendDefaultHealthPeriodAsync(string imei, CancellationToken stoppingToken)
+        {
+            var minutes = _configuration.GetValue<int?>("WatchTcp:HealthReportMinutes") ?? 2;
+            if (minutes <= 0)
+            {
+                return;
+            }
+
+            if (minutes < 2)
+            {
+                minutes = 2;
+            }
+
+            var frame = WatchDownlinkCommands.SetHealthSamplePeriod((ushort)minutes);
+            try
+            {
+                var sent = await _registry.TrySendAsync(imei, frame, stoppingToken);
+                _logger.LogInformation(
+                    "[WatchTcp] default health period imei={Imei} minutes={Minutes} sent={Sent} hex={Hex}",
+                    imei, minutes, sent, ToHex(frame));
+
+                // 追加下发 0xCE-0B 立即上报健康数据（文档 5.1.6 Type=0B）：设备立刻采样并上报，免去等待采样周期
+                var reportNowFrame = WatchDownlinkCommands.ReportHealthNow();
+                var reportNowSent = await _registry.TrySendAsync(imei, reportNowFrame, stoppingToken);
+                _logger.LogInformation(
+                    "[WatchTcp] report health now imei={Imei} sent={Sent} hex={Hex}",
+                    imei, reportNowSent, ToHex(reportNowFrame));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[WatchTcp] default health period send failed imei={Imei}", imei);
+            }
+        }
+
+        private async Task FlushPendingCommandsAsync(string? imei, CancellationToken stoppingToken)
+        {
+            if (string.IsNullOrWhiteSpace(imei))
+            {
+                return;
+            }
+
+            var pending = _registry.TakePendingCommands(imei);
+            foreach (var frame in pending)
+            {
+                try
+                {
+                    var sent = await _registry.TrySendAsync(imei, frame, stoppingToken);
+                    _logger.LogInformation("[WatchTcp] flush pending command imei={Imei} sent={Sent} hex={Hex}", imei, sent, ToHex(frame));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "[WatchTcp] flush pending command failed imei={Imei}", imei);
+                }
+            }
         }
 
         private static byte[] BuildLoginReply()

@@ -1,4 +1,4 @@
-﻿using IGeekFan.AspNetCore.Knife4jUI;
+using IGeekFan.AspNetCore.Knife4jUI;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -194,8 +194,15 @@ namespace Venus.WebApi
             services.AddHttpClient();
             services.Configure<CompreFaceOptions>(builder.Configuration.GetSection("CompreFace"));
             services.AddTransient<CompreFaceClient>();
+            services.Configure<CapsLedgerOptions>(builder.Configuration.GetSection("Caps"));
+            services.AddTransient<WorkLedgerService>();
+            services.Configure<ZlmOptions>(builder.Configuration.GetSection("Zlm"));
+            services.AddTransient<ZlmClient>();
+            services.Configure<VideoPlaybackOptions>(builder.Configuration.GetSection("VideoPlayback"));
+            services.Configure<OpenApiOptions>(builder.Configuration.GetSection("OpenApi")); //第三方对接开放接口
             services.AddSingleton<WatchConnectionRegistry>();
             services.AddHostedService<WatchTcpHostedService>();
+            services.AddHostedService<VideoPlaybackCleanupService>();
 
             //静态化Services
             AppService.Services = builder.Services;

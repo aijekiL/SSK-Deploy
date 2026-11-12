@@ -50,6 +50,34 @@ namespace Venus.Entitys.SecurityMonitorService
         /// </summary>
         public Guid? projectId { get; set; }
 
+        /// <summary>
+        /// 设备Id（智能安全帽）
+        /// </summary>
+        [MaxLength(50)]
+        public string? Device1 { get; set; }
+
+        /// <summary>
+        /// 手表IMEI
+        /// </summary>
+        [MaxLength(32)]
+        public string? WatchImei { get; set; }
+        /// <summary>
+        /// CompreFace中的当前人脸图片ID
+        /// </summary>
+        [MaxLength(100)]
+        public string? FaceImageId { get; set; }
+
+        /// <summary>
+        /// 人脸同步状态：0=未同步，1=成功，2=失败
+        /// </summary>
+        public int FaceSyncStatus { get; set; }
+
+        /// <summary>
+        /// 最近一次人脸同步结果
+        /// </summary>
+        [MaxLength(500)]
+        public string? FaceSyncMessage { get; set; }
+
 
     }
 }

@@ -59,7 +59,7 @@ services:
       POSTGRES_PASSWORD: ${postgres_password:-postgres}
       POSTGRES_URL: jdbc:postgresql://${postgres_domain:-compreface-postgres-db}:${postgres_port:-5432}/${postgres_db:-frs}
       SPRING_PROFILES_ACTIVE: dev
-      API_JAVA_OPTS: ${compreface_api_java_options:--Xms128m -Xmx256m}
+      API_JAVA_OPTS: ${compreface_api_java_options:--Xms256m -Xmx4g}
       SAVE_IMAGES_TO_DB: ${save_images_to_db:-true}
       MAX_FILE_SIZE: ${max_file_size:-5MB}
       MAX_REQUEST_SIZE: ${max_request_size:-10M}B

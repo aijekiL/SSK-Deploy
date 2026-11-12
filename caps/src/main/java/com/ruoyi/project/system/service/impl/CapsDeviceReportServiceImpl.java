@@ -29,11 +29,12 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
     private static final String WATCH_METRIC_DIASTOLIC = "diastolic";
     private static final long HISTORY_INTERVAL_MS = 60 * 1000L;
     private static final BigDecimal GAS_CHANGE_THRESHOLD = new BigDecimal("0.1");
+    // 气体安全区间：氧气19.5~21%VOL、可燃气体(CH4)<10%LEL、硫化氢<7ppm、一氧化碳<25ppm
     private static final BigDecimal MIN_O2 = new BigDecimal("19.5");
-    private static final BigDecimal MAX_O2 = new BigDecimal("23.5");
-    private static final BigDecimal MAX_CO = new BigDecimal("10");
-    private static final BigDecimal MAX_H2S = new BigDecimal("0.1");
-    private static final BigDecimal MAX_CH4 = new BigDecimal("0.1");
+    private static final BigDecimal MAX_O2 = new BigDecimal("21");
+    private static final BigDecimal MAX_CO = new BigDecimal("25");
+    private static final BigDecimal MAX_H2S = new BigDecimal("7");
+    private static final BigDecimal MAX_CH4 = new BigDecimal("10");
 
     @Autowired
     private CapsDeviceReportMapper capsDeviceReportMapper;
@@ -213,7 +214,7 @@ public class CapsDeviceReportServiceImpl implements ICapsDeviceReportService
                 continue;
             }
             hasMappedValue = true;
-            targetReport.setUpdateTime(reportTime);
+            targetReport.setUpdateTime(DateUtils.getNowDate());
             if (latestReport == null) {
                 capsDeviceReportMapper.insertCapsDeviceReport(targetReport);
             } else {

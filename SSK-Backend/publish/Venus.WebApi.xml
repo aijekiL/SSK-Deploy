@@ -108,6 +108,69 @@
             <param name="dto"></param>
             <returns></returns>
         </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.WatchLatest(System.Nullable{System.Guid},System.String)">
+            <summary>
+            获取人员最新手表健康数据
+            </summary>
+            <param name="staffId"></param>
+            <param name="watchImei"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.WatchConnectionStatus">
+            <summary>
+            获取手表TCP连接状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchPeriodDto">
+            <summary>
+            设置手表上报频率下行指令参数
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchPeriodDto.WatchImei">
+            <summary>
+            手表IMEI，与 staffId 二选一
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchPeriodDto.StaffId">
+            <summary>
+            人员Id，未传 WatchImei 时按人员档案中绑定的手表IMEI下发
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchPeriodDto.Minutes">
+            <summary>
+            上报/检测周期，单位：分钟
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchReportPeriod(Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchPeriodDto)">
+            <summary>
+            下发手表健康采样上报频率指令(0x1C，W300PGW V2.0 文档 5.1.4)，设备在线立即下发，离线则缓存待其登录后补发
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchHeartRateThresholdDto">
+            <summary>
+            设置心率报警门限下行指令参数
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchHeartRateThresholdDto.Upper">
+            <summary>
+            心率上限
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchHeartRateThresholdDto.Lower">
+            <summary>
+            心率下限
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchHeartRateThreshold(Venus.WebApi.Controllers.SecurityMonitorService.DeviceController.SetWatchHeartRateThresholdDto)">
+            <summary>
+            下发手表心率报警门限指令(0x19)
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
         <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.ProjectInfoController">
             <summary>
             项目信息接口
@@ -227,9 +290,29 @@
             设备1
             </summary>
         </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.WatchImei">
+            <summary>
+            手表IMEI
+            </summary>
+        </member>
         <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.AttachmentId">
             <summary>
             附件ID
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.EmployeeProfileId">
+            <summary>
+            已关联的人员信息台账ID
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.SyncEmployeeProfile">
+            <summary>
+            是否将本次登记同步到人员信息台账及人脸库
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto.SyncProfilePhoto">
+            <summary>
+            同步台账时是否同时替换台账登记照并刷新人脸库；为 false 时仅同步文字信息（台账无照片时仍会补挂）
             </summary>
         </member>
         <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto">
@@ -257,12 +340,28 @@
             附件ID
             </summary>
         </member>
-        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.ConfirmStaffInfo(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto)">
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.ConfirmStaffInfo(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffInfoDto,System.Threading.CancellationToken)">
             <summary>
             确认员工信息
             </summary>
             <param name="dto"></param>
+            <param name="cancellationToken"></param>
             <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.RetryEmployeeProfileFaceSyncDto">
+            <summary>
+            人脸同步重试参数
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.RetryEmployeeProfileFaceSyncDto.EmployeeProfileId">
+            <summary>
+            人员信息台账ID
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.RetryEmployeeProfileFaceSync(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.RetryEmployeeProfileFaceSyncDto,System.Threading.CancellationToken)">
+            <summary>
+            使用人员台账当前登记照重试人脸库同步
+            </summary>
         </member>
         <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.AddStaffToolInfo(Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveStaffToolInfoDto)">
             <summary>
@@ -315,11 +414,12 @@
             <param name="curStep"></param>
             <returns></returns>
         </member>
-        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.CompleteRegistration(System.Guid)">
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.CompleteRegistration(System.Guid,System.Boolean)">
             <summary>
             完成员工登记并正式入场
             </summary>
             <param name="StaffId"></param>
+            <param name="RequireSignature">移动端入场时是否要求安全交底签名</param>
             <returns></returns>
         </member>
         <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto">
@@ -362,6 +462,16 @@
             工作部门
             </summary>
         </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.Device1">
+            <summary>
+            设备Id（智能安全帽）
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.WatchImei">
+            <summary>
+            手表IMEI
+            </summary>
+        </member>
         <member name="P:Venus.WebApi.Controllers.SecurityMonitorService.StaffInfoController.SaveEmployeeProfileDto.AttachmentId">
             <summary>
             附件ID
@@ -388,6 +498,51 @@
             <param name="EmployeeProfileId"></param>
             <returns></returns>
         </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.VideoPlaybackController">
+            <summary>
+            视频回放（ZLM 录制片段查询/下载）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.VideoPlaybackController.GetPageList(Venus.Tools.Request.PageDataOptions)">
+            <summary>
+            分页查询视频回放片段（filter 支持 Name姓名/No工号/Department部门/Company单位/DeviceId设备，模糊匹配）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.VideoPlaybackController.Download(System.Guid,System.Threading.CancellationToken)">
+            <summary>
+            下载视频片段（从 ZLM 拉流代理返回，带人员信息文件名）
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController">
+            <summary>
+            作业台账（有限空间作业进出登记表 / 气体监测记录表）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.GetEntryExitLedger(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            获取进出登记表数据（预览）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.GetGasLedger(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            获取气体监测记录表数据（预览）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.SaveLedgerHeader(Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.SaveLedgerHeaderDto)">
+            <summary>
+            保存台账表头（作业单位/工作负责人/作业地点/专职监护人/项目管理员）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.ExportEntryExitWord(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            导出进出登记表 Word
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.SecurityMonitorService.WorkLedgerController.ExportGasWord(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            导出气体监测记录表 Word
+            </summary>
+        </member>
         <member name="M:Venus.WebApi.Controllers.User.UserController.GetUserListData(Venus.Tools.Request.PageDataOptions)">
             <summary>
             获取用户列表
@@ -406,6 +561,29 @@
             获取用户菜单
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Venus.WebApi.Controllers.ZlmHookController">
+            <summary>
+            ZLMediaKit Hook 回调接收（匿名访问，按 secret 校验）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.ZlmHookController.OnRecordMp4(System.Threading.CancellationToken)">
+            <summary>
+            MP4 录制完成回调：登记视频回放片段元数据（含人员快照）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.ZlmHookController.ResolveStaffAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            按设备ID解析人员：优先在场人员，其次最近一次进出登记
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Controllers.ZlmHookController.ToRelPath(System.String)">
+            <summary>从绝对路径提取相对 ZLM www 根目录的路径</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.CompreFaceClient.NormalizeFileName(System.String)">
+            <summary>
+            规范化上传文件名：CompreFace 按扩展名校验文件，浏览器摄像头拍照常见无扩展名（如 blob），统一回退为 upload.jpg
+            </summary>
         </member>
         <member name="P:Venus.WebApi.Services.CompreFaceOptions.BaseUrl">
             <summary>
@@ -440,6 +618,205 @@
         <member name="P:Venus.WebApi.Services.CompreFaceOptions.TimeoutSeconds">
             <summary>
             HTTP timeout for CompreFace requests.
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.VideoPlaybackOptions">
+            <summary>
+            视频回放清理配置
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.VideoPlaybackOptions.RetainDays">
+            <summary>
+            录像保留天数（1=仅保留当天，即每天零点前的片段全部清理）
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.VideoPlaybackOptions.CleanupIntervalMinutes">
+            <summary>
+            清理检查间隔（分钟）
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.VideoPlaybackCleanupService">
+            <summary>
+            视频回放片段清理服务：定时删除超过保留时长的片段（调用 ZLM 删除录像文件并移除元数据）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WatchConnectionRegistry.SendOrQueueAsync(System.String,System.Byte[],System.Threading.CancellationToken)">
+            <summary>
+            下发下行指令：在线立即发送，离线写入缓存队列等待登录后补发
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.WatchDownlinkCommands">
+            <summary>
+            手表下行指令帧构造器：帧头(BDBDBDBD) + MessageId + Payload + 校验和
+            校验和 = 0xFF - ((帧头+MessageId+Payload 逐字节累加) % 256)
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WatchDownlinkCommands.SetHealthSamplePeriod(System.UInt16)">
+            <summary>
+            0x1C 健康采样上报频率设置（W300PGW-CAT1 TCP协议V2.0 文档 5.1.4，注意与 W200P 的 0x1A 不同）：
+            payload = 4 个时间段，每段 7 字节：
+              enable(u8，1=启用) + Interval(U16 小端，分钟) + time_start_h + time_start_m + time_end_h + time_end_m
+            未启用时间段 7 字节全部填 0；设备仅在启用时间段内上报，时间段外不上报。
+            此处使用时间段1 覆盖全天 00:00-23:59。
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WatchDownlinkCommands.ReportHealthNow">
+            <summary>
+            0xCE-0B 立即上报健康数据（W300PGW V2.0 文档 5.1.6 Type=0B）：
+            payload = Type(0x0B) + switch(0x01 单次下发单次上报) + 0x0000 固定值。
+            设备收到后立刻开始健康采样并上报，用于免等待采样周期、立即获取最新数据。
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WatchDownlinkCommands.SetHeartRateThreshold(System.UInt16,System.UInt16)">
+            <summary>
+            0x19 心率报警门限：payload = u16 上限 + u16 下限（小端）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WatchTcpHostedService.SendDefaultHealthPeriodAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            登录成功后自动下发默认健康采样上报频率（0x1C）。
+            频率取配置 WatchTcp:HealthReportMinutes，默认 2 分钟；配置为 0 或负数时不下发。
+            设备最高支持 2 分钟（协议 5.1.4），因此配置小于 2 时按 2 下发。
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.CapsLedgerOptions">
+            <summary>
+            caps 安全帽数据库配置（同实例 MySQL 跨库查询气体上报历史）
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.WorkLedgerService">
+            <summary>
+            作业台账（有限空间作业进出登记表 / 气体监测记录表）数据组装与 Word 导出
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.Unit">
+            <summary>作业单位（人员所在部门，多个部门逗号分隔）</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.Manager">
+            <summary>工作负责人（工程登记负责人）</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.Guardian">
+            <summary>专职监护人</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.Administrator">
+            <summary>项目管理员</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.Location">
+            <summary>作业地点/检测位置（区域名称）</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.WorkContent">
+            <summary>工作内容（固定：有限空间作业）</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.LedgerHeader.ProjectNo">
+            <summary>项目编号（用于 Word 模板“编号：”字段；当前无正式编号时用 ObjectId 前8位）</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.O2">
+            <summary>氧气 %VOL</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.Ch4">
+            <summary>可燃性气体 %LEL</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.H2s">
+            <summary>硫化氢 ppm</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.Co">
+            <summary>一氧化碳 ppm</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.Result">
+            <summary>检测结果：合格/不合格</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.DetectTime">
+            <summary>检测时间</summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.WorkLedgerService.GasRow.Recorder">
+            <summary>记录人（工程负责人）</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.GetEntryExitLedgerAsync(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            组装有限空间作业进出登记表数据
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.GetGasLedgerAsync(System.Guid,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            组装气体监测记录表数据：设备首条有效气体数据立即记录，此后每15分钟取一次瞬时值（同时间点多设备取最不利值）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.SaveLedgerHeaderAsync(System.Guid,System.String,System.String,System.String,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            保存作业台账表头（作业单位/工作负责人/作业地点/专职监护人/项目管理员），供台账编辑
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.WorstO2(System.Collections.Generic.List{Venus.WebApi.Services.WorkLedgerService.GasHistoryItem})">
+            <summary>氧气最不利值：偏离20.9%最远的值</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.EvaluateGasResult(Venus.WebApi.Services.WorkLedgerService.GasRow)">
+            <summary>气体安全区间：氧气19.5~21%VOL、可燃性气体&lt;10%LEL、硫化氢&lt;7ppm、一氧化碳&lt;25ppm</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.BuildEntryExitWordAsync(Venus.WebApi.Services.WorkLedgerService.EntryExitLedger,System.Threading.CancellationToken)">
+            <summary>
+            生成进出登记表 Word
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.BuildGasWordAsync(Venus.WebApi.Services.WorkLedgerService.GasLedger,System.Threading.CancellationToken)">
+            <summary>
+            生成气体监测记录表 Word
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.FillHeaderLabels(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager,Venus.WebApi.Services.WorkLedgerService.LedgerHeader)">
+            <summary>
+            将表头标签（作业单位/工作负责人/专职监护人/工作内容/作业地点/项目管理员/检测位置/进出登记点位置）后追加对应值。
+            新模板无 {{}} 占位符，值直接写在标签所在单元格/段落文本之后。
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.RemoveExtraTables(System.Xml.XmlDocument,System.Xml.XmlNamespaceManager)">
+            <summary>
+            模板含两份相同表格（第二页副本），仅保留第一份，避免重复输出。
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.FillTemplate(System.String,System.Action{System.Xml.XmlDocument,System.Xml.XmlNamespaceManager})">
+            <summary>
+            读取 docx 模板，填充 document.xml 后重新打包
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.SetCell(System.Xml.XmlNode,System.Xml.XmlNamespaceManager,System.Int32,System.String)">
+            <summary>按索引给数据行某单元格赋值（索引越界忽略）</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.GetNodeText(System.Xml.XmlNode,System.Xml.XmlNamespaceManager)">
+            <summary>获取节点内全部文本（拼接所有 w:t）</summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.WorkLedgerService.SetNodeText(System.Xml.XmlNode,System.Xml.XmlNamespaceManager,System.String)">
+            <summary>
+            设置节点文本：保留第一个段落承载内容并删除多余段落/run（避免模板单元格多段落产生多余换行），无 w:t 时创建 run
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.ZlmOptions">
+            <summary>
+            ZLMediaKit 配置
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.ZlmOptions.HttpBaseUrl">
+            <summary>
+            ZLM HTTP API 基础地址（容器内网地址）
+            </summary>
+        </member>
+        <member name="P:Venus.WebApi.Services.ZlmOptions.Secret">
+            <summary>
+            ZLM API 密钥（与 zlm config.ini [api] secret 一致，hook 回调校验也用它）
+            </summary>
+        </member>
+        <member name="T:Venus.WebApi.Services.ZlmClient">
+            <summary>
+            ZLMediaKit 客户端（API 调用与录制文件流代理）
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.ZlmClient.DeleteRecordMp4Async(System.String,System.String,System.Int64,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            删除指定流一段时间内的 MP4 录制文件
+            </summary>
+        </member>
+        <member name="M:Venus.WebApi.Services.ZlmClient.OpenRecordFileAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            从 ZLM HTTP 文件服务拉取录制文件流（用于后端代理下载）
             </summary>
         </member>
     </members>
